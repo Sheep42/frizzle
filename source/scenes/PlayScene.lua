@@ -1,18 +1,33 @@
 PlayScene = {}
 class("PlayScene").extends(NobleScene)
+
 local scene = PlayScene
-
-scene.baseColor = Graphics.kColorBlack
-
 local background
 local sequence
 local playerSprite = nil
+local states = {}
+local stateMachine = nil
+
+scene.baseColor = Graphics.kColorBlack
+scene.inputHandler = {
+	AButtonDown = function()
+		stateMachine:changeStateById( "test_state_2" )
+	end,
+	BButtonDown = function()
+		stateMachine:changeToDefault()
+	end
+}
 
 function scene:init()
 
 	scene.super.init(self)
 
 	background = Graphics.image.new( "assets/images/background" )
+
+	-- TODO: Remove Me - Testing SateMachine system
+	table.insert( states, TestState:new( "test_state_1" ) )
+	table.insert( states, TestState2:new( "test_state_2" ) )
+	stateMachine = StateMachine:new( states[1], states )
 
 	local playerImg = Graphics.image.new( "assets/images/player" )
 	playerSprite = NobleSprite.new( playerImg )
@@ -25,7 +40,7 @@ function scene:enter()
 
 	scene.super.enter(self)
 
-	sequence = Sequence.new():from(0):to(100, 1.5, Ease.outBounce)
+	sequence = Sequence.new():from(0):to( 100, 1.5, Ease.outBounce )
 	sequence:start();
 
 end
@@ -46,6 +61,7 @@ end
 function scene:update()
 
 	scene.super.update(self)
+	stateMachine:update()
 
 end
 

@@ -90,9 +90,7 @@ function scene:update()
 	Graphics.setColor(Graphics.kColorBlack)
 	Graphics.fillRoundRect(260, -20, 130, 65, 15)
 	
-	if Noble.Settings.get( "debug_mode" ) == true then
-		Noble.showFPS = true
-	end
+	Noble.showFPS = Noble.Settings.get( "debug_mode" )
 
 end
 
