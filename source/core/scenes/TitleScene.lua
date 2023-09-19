@@ -88,7 +88,6 @@ function scene:update()
 	menu:draw(30, sequence:get()-15 or 100-15)
 
 	Graphics.setColor(Graphics.kColorBlack)
-	Graphics.fillRoundRect(260, -20, 130, 65, 15)
 	
 	Noble.showFPS = Noble.Settings.get( "debug_mode" )
 
