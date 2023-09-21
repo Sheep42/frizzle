@@ -8,3 +8,5 @@ import "core/states/State"
 import "core/states/StateMachine"
 import "core/states/TestState"
 import "core/states/TestState2"
+
+import "core/dialogue/Dialogue"

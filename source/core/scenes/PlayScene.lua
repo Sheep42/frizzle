@@ -5,17 +5,12 @@ local scene = PlayScene
 local background
 local sequence
 local playerSprite = nil
-local states = {}
-local stateMachine = nil
+local dialogue = nil
 
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
 	AButtonDown = function()
-		stateMachine:changeStateById( "test_state_2" )
 	end,
-	BButtonDown = function()
-		stateMachine:changeToDefault()
-	end
 }
 
 function scene:init()
@@ -24,15 +19,12 @@ function scene:init()
 
 	background = Graphics.image.new( "assets/images/background" )
 
-	-- TODO: Remove Me - Testing SateMachine system
-	table.insert( states, TestState:new( "test_state_1" ) )
-	table.insert( states, TestState2:new( "test_state_2" ) )
-	stateMachine = StateMachine:new( states[1], states )
-
 	local playerImg = Graphics.image.new( "assets/images/player" )
 	playerSprite = NobleSprite.new( playerImg )
 	playerSprite:moveTo( 200, 120 )
 	playerSprite:add()
+
+	dialogue = Dialogue:new()
 
 end
 
@@ -61,7 +53,7 @@ end
 function scene:update()
 
 	scene.super.update(self)
-	stateMachine:update()
+	dialogue:draw()
 
 end
 
