@@ -5,3 +5,12 @@
 function Utilities.getZero()
 	return 0
 end
+
+function Utilities.findKeyByValue( tbl, value )
+	for k, v in pairs(tbl) do
+		if v == value then
+		return k
+		end
+	end
+	return nil
+end

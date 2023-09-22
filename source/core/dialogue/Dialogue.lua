@@ -7,6 +7,12 @@ DialogueType = {
 	Fade = "fade"
 }
 
+TextSpeed = {
+	Slow = 1,
+	Normal = 2,
+	Fast = 3
+}
+
 -- Member variables
 Dialogue.text = ""
 Dialogue.backgroundColor = Graphics.kColorWhite

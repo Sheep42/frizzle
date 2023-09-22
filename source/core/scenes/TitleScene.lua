@@ -21,6 +21,21 @@ function scene:init()
 		end
 	)
 	menu:addItem( 
+		"set_text_speed", 
+		function() 
+			local oldValue = Noble.Settings.get( "text_speed" )
+			local oldKey = Utilities.findKeyByValue( TextSpeed, oldValue )
+			
+			local newValue = math.ringInt( oldValue + 1, 1, 3 ) 
+			local newKey = Utilities.findKeyByValue( TextSpeed, newValue )
+			Noble.Settings.set( "text_speed", newValue )
+
+			menu:setItemDisplayName( "set_text_speed", "Text Speed: " .. Utilities.findKeyByValue( TextSpeed, Noble.Settings.get( "text_speed" ) ) )
+		end,
+		nil,
+		"Text Speed: " .. Utilities.findKeyByValue( TextSpeed, Noble.Settings.get( "text_speed" ) )
+	)
+	menu:addItem( 
 		"enable_debug_mode", 
 		function() 
 			local oldValue = Noble.Settings.get( "debug_mode" )
