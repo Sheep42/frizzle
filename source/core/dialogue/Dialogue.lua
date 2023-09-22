@@ -18,7 +18,6 @@ Dialogue.text = ""
 Dialogue.backgroundColor = Graphics.kColorWhite
 Dialogue.borderColor = Graphics.kColorBlack
 Dialogue.dialogueType = DialogueType.Fade
-Dialogue.playSpeed = 2
 
 -- Constants
 local BOX_WIDTH = 275
@@ -30,6 +29,11 @@ local BORDER_HEIGHT = BOX_HEIGHT + 4
 -- Internals
 local isPlayingDialogue = false
 local dialoguePointer = 0
+local innerX = ( 400 / 2 ) - ( BOX_WIDTH / 2 )
+local innerY = 240 - 90 -- 150px
+local outerX = ( 400 / 2 ) - ( BORDER_WIDTH / 2 )
+local outerY = innerY - 2 -- border size, plus positioning offset
+local textX, textY = innerX + 10, innerY + 10 -- Inner box position, plus some padding
 
 function Dialogue:new( text, dialogueType, backgroundColor, borderColor )
 
@@ -57,15 +61,17 @@ function Dialogue:draw()
 
 	-- Draw the outer dialogue box
 	Graphics.setColor( self.borderColor )
-	Graphics.fillRoundRect( ( 200 - ( BORDER_WIDTH / 2 ) ), 148, BORDER_WIDTH, BORDER_HEIGHT, 5 )
+	Graphics.fillRoundRect( outerX, outerY, BORDER_WIDTH, BORDER_HEIGHT, 5 )
 	
 	-- Draw the inner dialogue box
 	Graphics.setColor( self.backgroundColor )
-	Graphics.fillRoundRect( ( 200 - ( BOX_WIDTH / 2 ) ), 150, BOX_WIDTH, BOX_HEIGHT, 5 )
+	Graphics.fillRoundRect( innerX, innerY, BOX_WIDTH, BOX_HEIGHT, 5 )
 
 end
 
 function Dialogue:play()
+	-- TODO: Dialogue types
+	Noble.Text.draw( self.text, textX, textY, Noble.Text.ALIGN_LEFT )
 end
 
 function Dialogue:pause()

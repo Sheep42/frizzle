@@ -24,7 +24,7 @@ function scene:init()
 	playerSprite:moveTo( 200, 120 )
 	playerSprite:add()
 
-	dialogue = Dialogue:new()
+	dialogue = Dialogue:new( "Hello, Game World!" )
 
 end
 
@@ -48,12 +48,19 @@ function scene:drawBackground()
 	scene.super.drawBackground(self)
 	background:draw( 0, 0 )
 
+	dialogue:draw()
+	dialogue:play()
+
 end
 
 function scene:update()
 
 	scene.super.update(self)
-	dialogue:draw()
+
+	playdate.timer.new( 2000, function ()
+		dialogue.text = "New thing"
+		dialogue:play()
+	end)
 
 end
 
