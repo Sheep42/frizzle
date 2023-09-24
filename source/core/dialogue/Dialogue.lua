@@ -119,6 +119,14 @@ function Dialogue:resetTimer()
 
 end
 
+function Dialogue:reset()
+
+	dialoguePointer = 0
+	self:resetTimer()
+	self.finished = false
+	
+end
+
 -- Utility Functions --
 function buildText( self )
 	
