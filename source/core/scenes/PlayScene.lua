@@ -6,12 +6,17 @@ local background
 local sequence
 local playerSprite = nil
 local dialogue = nil
+local crBuildDialogue = nil
+startDialogue = false
 
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
 	AButtonDown = function()
+		startDialogue = true
 	end,
 }
+
+local deltaTime = 0
 
 function scene:init()
 
@@ -24,7 +29,7 @@ function scene:init()
 	playerSprite:moveTo( 200, 120 )
 	playerSprite:add()
 
-	dialogue = Dialogue:new( "Hello, Game World!" )
+	dialogue = Dialogue:new( "Hello, Game World" )
 
 end
 
@@ -48,19 +53,15 @@ function scene:drawBackground()
 	scene.super.drawBackground(self)
 	background:draw( 0, 0 )
 
-	dialogue:draw()
-	dialogue:play()
-
 end
 
 function scene:update()
 
 	scene.super.update(self)
 
-	playdate.timer.new( 2000, function ()
-		dialogue.text = "New thing"
-		dialogue:play()
-	end)
+	if startDialogue then
+		showDialogue()	
+	end
 
 end
 
@@ -75,4 +76,9 @@ end
 
 function scene:finish()
 	scene.super.finish(self)
+end
+
+function showDialogue()
+	dialogue:draw()
+	dialogue:play()
 end

@@ -17,9 +17,12 @@ TextSpeed = {
 Dialogue.text = ""
 Dialogue.backgroundColor = Graphics.kColorWhite
 Dialogue.borderColor = Graphics.kColorBlack
-Dialogue.dialogueType = DialogueType.Fade
+Dialogue.textColor = Graphics.kColorBlack
+Dialogue.dialogueType = DialogueType.Typewriter
+Dialogue.showFullText = false
 
 -- Constants
+local BASE_TIMER_DURATION = 150
 local BOX_WIDTH = 275
 local BOX_HEIGHT = 75
 
@@ -27,15 +30,18 @@ local BORDER_WIDTH = BOX_WIDTH + 4
 local BORDER_HEIGHT = BOX_HEIGHT + 4
 
 -- Internals
-local isPlayingDialogue = false
 local dialoguePointer = 0
+local timerDuration = BASE_TIMER_DURATION
+local dialogueTimer = nil
+
+-- Positioning
 local innerX = ( 400 / 2 ) - ( BOX_WIDTH / 2 )
 local innerY = 240 - 90 -- 150px
 local outerX = ( 400 / 2 ) - ( BORDER_WIDTH / 2 )
 local outerY = innerY - 2 -- border size, plus positioning offset
 local textX, textY = innerX + 10, innerY + 10 -- Inner box position, plus some padding
 
-function Dialogue:new( text, dialogueType, backgroundColor, borderColor )
+function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textColor )
 
 	if text ~= nil then
 		self.text = text
@@ -52,6 +58,19 @@ function Dialogue:new( text, dialogueType, backgroundColor, borderColor )
 	if borderColor ~= nil then
 		self.borderColor = borderColor
 	end
+
+	if textColor ~= nil then
+		self.textColor = textColor
+	end
+
+	-- Set up dialogue timer
+	if self.dialogueType == DialogueType.Instant then
+		timerDuration = 0
+	else
+		timerDuration = BASE_TIMER_DURATION / Noble.Settings.get( "text_speed" )
+	end
+
+	resetTimer()
 
 	return self
 
@@ -70,9 +89,56 @@ function Dialogue:draw()
 end
 
 function Dialogue:play()
-	-- TODO: Dialogue types
-	Noble.Text.draw( self.text, textX, textY, Noble.Text.ALIGN_LEFT )
+
+	if self.showFullText then
+		drawText( self.text )
+		return
+	end
+
+	if self.dialogueType == DialogueType.Instant then
+		
+		drawText( self.text )
+		self.showFullText = true
+	
+	elseif self.dialogueType == DialogueType.Typewriter then
+		buildText( self )
+	end
+		
 end
 
-function Dialogue:pause()
+function buildText( self )
+	
+	local textToShow = self.text:sub( 0, dialoguePointer )
+	drawText( textToShow )
+
+	if dialogueTimer.value < timerDuration then
+		return
+	end
+
+	if dialoguePointer < #self.text then
+		dialoguePointer += 1
+		resetTimer()
+	else
+		self.showFullText = true
+	end
+	
+end
+
+-- Utility Functions --
+function drawText( text, align )
+
+	if text == nil then
+		return
+	end
+
+	if align == nil then
+		align = Noble.Text.ALIGN_LEFT
+	end
+
+	Noble.Text.draw( text, textX, textY, align )
+
+end
+
+function resetTimer()
+	dialogueTimer = playdate.timer.new( timerDuration, 0, timerDuration )
 end
