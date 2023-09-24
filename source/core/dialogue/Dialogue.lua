@@ -64,13 +64,7 @@ function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textCol
 	end
 
 	-- Set up dialogue timer
-	if self.dialogueType == DialogueType.Instant then
-		timerDuration = 0
-	else
-		timerDuration = BASE_TIMER_DURATION / Noble.Settings.get( "text_speed" )
-	end
-
-	resetTimer()
+	self:resetTimer()
 
 	return self
 
@@ -106,6 +100,25 @@ function Dialogue:play()
 		
 end
 
+function Dialogue:resetTimer()
+	
+	if self.dialogueType == DialogueType.Instant then
+		return
+	end
+
+	local textSpeed = Noble.Settings.get( "text_speed" )
+
+	if textSpeed < TextSpeed.Fast then
+		timerDuration = BASE_TIMER_DURATION / textSpeed
+	else
+		timerDuration = 0
+	end
+
+	dialogueTimer = playdate.timer.new( timerDuration, 0, timerDuration )
+
+end
+
+-- Utility Functions --
 function buildText( self )
 	
 	local textToShow = self.text:sub( 0, dialoguePointer )
@@ -117,14 +130,13 @@ function buildText( self )
 
 	if dialoguePointer < #self.text then
 		dialoguePointer += 1
-		resetTimer()
+		self:resetTimer()
 	else
 		self.showFullText = true
 	end
 	
 end
 
--- Utility Functions --
 function drawText( text, align )
 
 	if text == nil then
@@ -137,8 +149,4 @@ function drawText( text, align )
 
 	Noble.Text.draw( text, textX, textY, align )
 
-end
-
-function resetTimer()
-	dialogueTimer = playdate.timer.new( timerDuration, 0, timerDuration )
 end
