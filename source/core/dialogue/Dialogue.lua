@@ -101,13 +101,15 @@ function Dialogue:play()
 		
 end
 
-function Dialogue:resetTimer()
+function Dialogue:resetTimer( textSpeed )
 	
 	if self.dialogueType == DialogueType.Instant then
 		return
 	end
 
-	local textSpeed = Noble.Settings.get( "text_speed" )
+	if textSpeed == nil then
+		textSpeed = Noble.Settings.get( "text_speed" )
+	end
 
 	if textSpeed < TextSpeed.Fast then
 		timerDuration = BASE_TIMER_DURATION / textSpeed
