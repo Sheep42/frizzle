@@ -19,11 +19,12 @@ Dialogue.backgroundColor = Graphics.kColorWhite
 Dialogue.borderColor = Graphics.kColorBlack
 Dialogue.textColor = Graphics.kColorBlack
 Dialogue.dialogueType = DialogueType.Typewriter
-Dialogue.showFullText = false
+Dialogue.finished = false
 
 -- Constants
-local BASE_TIMER_DURATION = 150
-local BOX_WIDTH = 275
+local SCREEN_WIDTH, SCREEN_HEIGHT = Utilities.screenSize()
+local BASE_TIMER_DURATION = 100
+local BOX_WIDTH = 0.75 * SCREEN_WIDTH -- 75% of screen
 local BOX_HEIGHT = 75
 
 local BORDER_WIDTH = BOX_WIDTH + 4
@@ -35,9 +36,9 @@ local timerDuration = BASE_TIMER_DURATION
 local dialogueTimer = nil
 
 -- Positioning
-local innerX = ( 400 / 2 ) - ( BOX_WIDTH / 2 )
-local innerY = 240 - 90 -- 150px
-local outerX = ( 400 / 2 ) - ( BORDER_WIDTH / 2 )
+local innerX = ( SCREEN_WIDTH / 2 ) - ( BOX_WIDTH / 2 )
+local innerY = SCREEN_HEIGHT - 90 -- 150px
+local outerX = ( SCREEN_WIDTH / 2 ) - ( BORDER_WIDTH / 2 )
 local outerY = innerY - 2 -- border size, plus positioning offset
 local textX, textY = innerX + 10, innerY + 10 -- Inner box position, plus some padding
 
@@ -84,7 +85,7 @@ end
 
 function Dialogue:play()
 
-	if self.showFullText then
+	if self.finished then
 		drawText( self.text )
 		return
 	end
@@ -92,7 +93,7 @@ function Dialogue:play()
 	if self.dialogueType == DialogueType.Instant then
 		
 		drawText( self.text )
-		self.showFullText = true
+		self.finished = true
 	
 	elseif self.dialogueType == DialogueType.Typewriter then
 		buildText( self )
@@ -132,7 +133,7 @@ function buildText( self )
 		dialoguePointer += 1
 		self:resetTimer()
 	else
-		self.showFullText = true
+		self.finished = true
 	end
 	
 end

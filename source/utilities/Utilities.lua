@@ -14,3 +14,7 @@ function Utilities.findKeyByValue( tbl, value )
 	end
 	return nil
 end
+
+function Utilities.screenSize()
+	return 400, 240
+end
