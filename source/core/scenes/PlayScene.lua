@@ -6,13 +6,19 @@ local background
 local sequence
 local playerSprite = nil
 local dialogue = nil
-local crBuildDialogue = nil
 startDialogue = false
 
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
 	AButtonDown = function()
+		
 		startDialogue = true
+
+		if dialogue.finished == true then
+			startDialogue = false
+			dialogue:reset()
+		end
+
 	end,
 }
 
