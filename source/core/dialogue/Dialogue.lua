@@ -22,7 +22,7 @@ Dialogue.dialogueType = DialogueType.Typewriter
 Dialogue.finished = false
 
 -- Constants
-local SCREEN_WIDTH, SCREEN_HEIGHT = Utilities.screenSize()
+local SCREEN_WIDTH, SCREEN_HEIGHT = Utilities.screenSize().width, Utilities.screenSize().height
 local BASE_TIMER_DURATION = 100
 local BOX_WIDTH = 0.75 * SCREEN_WIDTH -- 75% of screen
 local BOX_HEIGHT = 75

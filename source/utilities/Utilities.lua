@@ -16,5 +16,5 @@ function Utilities.findKeyByValue( tbl, value )
 end
 
 function Utilities.screenSize()
-	return 400, 240
+	return {width = 400, height = 240}
 end
