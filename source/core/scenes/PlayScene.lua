@@ -5,7 +5,7 @@ local scene = PlayScene
 local background
 local sequence
 local petSprite = nil
-local cursorSprite = nil
+local cursor = nil
 local dialogue = nil
 startDialogue = false
 
@@ -21,6 +21,18 @@ scene.inputHandler = {
 		end
 
 	end,
+	downButtonHold = function ()
+		
+	end,
+	upButtonHold = function ()
+		
+	end,
+	leftButtonHold = function ()
+		
+	end,
+	rightButtonHold = function ()
+		
+	end,
 }
 
 local deltaTime = 0
@@ -31,10 +43,7 @@ function scene:init()
 
 	background = Graphics.image.new( "assets/images/background" )
 
-	local cursorImage = Graphics.image.new( "assets/images/UI/cursor" )
-	cursorSprite = NobleSprite.new( cursorImage )
-	cursorSprite:moveTo( 50, 120 )
-	cursorSprite:add()
+	cursor = Cursor:new( 50, 100 )
 
 	local petImage = Graphics.image.new( "assets/images/player" )
 	petSprite = NobleSprite.new( petImage )
