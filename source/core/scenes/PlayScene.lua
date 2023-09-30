@@ -4,7 +4,8 @@ class("PlayScene").extends(NobleScene)
 local scene = PlayScene
 local background
 local sequence
-local playerSprite = nil
+local petSprite = nil
+local cursorSprite = nil
 local dialogue = nil
 startDialogue = false
 
@@ -30,10 +31,15 @@ function scene:init()
 
 	background = Graphics.image.new( "assets/images/background" )
 
-	local playerImg = Graphics.image.new( "assets/images/player" )
-	playerSprite = NobleSprite.new( playerImg )
-	playerSprite:moveTo( 200, 120 )
-	playerSprite:add()
+	local cursorImage = Graphics.image.new( "assets/images/UI/cursor" )
+	cursorSprite = NobleSprite.new( cursorImage )
+	cursorSprite:moveTo( 50, 120 )
+	cursorSprite:add()
+
+	local petImage = Graphics.image.new( "assets/images/player" )
+	petSprite = NobleSprite.new( petImage )
+	petSprite:moveTo( 200, 120 )
+	petSprite:add()
 
 	dialogue = Dialogue:new( "Hello, Game World" )
 
