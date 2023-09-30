@@ -7,8 +7,8 @@ local scene = PlayScene
 local background
 local sequence
 local petSprite = nil
-local cursor = nil
 local dialogue = nil
+cursor = nil
 startDialogue = false
 
 scene.baseColor = Graphics.kColorBlack
@@ -23,6 +23,42 @@ scene.inputHandler = {
 		end
 
 	end,
+	downButtonUp = function ()
+		if cursor ~= nil then
+			if cursor.velocity.y < 0 then
+				return
+			end
+
+			cursor.velocity.y = 0
+		end
+	end,
+	upButtonUp = function ()
+		if cursor ~= nil then
+			if cursor.velocity.y > 0 then
+				return
+			end
+
+			cursor.velocity.y = 0
+		end	
+	end,
+	leftButtonUp = function ()
+		if cursor ~= nil then
+			if cursor.velocity.x > 0 then
+				return
+			end
+
+			cursor.velocity.x = 0
+		end	
+	end,
+	rightButtonUp = function ()
+		if cursor ~= nil then
+			if cursor.velocity.x < 0 then
+				return
+			end
+
+			cursor.velocity.x = 0
+		end	
+	end,
 	downButtonDown = function ()
 
 		if cursor ~= nil then
@@ -30,19 +66,9 @@ scene.inputHandler = {
 		end
 
 	end,
-	downButtonUp = function ()
-		if cursor ~= nil then
-			cursor.velocity.y = 0
-		end
-	end,
 	upButtonDown = function ()
 		if cursor ~= nil then
 			cursor.velocity.y = -CURSOR_SPEED_MULTIPLIER
-		end	
-	end,
-	upButtonUp = function ()
-		if cursor ~= nil then
-			cursor.velocity.y = 0
 		end	
 	end,
 	leftButtonDown = function ()
@@ -50,22 +76,11 @@ scene.inputHandler = {
 			cursor.velocity.x = -CURSOR_SPEED_MULTIPLIER
 		end	
 	end,
-	leftButtonUp = function ()
-		if cursor ~= nil then
-			cursor.velocity.x = 0
-		end	
-	end,
 	rightButtonDown = function ()
 		if cursor ~= nil then
 			cursor.velocity.x = CURSOR_SPEED_MULTIPLIER
 		end	
 	end,
-	rightButtonUp = function ()
-		if cursor ~= nil then
-			cursor.velocity.x = 0
-		end	
-	end,
-
 }
 
 function scene:init()
