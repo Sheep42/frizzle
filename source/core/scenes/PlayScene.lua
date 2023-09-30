@@ -23,7 +23,7 @@ scene.inputHandler = {
 		end
 
 	end,
-	downButtonHold = function ()
+	downButtonDown = function ()
 
 		if cursor ~= nil then
 			cursor.velocity.y = CURSOR_SPEED_MULTIPLIER
@@ -35,7 +35,7 @@ scene.inputHandler = {
 			cursor.velocity.y = 0
 		end
 	end,
-	upButtonHold = function ()
+	upButtonDown = function ()
 		if cursor ~= nil then
 			cursor.velocity.y = -CURSOR_SPEED_MULTIPLIER
 		end	
@@ -45,7 +45,7 @@ scene.inputHandler = {
 			cursor.velocity.y = 0
 		end	
 	end,
-	leftButtonHold = function ()
+	leftButtonDown = function ()
 		if cursor ~= nil then
 			cursor.velocity.x = -CURSOR_SPEED_MULTIPLIER
 		end	
@@ -55,7 +55,7 @@ scene.inputHandler = {
 			cursor.velocity.x = 0
 		end	
 	end,
-	rightButtonHold = function ()
+	rightButtonDown = function ()
 		if cursor ~= nil then
 			cursor.velocity.x = CURSOR_SPEED_MULTIPLIER
 		end	

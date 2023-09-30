@@ -18,7 +18,33 @@ end
 function Cursor:update()
 
 	if self.velocity.x ~= 0 or self.velocity.y ~= 0 then
-		self:moveBy( self.velocity.x * MOVE_SPEED, self.velocity.y * MOVE_SPEED )
+
+		-- Contain cursor to screenBounds
+			currX, currY = self:getPosition()
+			
+			if self.velocity.x < 0 and currX <= Utilities.screenBounds().left then
+				self.velocity.x = 0
+				self:moveTo( Utilities.screenBounds().left, currY )	
+			end 
+
+			if self.velocity.x > 0 and currX >= Utilities.screenBounds().right then
+				self.velocity.x = 0
+				self:moveTo( Utilities.screenBounds().right, currY )
+			end
+
+			if self.velocity.y < 0 and currY <= Utilities.screenBounds().top then
+				self.velocity.y = 0
+				self:moveTo( currX, Utilities.screenBounds().top )	
+			end 
+
+			if self.velocity.y > 0 and currY >= Utilities.screenBounds().bottom then
+				self.velocity.y = 0
+				self:moveTo( currX, Utilities.screenBounds().bottom )
+			end
+
+		-- Move cursor
+			self:moveBy( self.velocity.x * MOVE_SPEED, self.velocity.y * MOVE_SPEED )
+
 	end
 	
 end
