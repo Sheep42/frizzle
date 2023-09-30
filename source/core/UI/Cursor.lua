@@ -17,8 +17,6 @@ end
 
 function Cursor:update()
 
-	print( "cursor" )
-	print( self.velocity )
 	if self.velocity.x ~= 0 or self.velocity.y ~= 0 then
 		self:moveBy( self.velocity.x * MOVE_SPEED, self.velocity.y * MOVE_SPEED )
 	end
