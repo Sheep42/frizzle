@@ -9,6 +9,5 @@ import "core/states/StateMachine"
 import "core/states/TestState"
 import "core/states/TestState2"
 
-import "core/actions/Action"
-
+import "core/UI/Cursor"
 import "core/dialogue/Dialogue"

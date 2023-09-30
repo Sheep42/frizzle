@@ -1,6 +1,8 @@
 PlayScene = {}
 class("PlayScene").extends(NobleScene)
 
+local CURSOR_SPEED_MULTIPLIER = 1
+
 local scene = PlayScene
 local background
 local sequence
@@ -22,35 +24,58 @@ scene.inputHandler = {
 
 	end,
 	downButtonHold = function ()
-		
+
+		if cursor ~= nil then
+			cursor.velocity.y = CURSOR_SPEED_MULTIPLIER
+		end
+
+	end,
+	downButtonUp = function ()
+		if cursor ~= nil then
+			cursor.velocity.y = 0
+		end
 	end,
 	upButtonHold = function ()
-		
+		if cursor ~= nil then
+			cursor.velocity.y = -CURSOR_SPEED_MULTIPLIER
+		end	
+	end,
+	upButtonUp = function ()
+		if cursor ~= nil then
+			cursor.velocity.y = 0
+		end	
 	end,
 	leftButtonHold = function ()
-		
+		if cursor ~= nil then
+			cursor.velocity.x = -CURSOR_SPEED_MULTIPLIER
+		end	
+	end,
+	leftButtonUp = function ()
+		if cursor ~= nil then
+			cursor.velocity.x = 0
+		end	
 	end,
 	rightButtonHold = function ()
-		
+		if cursor ~= nil then
+			cursor.velocity.x = CURSOR_SPEED_MULTIPLIER
+		end	
 	end,
-}
+	rightButtonUp = function ()
+		if cursor ~= nil then
+			cursor.velocity.x = 0
+		end	
+	end,
 
-local deltaTime = 0
+}
 
 function scene:init()
 
 	scene.super.init(self)
 
 	background = Graphics.image.new( "assets/images/background" )
-
-	cursor = Cursor:new( 50, 100 )
-
-	local petImage = Graphics.image.new( "assets/images/player" )
-	petSprite = NobleSprite.new( petImage )
-	petSprite:moveTo( 200, 120 )
-	petSprite:add()
-
 	dialogue = Dialogue:new( "Hello, Game World" )
+	petSprite = NobleSprite( "assets/images/player" )
+	cursor = Cursor()
 
 end
 
@@ -67,6 +92,12 @@ function scene:start()
 	
 	scene.super.start(self)
 
+	-- Add Pet to Scene
+	petSprite:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+
+	-- Add Cursor to the Scene
+	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
+
 end
 
 function scene:drawBackground()
@@ -79,6 +110,10 @@ end
 function scene:update()
 
 	scene.super.update(self)
+
+	if cursor ~= nil then
+		cursor:update()
+	end
 
 	if startDialogue then
 		showDialogue()	
