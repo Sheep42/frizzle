@@ -11,11 +11,24 @@ local MOVE_SPEED = 4
 function Cursor:init()
 
 	Cursor.super.init( self, CURSOR_IMAGE_PATH )
+	
 	self.velocity = {x = 0, y = 0}
+	self:setZIndex( 999 )
+
+	-- Set up collisions
+	self:setCollideRect( 0, 0, self:getSize() )
+	self:setGroups( { Utilities.collisionGroups.cursor } )
+	self:setCollidesWithGroups( {
+		Utilities.collisionGroups.uiButtons,
+	} )
 
 end
 
 function Cursor:update()
+	self:move()
+end
+
+function Cursor:move()
 
 	if self.velocity.x ~= 0 or self.velocity.y ~= 0 then
 
@@ -46,5 +59,5 @@ function Cursor:update()
 			self:moveBy( self.velocity.x * MOVE_SPEED, self.velocity.y * MOVE_SPEED )
 
 	end
-	
+
 end

@@ -10,4 +10,5 @@ import "core/states/TestState"
 import "core/states/TestState2"
 
 import "core/UI/Cursor"
+import "core/UI/Button"
 import "core/dialogue/Dialogue"

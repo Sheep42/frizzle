@@ -2,6 +2,11 @@
 -- The "Utilities" table is already defined in "noble/Utilities.lua."
 -- Try to avoid name collisions.
 
+Utilities.collisionGroups = {
+	cursor = 1,
+	uiButtons = 2,
+}
+
 local SCREEN_BOUNDS_PADDING_PERCENT = {x = 0.025, y = 0.05}
 
 function Utilities.getZero()

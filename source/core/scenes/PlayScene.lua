@@ -8,7 +8,8 @@ local background
 local sequence
 local petSprite = nil
 local dialogue = nil
-cursor = nil
+local cursor = nil
+local uiButtons = {}
 startDialogue = false
 
 scene.baseColor = Graphics.kColorBlack
@@ -60,11 +61,9 @@ scene.inputHandler = {
 		end	
 	end,
 	downButtonDown = function ()
-
 		if cursor ~= nil then
 			cursor.velocity.y = CURSOR_SPEED_MULTIPLIER
 		end
-
 	end,
 	upButtonDown = function ()
 		if cursor ~= nil then
@@ -91,7 +90,10 @@ function scene:init()
 	dialogue = Dialogue:new( "Hello, Game World" )
 	petSprite = NobleSprite( "assets/images/player" )
 	cursor = Cursor()
-
+	uiButtons = {
+		petBtn = Button( "assets/images/UI/button-pet" ),
+	}
+	
 end
 
 function scene:enter()
@@ -110,6 +112,11 @@ function scene:start()
 	-- Add Pet to Scene
 	petSprite:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
+	-- Add Buttons to the Scene
+	for i, button in pairs( uiButtons ) do
+		button:add( Utilities.screenBounds().left + 15, Utilities.screenBounds().bottom - 10 )
+	end
+
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
 
@@ -124,11 +131,7 @@ end
 
 function scene:update()
 
-	scene.super.update(self)
-
-	if cursor ~= nil then
-		cursor:update()
-	end
+	scene.super.update( self )
 
 	if startDialogue then
 		showDialogue()	
@@ -138,7 +141,7 @@ end
 
 function scene:exit()
 
-	scene.super.exit(self)
+	scene.super.exit( self )
 
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start();
@@ -146,7 +149,7 @@ function scene:exit()
 end
 
 function scene:finish()
-	scene.super.finish(self)
+	scene.super.finish( self )
 end
 
 function showDialogue()
