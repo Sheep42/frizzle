@@ -14,8 +14,7 @@ Button.hoverOutCallback = function()
 end
 
 Button.isVisible = true
-
-local isHovered = false
+Button._isHovered = false
 
 -- Create a Button 
 -- 
@@ -75,13 +74,13 @@ function Button:press( ... )
 end
 
 function Button:hover( ... )
-	isHovered = true
+	self._isHovered = true
 	self.animation:setState( "hover" )
 	self.hoverCallback( ... )
 end
 
 function Button:hoverOut( ... )
-	isHovered = false
+	self._isHovered = false
 	self.animation:setState( "default" )
 	self.hoverOutCallback( ... )
 end
@@ -92,8 +91,16 @@ function Button:update()
 	local collisions = self:overlappingSprites()
 	if #collisions > 0 then
 		self:hover()
-	elseif isHovered then
+	elseif self._isHovered then
 		self:hoverOut()
 	end
 
+end
+
+function Button.getDimensions()
+	return { width = 32, height = 32 }
+end
+
+function Button.getPadding()
+	return 20
 end

@@ -9,6 +9,9 @@ local sequence
 local petSprite = nil
 local dialogue = nil
 local cursor = nil
+local petBtn = nil
+local feedBtn = nil
+local playBtn = nil
 local uiButtons = {}
 startDialogue = false
 
@@ -90,10 +93,24 @@ function scene:init()
 	dialogue = Dialogue:new( "Hello, Game World" )
 	petSprite = NobleSprite( "assets/images/player" )
 	cursor = Cursor()
-	uiButtons = {
-		petBtn = Button( "assets/images/UI/button-pet" ),
-	}
 	
+	petBtn = Button( "assets/images/UI/button-pet" )
+	feedBtn = Button( "assets/images/UI/button-pet" )
+	playBtn = Button( "assets/images/UI/button-pet" )
+
+	-- TODO: Implement Button click handlers 
+	-- petBtn:setHoverCallback( function()
+	-- 	print( "pet" )
+	-- end)
+
+	-- feedBtn:setHoverCallback( function()
+	-- 	print( "feed" )
+	-- end)
+
+	uiButtons[1] = petBtn
+	uiButtons[2] = feedBtn
+	uiButtons[3] = playBtn
+
 end
 
 function scene:enter()
@@ -113,12 +130,24 @@ function scene:start()
 	petSprite:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
 	-- Add Buttons to the Scene
-	for i, button in pairs( uiButtons ) do
-		button:add( Utilities.screenBounds().left + 15, Utilities.screenBounds().bottom - 10 )
-	end
+	setupButtons()
 
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
+
+end
+
+function setupButtons()
+	
+	local totalButtons = #uiButtons
+	local buttonPanelWidth = ( Button.getDimensions().width + Button.getPadding() ) * totalButtons - Button.getPadding()
+	local startX = math.floor( ( Utilities.screenSize().width - buttonPanelWidth ) / 2 + ( Button.getDimensions().width / 2 ) )
+	local currentX = startX
+
+	for i = 1, #uiButtons do
+		uiButtons[i]:add( currentX, Utilities.screenBounds().bottom - 10 )
+		currentX = currentX + Button.getDimensions().width + Button.getPadding()
+	end
 
 end
 
