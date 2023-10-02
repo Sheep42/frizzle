@@ -18,14 +18,7 @@ startDialogue = false
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
 	AButtonDown = function()
-		
-		startDialogue = true
-
-		if dialogue.finished == true then
-			startDialogue = false
-			dialogue:reset()
-		end
-
+		checkBtnPress()
 	end,
 	downButtonUp = function ()
 		if cursor ~= nil then
@@ -107,6 +100,15 @@ function scene:init()
 	-- 	print( "feed" )
 	-- end)
 
+	petBtn:setPressedCallback( function()
+		startDialogue = true
+
+		if dialogue.finished == true then
+			startDialogue = false
+			dialogue:reset()
+		end
+	end)
+
 	uiButtons[1] = petBtn
 	uiButtons[2] = feedBtn
 	uiButtons[3] = playBtn
@@ -149,6 +151,12 @@ function setupButtons()
 		currentX = currentX + Button.getDimensions().width + Button.getPadding()
 	end
 
+end
+
+function checkBtnPress()
+	for i = 1, #uiButtons do
+		uiButtons[i]:press()
+	end
 end
 
 function scene:drawBackground()

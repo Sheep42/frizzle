@@ -70,7 +70,11 @@ function Button:setHoverCallback( callback )
 end
 
 function Button:press( ... )
-	self.pressedCallback( ... )
+
+	if self._isHovered then
+		self.pressedCallback( ... )
+	end
+
 end
 
 function Button:hover( ... )
