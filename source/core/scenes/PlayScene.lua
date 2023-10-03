@@ -1,7 +1,7 @@
 PlayScene = {}
 class("PlayScene").extends(NobleScene)
 
-local CURSOR_SPEED_MULTIPLIER = 1
+local _CURSOR_SPEED_MULTIPLIER = 1
 
 local scene = PlayScene
 local background
@@ -13,7 +13,7 @@ local petBtn = nil
 local feedBtn = nil
 local playBtn = nil
 local uiButtons = {}
-startDialogue = false
+local startDialogue = false
 
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
@@ -58,22 +58,22 @@ scene.inputHandler = {
 	end,
 	downButtonDown = function ()
 		if cursor ~= nil then
-			cursor.velocity.y = CURSOR_SPEED_MULTIPLIER
+			cursor.velocity.y = _CURSOR_SPEED_MULTIPLIER
 		end
 	end,
 	upButtonDown = function ()
 		if cursor ~= nil then
-			cursor.velocity.y = -CURSOR_SPEED_MULTIPLIER
+			cursor.velocity.y = -_CURSOR_SPEED_MULTIPLIER
 		end	
 	end,
 	leftButtonDown = function ()
 		if cursor ~= nil then
-			cursor.velocity.x = -CURSOR_SPEED_MULTIPLIER
+			cursor.velocity.x = -_CURSOR_SPEED_MULTIPLIER
 		end	
 	end,
 	rightButtonDown = function ()
 		if cursor ~= nil then
-			cursor.velocity.x = CURSOR_SPEED_MULTIPLIER
+			cursor.velocity.x = _CURSOR_SPEED_MULTIPLIER
 		end	
 	end,
 }
