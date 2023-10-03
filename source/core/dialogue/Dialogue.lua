@@ -33,6 +33,7 @@ Dialogue._boderHeight = 0
 Dialogue._dialoguePointer = 0
 Dialogue._timerDuration = 0
 Dialogue._dialogueTimer = nil
+Dialogue._showDialogue = false
 
 -- Positioning 
 Dialogue._innerX = 0
@@ -80,6 +81,23 @@ function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textCol
 
 	return self
 
+end
+
+function Dialogue:update()
+	
+	if self._showDialogue then
+		self:draw()
+		self:play()
+	end
+
+end
+
+function Dialogue:show()
+	self._showDialogue = true
+end
+
+function Dialogue:hide()
+	self._showDialogue = false
 end
 
 function Dialogue:draw()

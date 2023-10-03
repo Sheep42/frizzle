@@ -13,7 +13,6 @@ local petBtn = nil
 local feedBtn = nil
 local playBtn = nil
 local uiButtons = {}
-local startDialogue = false
 
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
@@ -101,12 +100,14 @@ function scene:init()
 	-- end)
 
 	petBtn:setPressedCallback( function()
-		startDialogue = true
+
+		dialogue:show()
 
 		if dialogue.finished == true then
-			startDialogue = false
+			dialogue:hide()
 			dialogue:reset()
 		end
+
 	end)
 
 	uiButtons[1] = petBtn
@@ -169,10 +170,7 @@ end
 function scene:update()
 
 	scene.super.update( self )
-
-	if startDialogue then
-		showDialogue()	
-	end
+	dialogue:update()
 
 end
 
@@ -187,9 +185,4 @@ end
 
 function scene:finish()
 	scene.super.finish( self )
-end
-
-function showDialogue()
-	dialogue:draw()
-	dialogue:play()
 end
