@@ -22,25 +22,25 @@ Dialogue.dialogueType = DialogueType.Typewriter
 Dialogue.finished = false
 
 -- Constants
-local SCREEN_WIDTH, SCREEN_HEIGHT = Utilities.screenSize().width, Utilities.screenSize().height
-local BASE_TIMER_DURATION = 100
-local BOX_WIDTH = 0.75 * SCREEN_WIDTH -- 75% of screen
-local BOX_HEIGHT = 75
+Dialogue._BASE_TIMER_DURATION = 100
+Dialogue._BOX_WIDTH = 0.75 * Utilities.screenSize().width -- 75% of screen
+Dialogue._BOX_HEIGHT = 75
 
-local BORDER_WIDTH = BOX_WIDTH + 4
-local BORDER_HEIGHT = BOX_HEIGHT + 4
+Dialogue._borderWidth = 0
+Dialogue._boderHeight = 0
 
 -- Internals
-local dialoguePointer = 0
-local timerDuration = BASE_TIMER_DURATION
-local dialogueTimer = nil
+Dialogue._dialoguePointer = 0
+Dialogue._timerDuration = 0
+Dialogue._dialogueTimer = nil
 
--- Positioning
-local innerX = ( SCREEN_WIDTH / 2 ) - ( BOX_WIDTH / 2 )
-local innerY = SCREEN_HEIGHT - 90 -- 150px
-local outerX = ( SCREEN_WIDTH / 2 ) - ( BORDER_WIDTH / 2 )
-local outerY = innerY - 2 -- border size, plus positioning offset
-local textX, textY = innerX + 10, innerY + 10 -- Inner box position, plus some padding
+-- Positioning 
+Dialogue._innerX = 0
+Dialogue._innerY = 0
+Dialogue._outerX = 0
+Dialogue._outerY = 0
+Dialogue._textX = 0
+Dialogue._textY = 0
 
 function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textColor )
 
@@ -64,6 +64,17 @@ function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textCol
 		self.textColor = textColor
 	end
 
+	self._borderWidth = self._BOX_WIDTH + 4
+	self._boderHeight = self._BOX_HEIGHT + 4
+	self._timerDuration = self._BASE_TIMER_DURATION
+
+	-- Positioning
+	self._innerX = ( Utilities.screenSize().width / 2 ) - ( self._BOX_WIDTH / 2 )
+	self._innerY = Utilities.screenSize().height - 90 -- 150px
+	self._outerX = ( Utilities.screenSize().width / 2 ) - ( self._borderWidth / 2 )
+	self._outerY = self._innerY - 2 -- border size, plus positioning offset
+	self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
+
 	-- Set up dialogue timer
 	self:resetTimer()
 
@@ -75,24 +86,24 @@ function Dialogue:draw()
 
 	-- Draw the outer dialogue box
 	Graphics.setColor( self.borderColor )
-	Graphics.fillRoundRect( outerX, outerY, BORDER_WIDTH, BORDER_HEIGHT, 5 )
+	Graphics.fillRoundRect( self._outerX, self._outerY, self._borderWidth, self._boderHeight, 5 )
 	
 	-- Draw the inner dialogue box
 	Graphics.setColor( self.backgroundColor )
-	Graphics.fillRoundRect( innerX, innerY, BOX_WIDTH, BOX_HEIGHT, 5 )
+	Graphics.fillRoundRect( self._innerX, self._innerY, self._BOX_WIDTH, self._BOX_HEIGHT, 5 )
 
 end
 
 function Dialogue:play()
 
 	if self.finished then
-		drawText( self.text )
+		self:drawText( self.text )
 		return
 	end
 
 	if self.dialogueType == DialogueType.Instant then
 		
-		drawText( self.text )
+		self:drawText( self.text )
 		self.finished = true
 	
 	elseif self.dialogueType == DialogueType.Typewriter then
@@ -112,18 +123,18 @@ function Dialogue:resetTimer( textSpeed )
 	end
 
 	if textSpeed < TextSpeed.Fast then
-		timerDuration = BASE_TIMER_DURATION / textSpeed
+		self._timerDuration = self._BASE_TIMER_DURATION / textSpeed
 	else
-		timerDuration = 0
+		self._timerDuration = 0
 	end
 
-	dialogueTimer = playdate.timer.new( timerDuration, 0, timerDuration )
+	self._dialogueTimer = playdate.timer.new( self._timerDuration, 0, self._timerDuration )
 
 end
 
 function Dialogue:reset()
 
-	dialoguePointer = 0
+	self._dialoguePointer = 0
 	self:resetTimer()
 	self.finished = false
 	
@@ -132,15 +143,15 @@ end
 -- Utility Functions --
 function buildText( self )
 	
-	local textToShow = self.text:sub( 0, dialoguePointer )
-	drawText( textToShow )
+	local textToShow = self.text:sub( 0, self._dialoguePointer )
+	self:drawText( textToShow )
 
-	if dialogueTimer.value < timerDuration then
+	if self._dialogueTimer.value < self._timerDuration then
 		return
 	end
 
-	if dialoguePointer < #self.text then
-		dialoguePointer += 1
+	if self._dialoguePointer < #self.text then
+		self._dialoguePointer += 1
 		self:resetTimer()
 	else
 		self.finished = true
@@ -148,7 +159,7 @@ function buildText( self )
 	
 end
 
-function drawText( text, align )
+function Dialogue:drawText( text, align )
 
 	if text == nil then
 		return
@@ -158,6 +169,6 @@ function drawText( text, align )
 		align = Noble.Text.ALIGN_LEFT
 	end
 
-	Noble.Text.draw( text, textX, textY, align )
+	Noble.Text.draw( text, self._textX, self._textY, align )
 
 end
