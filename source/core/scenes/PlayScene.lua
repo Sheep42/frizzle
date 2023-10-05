@@ -91,14 +91,6 @@ function scene:init()
 	playBtn = Button( "assets/images/UI/button-pet" )
 
 	-- TODO: Implement Button click handlers 
-	-- petBtn:setHoverCallback( function()
-	-- 	print( "pet" )
-	-- end)
-
-	-- feedBtn:setHoverCallback( function()
-	-- 	print( "feed" )
-	-- end)
-
 	petBtn:setPressedCallback( function()
 
 		dialogue:show()
@@ -164,6 +156,7 @@ function scene:drawBackground()
 
 	scene.super.drawBackground(self)
 	background:draw( 0, 0 )
+	dialogue:drawCanvas()
 
 end
 

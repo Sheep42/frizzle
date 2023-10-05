@@ -34,6 +34,7 @@ Dialogue._dialoguePointer = 0
 Dialogue._timerDuration = 0
 Dialogue._dialogueTimer = nil
 Dialogue._showDialogue = false
+Dialogue._canvas = nil
 
 -- Positioning 
 Dialogue._innerX = 0
@@ -68,6 +69,7 @@ function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textCol
 	self._borderWidth = self._BOX_WIDTH + 4
 	self._boderHeight = self._BOX_HEIGHT + 4
 	self._timerDuration = self._BASE_TIMER_DURATION
+	self._canvas = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height )
 
 	-- Positioning
 	self._innerX = ( Utilities.screenSize().width / 2 ) - ( self._BOX_WIDTH / 2 )
@@ -88,6 +90,8 @@ function Dialogue:update()
 	if self._showDialogue then
 		self:draw()
 		self:play()
+	else
+		self:clearCanvas()
 	end
 
 end
@@ -100,7 +104,17 @@ function Dialogue:hide()
 	self._showDialogue = false
 end
 
+function Dialogue:drawCanvas()
+	self._canvas:draw( 0, 0 )
+end
+
+function Dialogue:clearCanvas()
+	self._canvas:clear( Graphics.kColorClear )
+end
+
 function Dialogue:draw()
+	
+	Graphics.lockFocus( self._canvas )
 
 	-- Draw the outer dialogue box
 	Graphics.setColor( self.borderColor )
@@ -109,6 +123,8 @@ function Dialogue:draw()
 	-- Draw the inner dialogue box
 	Graphics.setColor( self.backgroundColor )
 	Graphics.fillRoundRect( self._innerX, self._innerY, self._BOX_WIDTH, self._BOX_HEIGHT, 5 )
+
+	Graphics.unlockFocus()
 
 end
 
