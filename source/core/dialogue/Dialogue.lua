@@ -66,7 +66,7 @@ Dialogue._emoteY = 0
 -- Creates a new Dialogue
 --
 -- @param string|NobleSprite say Text or Emote to initialize the Dialogue with
-function Dialogue:new( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
+function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
 
 	if say ~= nil then
 

@@ -8,6 +8,7 @@ local background
 local sequence
 local petSprite = nil
 local dialogue = nil
+local bark = nil
 local cursor = nil
 local petBtn = nil
 local feedBtn = nil
@@ -82,7 +83,17 @@ function scene:init()
 	scene.super.init(self)
 
 	background = Graphics.image.new( "assets/images/background" )
-	dialogue = Dialogue:new( "Hello, Game World" )
+	dialogue = Dialogue( "Hello, Game World" )
+	bark = Dialogue( 
+		NobleSprite( "assets/images/player" ), 
+		Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box
+		Utilities.screenBounds().top + 20, -- 20 px down from top of allowable screen area
+		true,
+		50,
+		50,
+		2,
+		2  
+	)
 	petSprite = NobleSprite( "assets/images/player" )
 	cursor = Cursor()
 	
@@ -95,6 +106,10 @@ function scene:init()
 
 		if dialogue:getState() == DialogueState.Hide then
 			dialogue:show()
+		end
+
+		if bark:getState() == DialogueState.Hide then
+			bark:show()
 		end
 
 	end)
@@ -126,7 +141,6 @@ function scene:start()
 
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
-	-- dialogue:bark( "hello" )
 
 end
 
@@ -155,6 +169,7 @@ function scene:drawBackground()
 	scene.super.drawBackground(self)
 	background:draw( 0, 0 )
 	dialogue:drawCanvas()
+	bark:drawCanvas()
 
 end
 
@@ -162,6 +177,7 @@ function scene:update()
 
 	scene.super.update( self )
 	dialogue:update()
+	bark:update()
 
 end
 
