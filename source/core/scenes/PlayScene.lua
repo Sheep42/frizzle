@@ -129,6 +129,7 @@ function scene:start()
 
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
+	-- dialogue:bark( "hello" )
 
 end
 

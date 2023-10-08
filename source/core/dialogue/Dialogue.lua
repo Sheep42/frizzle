@@ -4,7 +4,6 @@ class( "Dialogue" ).extends()
 DialogueType = {
 	Typewriter = "typewriter",
 	Instant = "instant",
-	Fade = "fade"
 }
 
 TextSpeed = {
@@ -15,19 +14,20 @@ TextSpeed = {
 
 -- Member variables
 Dialogue.text = ""
+Dialogue.x = 0
+Dialogue.y = 0
 Dialogue.backgroundColor = Graphics.kColorWhite
 Dialogue.borderColor = Graphics.kColorBlack
 Dialogue.textColor = Graphics.kColorBlack
+Dialogue.boxWidth = 0.75 * Utilities.screenSize().width -- 75% of screen
+Dialogue.boxHeight = 75
+Dialogue.borderWidth = 0
+Dialogue.borderHeight = 0
 Dialogue.dialogueType = DialogueType.Typewriter
 Dialogue.finished = false
 
 -- Constants
 Dialogue._BASE_TIMER_DURATION = 100
-Dialogue._BOX_WIDTH = 0.75 * Utilities.screenSize().width -- 75% of screen
-Dialogue._BOX_HEIGHT = 75
-
-Dialogue._borderWidth = 0
-Dialogue._boderHeight = 0
 
 -- Internals
 Dialogue._dialoguePointer = 0
@@ -39,12 +39,10 @@ Dialogue._canvas = nil
 -- Positioning 
 Dialogue._innerX = 0
 Dialogue._innerY = 0
-Dialogue._outerX = 0
-Dialogue._outerY = 0
 Dialogue._textX = 0
 Dialogue._textY = 0
 
-function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textColor )
+function Dialogue:new( text, x, y, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
 
 	if text ~= nil then
 		self.text = text
@@ -66,16 +64,43 @@ function Dialogue:new( text, dialogueType, backgroundColor, borderColor, textCol
 		self.textColor = textColor
 	end
 
-	self._borderWidth = self._BOX_WIDTH + 4
-	self._boderHeight = self._BOX_HEIGHT + 4
+	if boxWidth ~= nil then
+		self.boxWidth = boxWidth
+	end
+
+	if boxHeight ~= nil then
+		self.boxHeight = boxHeight
+	end
+
+	self.borderWidth = 4
+	if borderWidth ~= nil then
+		self.borderWidth = borderWidth
+	end
+
+	self.borderHeight = 4
+	if borderHeight ~= nil then
+		self.borderHeight = borderHeight
+	end
+
 	self._timerDuration = self._BASE_TIMER_DURATION
 	self._canvas = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height )
 
 	-- Positioning
-	self._innerX = ( Utilities.screenSize().width / 2 ) - ( self._BOX_WIDTH / 2 )
-	self._innerY = Utilities.screenSize().height - 90 -- 150px
-	self._outerX = ( Utilities.screenSize().width / 2 ) - ( self._borderWidth / 2 )
-	self._outerY = self._innerY - 2 -- border size, plus positioning offset
+	if x ~= nil then
+		self.x = x
+	else
+		self.x = ( Utilities.screenSize().width / 2 ) - ( ( self.boxWidth + self.borderWidth ) / 2 )
+	end
+
+	if y ~= nil then
+		self.y = y
+	else
+		self.y = Utilities.screenSize().height - self.boxHeight - 40
+	end
+
+	self._innerX = self.x + ( self.borderWidth / 2 )
+	self._innerY = self.y + ( self.borderHeight / 2 )
+
 	self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
 
 	-- Set up dialogue timer
@@ -118,11 +143,11 @@ function Dialogue:draw()
 
 	-- Draw the outer dialogue box
 	Graphics.setColor( self.borderColor )
-	Graphics.fillRoundRect( self._outerX, self._outerY, self._borderWidth, self._boderHeight, 5 )
+	Graphics.fillRoundRect( self.x, self.y, self.boxWidth + self.borderWidth, self.boxHeight + self.borderHeight, 5 )
 	
 	-- Draw the inner dialogue box
 	Graphics.setColor( self.backgroundColor )
-	Graphics.fillRoundRect( self._innerX, self._innerY, self._BOX_WIDTH, self._BOX_HEIGHT, 5 )
+	Graphics.fillRoundRect( self._innerX, self._innerY, self.boxWidth, self.boxHeight, 5 )
 
 	Graphics.unlockFocus()
 
