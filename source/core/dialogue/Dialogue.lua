@@ -13,7 +13,8 @@ TextSpeed = {
 }
 
 -- Member variables
-Dialogue.text = ""
+Dialogue.text = nil
+Dialogue.emote = nil
 Dialogue.x = 0
 Dialogue.y = 0
 Dialogue.backgroundColor = Graphics.kColorWhite
@@ -41,11 +42,21 @@ Dialogue._innerX = 0
 Dialogue._innerY = 0
 Dialogue._textX = 0
 Dialogue._textY = 0
+Dialogue._emoteX = 0
+Dialogue._emoteY = 0
 
-function Dialogue:new( text, x, y, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
+-- Creates a new Dialogue
+--
+-- @param string|NobleSprite say Text or Emote to initialize the Dialogue with
+function Dialogue:new( say, x, y, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
 
-	if text ~= nil then
-		self.text = text
+	if say ~= nil then
+
+		if type( say ) == "string" then
+			self.text = text
+		elseif type( say ) == "table" then
+			self.emote = say	
+		end
 	end
 
 	if dialogueType ~= nil then
@@ -102,6 +113,7 @@ function Dialogue:new( text, x, y, boxWidth, boxHeight, borderWidth, borderHeigh
 	self._innerY = self.y + ( self.borderHeight / 2 )
 
 	self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
+	self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ), self.y + ( self.boxHeight / 2 )
 
 	-- Set up dialogue timer
 	self:resetTimer()
@@ -160,13 +172,20 @@ function Dialogue:play()
 		return
 	end
 
-	if self.dialogueType == DialogueType.Instant then
+	if self.text ~= nil then
 		
-		self:drawText( self.text )
-		self.finished = true
-	
-	elseif self.dialogueType == DialogueType.Typewriter then
-		buildText( self )
+		if self.dialogueType == DialogueType.Instant then
+			
+			self:drawText( self.text )
+			self.finished = true
+		
+		elseif self.dialogueType == DialogueType.Typewriter then
+			buildText( self )
+		end
+
+	elseif self.emote ~= nil then
+		self.emote:add( self._emoteX, self._emoteY )
+		-- Noble.currentScene():addSprite( self.emote )
 	end
 		
 end
@@ -199,6 +218,54 @@ function Dialogue:reset()
 	
 end
 
+-- Sets the current text for this Dialogue and cleans up any internals
+--
+-- @param string text The text to set
+--
+-- @param int textX Optional x position for the text, relative to innerX
+--
+-- @param int textY Optional y position for the text, relative to innerY
+function Dialogue:setText( text, textX, textY )
+
+	self.text = text
+	self.emote = nil
+
+	if textX ~= nil then
+		self._textX = self._innerX + textX
+	end
+
+	if textY ~= nil then
+		self._textY = self._innerY + textY
+	end
+
+	self:reset()
+
+end
+
+-- Sets the current emote for this Dialogue and cleans up any internals
+--
+-- @param NobleSprite emote The emote to set
+--
+-- @param int textX Optional x position for the emote, relative to innerX
+--
+-- @param int textY Optional y position for the emote, relative to innerY
+function Dialogue:setEmote( emote, emoteX, emoteY )
+
+	self.emote = emote
+	self.text = nil
+
+	if emoteX ~= nil then
+		self._emoteX = self._innerX + emoteX
+	end
+
+	if emoteY ~= nil then
+		self._emoteY = self._innerY + emoteY
+	end
+
+	self:reset()
+
+end
+
 -- Utility Functions --
 function buildText( self )
 	
@@ -228,6 +295,8 @@ function Dialogue:drawText( text, align )
 		align = Noble.Text.ALIGN_LEFT
 	end
 
+	Graphics.lockFocus( self._canvas )
 	Noble.Text.draw( text, self._textX, self._textY, align )
+	Graphics.unlockFocus()
 
 end
