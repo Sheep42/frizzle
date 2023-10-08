@@ -84,6 +84,7 @@ function scene:init()
 	background = Graphics.image.new( "assets/images/background" )
 	-- dialogue = Dialogue:new( "Hello, Game World" )
 	dialogue = Dialogue:new( NobleSprite( "assets/images/UI/cursor" ) )
+	dialogue.autohide = true
 	petSprite = NobleSprite( "assets/images/player" )
 	cursor = Cursor()
 	
@@ -96,10 +97,10 @@ function scene:init()
 
 		dialogue:show()
 
-		if dialogue.finished == true then
-			dialogue:hide()
-			dialogue:setText( "You clicked dude" )
-		end
+		-- if dialogue.finished == true then
+		-- 	dialogue:hide()
+		-- 	dialogue:setText( "You clicked dude" )
+		-- end
 
 	end)
 

@@ -12,6 +12,11 @@ TextSpeed = {
 	Fast = 3
 }
 
+DialogueState = {
+	Show = 'show',
+	Hide = 'hide',
+}
+
 -- Member variables
 Dialogue.text = nil
 Dialogue.emote = nil
@@ -25,6 +30,9 @@ Dialogue.boxHeight = 75
 Dialogue.borderWidth = 0
 Dialogue.borderHeight = 0
 Dialogue.dialogueType = DialogueType.Typewriter
+Dialogue.autohide = false
+Dialogue.textDuration = 0
+Dialogue.showDuration = 1000
 Dialogue.finished = false
 
 -- Constants
@@ -32,10 +40,10 @@ Dialogue._BASE_TIMER_DURATION = 100
 
 -- Internals
 Dialogue._dialoguePointer = 0
-Dialogue._timerDuration = 0
 Dialogue._dialogueTimer = nil
-Dialogue._showDialogue = false
+Dialogue._showTimer = nil
 Dialogue._canvas = nil
+Dialogue._state = DialogueState.Hide
 
 -- Positioning 
 Dialogue._innerX = 0
@@ -48,7 +56,7 @@ Dialogue._emoteY = 0
 -- Creates a new Dialogue
 --
 -- @param string|NobleSprite say Text or Emote to initialize the Dialogue with
-function Dialogue:new( say, x, y, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
+function Dialogue:new( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
 
 	if say ~= nil then
 
@@ -57,6 +65,10 @@ function Dialogue:new( say, x, y, boxWidth, boxHeight, borderWidth, borderHeight
 		elseif type( say ) == "table" then
 			self.emote = say	
 		end
+	end
+
+	if autohide ~= nil then
+		self.autohide = autohide	
 	end
 
 	if dialogueType ~= nil then
@@ -93,7 +105,7 @@ function Dialogue:new( say, x, y, boxWidth, boxHeight, borderWidth, borderHeight
 		self.borderHeight = borderHeight
 	end
 
-	self._timerDuration = self._BASE_TIMER_DURATION
+	self.textDuration = self._BASE_TIMER_DURATION
 	self._canvas = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height )
 
 	-- Positioning
@@ -116,7 +128,7 @@ function Dialogue:new( say, x, y, boxWidth, boxHeight, borderWidth, borderHeight
 	self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ), self.y + ( self.boxHeight / 2 )
 
 	-- Set up dialogue timer
-	self:resetTimer()
+	self:resetTimers()
 
 	return self
 
@@ -124,21 +136,29 @@ end
 
 function Dialogue:update()
 	
-	if self._showDialogue then
+	if self.autohide and self._showTimer.value >= self.showDuration then
+		self:hide()
+	end
+
+	-- Yeah, I could use a real state machine here but, honestly, it feels a
+	-- little overkill in this particular case. 
+	if self._state == DialogueState.Show then
 		self:draw()
 		self:play()
-	else
+	elseif self._state == DialogueState.Hide then
 		self:clearCanvas()
 	end
 
 end
 
 function Dialogue:show()
-	self._showDialogue = true
+	self._state = DialogueState.Show
+	self:startTimers()
 end
 
 function Dialogue:hide()
-	self._showDialogue = false
+	self._state = DialogueState.Hide
+	self:reset()
 end
 
 function Dialogue:drawCanvas()
@@ -146,7 +166,13 @@ function Dialogue:drawCanvas()
 end
 
 function Dialogue:clearCanvas()
+
+	if self.emote ~= nil then
+		self.emote:remove()
+	end
+
 	self._canvas:clear( Graphics.kColorClear )
+
 end
 
 function Dialogue:draw()
@@ -167,13 +193,13 @@ end
 
 function Dialogue:play()
 
-	if self.finished then
-		self:drawText( self.text )
-		return
-	end
-
 	if self.text ~= nil then
 		
+		if self.finished then
+			self:drawText( self.text )
+			return
+		end
+
 		if self.dialogueType == DialogueType.Instant then
 			
 			self:drawText( self.text )
@@ -184,14 +210,34 @@ function Dialogue:play()
 		end
 
 	elseif self.emote ~= nil then
+
+		if self.finished then
+			return
+		end
+
 		self.emote:add( self._emoteX, self._emoteY )
-		-- Noble.currentScene():addSprite( self.emote )
+		self.finished = true
+
 	end
 		
 end
 
-function Dialogue:resetTimer( textSpeed )
+function Dialogue:reset()
+
+	self._dialoguePointer = 0
+	self:resetTimers()
+	self.finished = false
 	
+end
+
+function Dialogue:resetTimers( textSpeed )
+	
+	-- Autohide Timer
+	self._showTimer = playdate.timer.new( self.showDuration, 0, self.showDuration )
+	self._showTimer:pause()
+	self._showTimer:reset()
+
+	-- Dialogue Timer 
 	if self.dialogueType == DialogueType.Instant then
 		return
 	end
@@ -201,21 +247,22 @@ function Dialogue:resetTimer( textSpeed )
 	end
 
 	if textSpeed < TextSpeed.Fast then
-		self._timerDuration = self._BASE_TIMER_DURATION / textSpeed
+		self.textDuration = self._BASE_TIMER_DURATION / textSpeed
 	else
-		self._timerDuration = 0
+		self.textDuration = 0
 	end
 
-	self._dialogueTimer = playdate.timer.new( self._timerDuration, 0, self._timerDuration )
+	self._dialogueTimer = playdate.timer.new( self.textDuration, 0, self.textDuration )
+	self._dialogueTimer:pause()
+	self._dialogueTimer:reset()
 
 end
 
-function Dialogue:reset()
+function Dialogue:startTimers()
 
-	self._dialoguePointer = 0
-	self:resetTimer()
-	self.finished = false
-	
+	self._dialogueTimer:start()
+	self._showTimer:start()
+
 end
 
 -- Sets the current text for this Dialogue and cleans up any internals
@@ -253,7 +300,7 @@ function Dialogue:setEmote( emote, emoteX, emoteY )
 
 	self.emote = emote
 	self.text = nil
-
+	
 	if emoteX ~= nil then
 		self._emoteX = self._innerX + emoteX
 	end
@@ -272,13 +319,13 @@ function buildText( self )
 	local textToShow = self.text:sub( 0, self._dialoguePointer )
 	self:drawText( textToShow )
 
-	if self._dialogueTimer.value < self._timerDuration then
+	if self._dialogueTimer.value < self.textDuration then
 		return
 	end
 
 	if self._dialoguePointer < #self.text then
 		self._dialoguePointer += 1
-		self:resetTimer()
+		self:resetTimers()
 	else
 		self.finished = true
 	end
