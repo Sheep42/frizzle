@@ -313,6 +313,10 @@ function Dialogue:setEmote( emote, emoteX, emoteY )
 
 end
 
+function Dialogue:getState()
+	return self._state
+end
+
 -- Utility Functions --
 function buildText( self )
 	
