@@ -35,6 +35,16 @@ Dialogue.textDuration = 0
 Dialogue.showDuration = 1000
 Dialogue.finished = false
 
+-- Dispatch Callbacks
+Dialogue.onFinishCallback = function ()
+end
+
+Dialogue.onShowCallback = function ()
+end
+
+Dialogue.onHideCallback = function ()
+end
+
 -- Constants
 Dialogue._BASE_TIMER_DURATION = 100
 
@@ -131,6 +141,15 @@ function Dialogue:new( say, x, y, autohide, boxWidth, boxHeight, borderWidth, bo
 	-- Set up dialogue timer
 	self:resetTimers()
 
+	-- Set up dispatch callbacks
+	self.onShowCallback = function ()
+		self:startTimers()
+	end
+
+	self.onHideCallback = function ()
+		self:reset()
+	end
+
 	return self
 
 end
@@ -154,12 +173,12 @@ end
 
 function Dialogue:show()
 	self._state = DialogueState.Show
-	self:startTimers()
+	self.onShowCallback()
 end
 
 function Dialogue:hide()
 	self._state = DialogueState.Hide
-	self:reset()
+	self.onHideCallback()
 end
 
 function Dialogue:drawCanvas()
@@ -204,7 +223,7 @@ function Dialogue:play()
 		if self.dialogueType == DialogueType.Instant then
 			
 			self:drawText( self.text )
-			self.finished = true
+			self:finish()
 		
 		elseif self.dialogueType == DialogueType.Typewriter then
 			buildText( self )
@@ -217,7 +236,7 @@ function Dialogue:play()
 		end
 
 		self.emote:add( self._emoteX, self._emoteY )
-		self.finished = true
+		self:finish()
 
 	end
 		
@@ -327,6 +346,13 @@ function Dialogue:getState()
 	return self._state
 end
 
+function Dialogue:finish()
+	
+	self.finished = true
+	self.onFinishCallback()
+
+end
+
 -- Utility Functions --
 function buildText( self )
 	
@@ -342,7 +368,7 @@ function buildText( self )
 		self:resetDialogueTimer()
 		self._dialogueTimer:start()
 	else
-		self.finished = true
+		self:finish()
 	end
 	
 end
