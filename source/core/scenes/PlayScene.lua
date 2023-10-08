@@ -94,6 +94,7 @@ function scene:init()
 		2,
 		2  
 	)
+
 	petSprite = NobleSprite( "assets/images/player" )
 	cursor = Cursor()
 	
@@ -111,6 +112,8 @@ function scene:init()
 		if bark:getState() == DialogueState.Hide then
 			bark:show()
 		end
+
+		petBtn:deactivate()
 
 	end)
 

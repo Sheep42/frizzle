@@ -13,7 +13,15 @@ Button.hoverOutCallback = function()
 	return
 end
 
-Button.isVisible = true
+Button.onActivateeCallback = function ()
+	return
+end
+
+Button.onDeactivateCallback = function ()
+	return
+end
+
+Button._isActive = true
 Button._isHovered = false
 
 -- Create a Button 
@@ -91,6 +99,10 @@ end
 
 function Button:update() 
 
+	if not self._isActive then
+		return	
+	end
+
 	-- Handle hovering & pressing
 	local collisions = self:overlappingSprites()
 	if #collisions > 0 then
@@ -99,6 +111,17 @@ function Button:update()
 		self:hoverOut()
 	end
 
+end
+
+function Button:activate()
+	self._isActive = true
+	self:onActivateeCallback()
+end
+
+function Button:deactivate()
+	self._isActive = false
+	self:hoverOut()
+	self:onDeactivateCallback()
 end
 
 function Button.getDimensions()
