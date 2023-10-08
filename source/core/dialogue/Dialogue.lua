@@ -61,10 +61,11 @@ function Dialogue:new( say, x, y, autohide, boxWidth, boxHeight, borderWidth, bo
 	if say ~= nil then
 
 		if type( say ) == "string" then
-			self.text = text
+			self.text = say
 		elseif type( say ) == "table" then
 			self.emote = say	
 		end
+
 	end
 
 	if autohide ~= nil then
@@ -232,12 +233,21 @@ end
 
 function Dialogue:resetTimers( textSpeed )
 	
-	-- Autohide Timer
+	self:resetAutohideTimer()
+	self:resetDialogueTimer()
+
+end
+
+function Dialogue:resetAutohideTimer()
+
 	self._showTimer = playdate.timer.new( self.showDuration, 0, self.showDuration )
 	self._showTimer:pause()
 	self._showTimer:reset()
 
-	-- Dialogue Timer 
+end
+
+function Dialogue:resetDialogueTimer()
+
 	if self.dialogueType == DialogueType.Instant then
 		return
 	end
@@ -329,7 +339,8 @@ function buildText( self )
 
 	if self._dialoguePointer < #self.text then
 		self._dialoguePointer += 1
-		self:resetTimers()
+		self:resetDialogueTimer()
+		self._dialogueTimer:start()
 	else
 		self.finished = true
 	end
