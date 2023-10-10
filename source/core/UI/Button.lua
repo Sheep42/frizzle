@@ -32,13 +32,14 @@ Button._isHovered = false
 --
 -- @return A new Button animation
 --
--- All UI Buttons must have a 32x32 spritesheet with 2 frames. 
+-- All UI Buttons must have a 32x32 spritesheet with a single animation. 
 -- Spritesheets must follow the naming convention: sheetname-32-32.png. 
 -- When passing in __spritesheet pass in only path/to/sheetname
 function Button:init( __spritesheet, __frameDuration )
 
 	local frameDuration = 15
 	local anim = Noble.Animation.new( __spritesheet )
+	local frames, _ = anim.imageTable:getSize()
 
 	if __frameDuration then
 		frameDuration = __frameDuration
@@ -46,7 +47,7 @@ function Button:init( __spritesheet, __frameDuration )
 
 	-- Set up animation
 	anim:addState( "default", 1, 1 )
-	anim:addState( "hover", 1, 2, nil, nil, nil, frameDuration )
+	anim:addState( "hover", 1, frames, nil, nil, nil, frameDuration )
 
 	anim:setState( "default" )
 

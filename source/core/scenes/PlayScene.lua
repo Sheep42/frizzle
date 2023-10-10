@@ -99,7 +99,7 @@ function scene:init()
 	cursor = Cursor()
 	
 	petBtn = Button( "assets/images/UI/button-pet" )
-	feedBtn = Button( "assets/images/UI/button-pet" )
+	feedBtn = Button( "assets/images/UI/button-feed" )
 	playBtn = Button( "assets/images/UI/button-pet" )
 
 	-- TODO: Implement Button click handlers 
@@ -113,7 +113,7 @@ function scene:init()
 			bark:show()
 		end
 
-		petBtn:deactivate()
+		-- petBtn:deactivate()
 
 	end)
 
