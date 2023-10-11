@@ -129,7 +129,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 	if y ~= nil then
 		self.y = y
 	else
-		self.y = Utilities.screenSize().height - self.boxHeight - 40
+		self.y = Utilities.screenSize().height - self.boxHeight - 60
 	end
 
 	self._innerX = self.x + ( self.borderWidth / 2 )
