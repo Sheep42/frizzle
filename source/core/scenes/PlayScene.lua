@@ -101,8 +101,8 @@ function scene:init()
 	petBtn = Button( "assets/images/UI/button-pet" )
 	feedBtn = Button( "assets/images/UI/button-feed" )
 	playBtn = Button( "assets/images/UI/button-play" )
-	groomBtn = Button( "assets/images/UI/button-play" )
-	sleepBtn = Button( "assets/images/UI/button-play" )
+	groomBtn = Button( "assets/images/UI/button-groom" )
+	sleepBtn = Button( "assets/images/UI/button-sleep" )
 
 	-- TODO: Implement Button click handlers 
 	petBtn:setPressedCallback( function()
