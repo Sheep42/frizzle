@@ -259,7 +259,7 @@ end
 
 function Dialogue:resetAutohideTimer()
 
-	self._showTimer = playdate.timer.new( self.showDuration, 0, self.showDuration )
+	self._showTimer = Timer.new( self.showDuration, 0, self.showDuration )
 	self._showTimer:pause()
 	self._showTimer:reset()
 
@@ -281,7 +281,7 @@ function Dialogue:resetDialogueTimer()
 		self.textDuration = 0
 	end
 
-	self._dialogueTimer = playdate.timer.new( self.textDuration, 0, self.textDuration )
+	self._dialogueTimer = Timer.new( self.textDuration, 0, self.textDuration )
 	self._dialogueTimer:pause()
 	self._dialogueTimer:reset()
 
