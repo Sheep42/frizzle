@@ -13,6 +13,7 @@ local cursor = nil
 local petBtn = nil
 local feedBtn = nil
 local playBtn = nil
+local bgMusic = nil
 local uiButtons = {}
 
 scene.baseColor = Graphics.kColorBlack
@@ -83,6 +84,10 @@ function scene:init()
 	scene.super.init(self)
 
 	background = Graphics.image.new( "assets/images/background" )
+
+	bgMusic = Sound.fileplayer.new( "assets/sound/tamagotchi-music.mp3" )
+
+	-- Create dialogue and bark objects
 	dialogue = Dialogue( "Hello, Game World" )
 	bark = Dialogue( 
 		NobleSprite( "assets/images/player" ), 
@@ -95,9 +100,13 @@ function scene:init()
 		2  
 	)
 
+	-- Create Pet
 	petSprite = NobleSprite( "assets/images/player" )
+
+	-- Create cursor
 	cursor = Cursor()
 	
+	-- Create UI Buttons
 	petBtn = Button( "assets/images/UI/button-pet" )
 	feedBtn = Button( "assets/images/UI/button-feed" )
 	playBtn = Button( "assets/images/UI/button-play" )
@@ -119,6 +128,7 @@ function scene:init()
 
 	end)
 
+	-- Add UI Buttons to table
 	uiButtons[1] = petBtn
 	uiButtons[2] = feedBtn
 	uiButtons[3] = playBtn
@@ -177,6 +187,7 @@ function scene:drawBackground()
 	background:draw( 0, 0 )
 	dialogue:drawCanvas()
 	bark:drawCanvas()
+	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
 end
 

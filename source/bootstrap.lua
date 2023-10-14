@@ -15,5 +15,5 @@ import "core/UI/Button"
 import "core/dialogue/Dialogue"
 
 -- Globals
-local pd = playdate
-local Sound = pd.sound
+pd = playdate
+Sound = pd.sound
