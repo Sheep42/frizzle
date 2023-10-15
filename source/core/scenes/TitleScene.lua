@@ -7,11 +7,13 @@ scene.baseColor = Graphics.kColorBlack
 local background
 local menu
 local sequence
+local bgMusic = nil
 
 function scene:init()
 	scene.super.init(self)
 
 	background = Graphics.image.new( "assets/images/background2" )
+	bgMusic = Sound.fileplayer.new( "assets/sound/title2.mp3" )
 
 	menu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
 	menu:addItem( 
@@ -91,6 +93,7 @@ function scene:drawBackground()
 	scene.super.drawBackground(self)
 
 	background:draw(0, 0)
+	bgMusic:play( 0 )
 end
 
 function scene:update()
@@ -113,6 +116,7 @@ function scene:exit()
 
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
+	bgMusic:stop()
 	sequence:start();
 
 end
