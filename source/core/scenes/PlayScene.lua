@@ -89,6 +89,8 @@ function scene:init()
 
 	-- Create dialogue and bark objects
 	dialogue = Dialogue( "Hello, Game World" )
+	dialogue:enableSound()
+
 	bark = Dialogue( 
 		NobleSprite( "assets/images/player" ), 
 		Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box

@@ -1,0 +1,2 @@
+GameController = {}
+class( "GameController" ).extends()

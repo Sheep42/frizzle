@@ -17,3 +17,7 @@ import "core/dialogue/Dialogue"
 -- Globals
 pd = playdate
 Sound = pd.sound
+
+-- Generic Setup
+local s, ms = pd.getSecondsSinceEpoch()
+math.randomseed( ms, s )

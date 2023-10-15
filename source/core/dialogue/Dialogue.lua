@@ -47,12 +47,16 @@ end
 
 -- Constants
 Dialogue._BASE_TIMER_DURATION = 100
+Dialogue._BASE_PITCH = 261.63 
+Dialogue._BASE_VOLUME = 0.5
+Dialogue._SYNTH_LENGTH = 0.15
 
 -- Internals
 Dialogue._dialoguePointer = 0
 Dialogue._dialogueTimer = nil
 Dialogue._showTimer = nil
 Dialogue._canvas = nil
+Dialogue._textSound = nil
 Dialogue._state = DialogueState.Hide
 
 -- Positioning 
@@ -342,6 +346,17 @@ function Dialogue:setEmote( emote, emoteX, emoteY )
 
 end
 
+function Dialogue:enableSound()
+	
+	local textSound = Sound.synth.new( Sound.kWavePOVosim )
+	self._textSound = textSound
+
+end
+
+function Dialogue:disableSound()
+	self._textSound = nil
+end
+
 function Dialogue:getState()
 	return self._state
 end
@@ -355,12 +370,16 @@ end
 
 -- Utility Functions --
 function buildText( self )
-	
+
 	local textToShow = self.text:sub( 0, self._dialoguePointer )
 	self:drawText( textToShow )
 
 	if self._dialogueTimer.value < self.textDuration then
 		return
+	end
+
+	if self._textSound ~= nil and self.text:sub( self._dialoguePointer, self._dialoguePointer ) ~= ' ' then
+		self._textSound:playNote( self._BASE_PITCH + math.random( -10, 10 ), self._BASE_VOLUME, self._SYNTH_LENGTH )
 	end
 
 	if self._dialoguePointer < #self.text then
