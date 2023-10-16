@@ -87,13 +87,13 @@ function scene:start()
 
 	menu:activate()
 	Noble.Input.setCrankIndicatorStatus(true)
+	bgMusic:play( 0 )
 end
 
 function scene:drawBackground()
 	scene.super.drawBackground(self)
 
 	background:draw(0, 0)
-	bgMusic:play( 0 )
 end
 
 function scene:update()
@@ -117,7 +117,7 @@ function scene:exit()
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	bgMusic:stop()
-	sequence:start();
+	sequence:start()
 
 end
 

@@ -161,6 +161,8 @@ function scene:start()
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
 
+	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
+
 end
 
 function setupButtons()
@@ -189,7 +191,6 @@ function scene:drawBackground()
 	background:draw( 0, 0 )
 	dialogue:drawCanvas()
 	bark:drawCanvas()
-	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
 end
 
