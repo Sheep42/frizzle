@@ -100,6 +100,8 @@ end
 
 function Button:update() 
 
+	Button.super.update( self )
+
 	if not self._isActive then
 		return	
 	end

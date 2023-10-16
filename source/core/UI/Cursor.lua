@@ -25,6 +25,7 @@ function Cursor:init()
 end
 
 function Cursor:update()
+	Cursor.super.update( self )
 	self:move()
 end
 
