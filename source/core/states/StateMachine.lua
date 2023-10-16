@@ -11,7 +11,7 @@ StateMachine.states = {}
 -- @param State defaultState The State to set as defualt for this StateMachine
 --
 -- @param Array<State> states A list of States to register for this StateMachine
-function StateMachine:new( defaultState, states )
+function StateMachine:init( defaultState, states )
 
 	if defaultState == nil then
 		error( "StateMachine requires a defaultState" )

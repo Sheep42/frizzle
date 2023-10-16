@@ -9,7 +9,7 @@ State.stateMachine = nil
 -- Constructor
 --
 -- @param String id The state ID - Should be unique
-function State:new( id )
+function State:init( id )
 
 	if id == nil then
 		error( "State must have an ID" )
