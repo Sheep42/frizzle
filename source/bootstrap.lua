@@ -14,6 +14,8 @@ import "core/UI/Cursor"
 import "core/UI/Button"
 import "core/dialogue/Dialogue"
 
+import "core/entities/VirtualPet"
+
 -- Globals
 pd = playdate
 Sound = pd.sound

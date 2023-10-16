@@ -6,7 +6,7 @@ local _CURSOR_SPEED_MULTIPLIER = 1
 local scene = PlayScene
 local background
 local sequence
-local petSprite = nil
+local pet = nil
 local dialogue = nil
 local bark = nil
 local cursor = nil
@@ -103,7 +103,7 @@ function scene:init()
 	)
 
 	-- Create Pet
-	petSprite = NobleSprite( "assets/images/player" )
+	pet = VirtualPet( "assets/images/player" )
 
 	-- Create cursor
 	cursor = Cursor()
@@ -153,7 +153,7 @@ function scene:start()
 	scene.super.start(self)
 
 	-- Add Pet to Scene
-	petSprite:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+	pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
 	-- Add Buttons to the Scene
 	setupButtons()
