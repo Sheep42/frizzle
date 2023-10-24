@@ -5,6 +5,7 @@ class( "State" ).extends()
 -- State identifier
 State.id = ""
 State.stateMachine = nil
+State.owner = nil -- The owner object
 
 -- Constructor
 --
