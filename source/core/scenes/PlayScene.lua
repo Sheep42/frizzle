@@ -99,7 +99,7 @@ function scene:init()
 		50,
 		50,
 		2,
-		2  
+		2 
 	)
 
 	-- Create Pet
@@ -188,15 +188,20 @@ end
 function scene:drawBackground()
 
 	scene.super.drawBackground(self)
-	background:draw( 0, 0 )
-	dialogue:drawCanvas()
-	bark:drawCanvas()
+	-- background:draw( 0, 0 )
+
+	-- Draw Bark Canvas
+	bark:drawCanvas()	
 
 end
 
 function scene:update()
 
 	scene.super.update( self )
+
+	-- Draw dialogue canvas over sprites
+	dialogue:drawCanvas()
+
 	dialogue:update()
 	bark:update()
 

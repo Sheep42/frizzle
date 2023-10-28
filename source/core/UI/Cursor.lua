@@ -34,7 +34,7 @@ function Cursor:move()
 	if self.velocity.x ~= 0 or self.velocity.y ~= 0 then
 
 		-- Contain cursor to screenBounds
-			currX, currY = self:getPosition()
+			local currX, currY = self:getPosition()
 			
 			if self.velocity.x < 0 and currX <= Utilities.screenBounds().left then
 				self.velocity.x = 0
