@@ -10,9 +10,13 @@ pet._animations = {
 		name = "idle",
 		startFrame = 1,
 		endFrame = 6,
-		frameDuration = 15,
 	},
 }
+
+pet._hunger = 0
+pet._boredom = 0
+pet._groom = 0
+pet._friendship = 0
 
 function pet:init()
 
