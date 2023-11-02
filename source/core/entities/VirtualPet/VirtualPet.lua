@@ -13,10 +13,10 @@ pet._animations = {
 	},
 }
 
-pet._hunger = 0
-pet._boredom = 0
-pet._groom = 0
-pet._friendship = 0
+pet.hunger = 0
+pet.boredom = 0
+pet.groom = 0
+pet.friendship = 0
 
 function pet:init()
 
