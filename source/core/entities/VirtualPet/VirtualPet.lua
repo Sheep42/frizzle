@@ -14,11 +14,14 @@ pet._animations = {
 }
 
 pet._statTimer = nil
-pet._hunger = 5
-pet._boredom = 5
-pet._groom = 5
-pet._friendship = 5
-pet._tired = 5
+
+pet.stats = {
+	hunger = 5,
+	boredom = 5,
+	groom = 5,
+	friendship = 5,
+	tired = 5,
+}
 
 function pet:init()
 
@@ -69,24 +72,24 @@ function pet:tickStats()
 
 		self._statTimer = nil
 
-		if self._hunger > 0 then
-			self._hunger -= 1
+		if self.stats.hunger > 0 then
+			self.stats.hunger -= 1
 		end
 	
-		if self._boredom > 0 then
-			self._boredom -= 1
+		if self.stats.boredom > 0 then
+			self.stats.boredom -= 1
 		end
 	
-		if self._friendship > 0 then
-			self._friendship -= 1
+		if self.stats.friendship > 0 then
+			self.stats.friendship -= 1
 		end
 	
-		if self._groom > 0 then
-			self._groom -= 1
+		if self.stats.groom > 0 then
+			self.stats.groom -= 1
 		end
 	
-		if self._tired > 0 then
-			self._tired -= 1
+		if self.stats.tired > 0 then
+			self.stats.tired -= 1
 		end
 
 	end
