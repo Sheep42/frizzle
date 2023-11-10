@@ -13,10 +13,12 @@ pet._animations = {
 	},
 }
 
-pet.hunger = 0
-pet.boredom = 0
-pet.groom = 0
-pet.friendship = 0
+pet._statTimer = nil
+pet._hunger = 5
+pet._boredom = 5
+pet._groom = 5
+pet._friendship = 5
+pet._tired = 5
 
 function pet:init()
 
@@ -53,5 +55,40 @@ function pet:update()
 
 	pet.super.update( self )
 	self._stateMachine:update()
+
+end
+
+function pet:tickStats()
+
+	if self._statTimer == nil then
+		local duration = math.random( 3, 6 ) * 1000
+		self._statTimer = Timer.new( duration, 0, duration )
+	end
+
+	if self._statTimer.value >= self._statTimer.duration then
+
+		self._statTimer = nil
+
+		if self._hunger > 0 then
+			self._hunger -= 1
+		end
+	
+		if self._boredom > 0 then
+			self._boredom -= 1
+		end
+	
+		if self._friendship > 0 then
+			self._friendship -= 1
+		end
+	
+		if self._groom > 0 then
+			self._groom -= 1
+		end
+	
+		if self._tired > 0 then
+			self._tired -= 1
+		end
+
+	end
 
 end

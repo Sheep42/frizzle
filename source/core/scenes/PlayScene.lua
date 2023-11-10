@@ -92,7 +92,7 @@ function scene:init()
 	dialogue:enableSound()
 
 	bark = Dialogue( 
-		NobleSprite( "assets/images/player" ), 
+		NobleSprite( "assets/images/UI/heart" ), 
 		Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box
 		Utilities.screenBounds().top + 20, -- 20 px down from top of allowable screen area
 		true,
