@@ -15,7 +15,7 @@ import "core/UI/Button"
 import "core/dialogue/Dialogue"
 
 import "core/entities/VirtualPet/VirtualPet"
-import "core/entities/VirtualPet/PetState_Idle"
+import "core/entities/VirtualPet/PetState_Active"
 
 -- Globals
 pd = playdate

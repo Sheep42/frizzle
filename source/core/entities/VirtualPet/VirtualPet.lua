@@ -42,7 +42,7 @@ function pet:init()
 
 	-- Set up logic states
 	self._states = {
-		IdleState = PetState_Idle( "idle", self ),
+		IdleState = PetState_Active( "active", self ),
 	}
 
 	self._stateMachine = StateMachine( self._states.IdleState, self._states )

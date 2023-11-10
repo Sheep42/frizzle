@@ -1,6 +1,6 @@
-PetState_Idle = {}
-class( "PetState_Idle" ).extends( State )
-local state = PetState_Idle
+PetState_Active = {}
+class( "PetState_Active" ).extends( State )
+local state = PetState_Active
 
 function state:init( id, owner )
 	
@@ -19,5 +19,5 @@ function state:exit() end
 
 -- Fires when the State Machine updates
 function state:tick() 
-
+	self.owner:tickStats()
 end
