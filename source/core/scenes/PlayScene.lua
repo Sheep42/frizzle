@@ -15,6 +15,7 @@ local feedBtn = nil
 local playBtn = nil
 local bgMusic = nil
 local uiButtons = {}
+local statBars = {}
 
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
@@ -103,7 +104,8 @@ function scene:init()
 	)
 
 	-- Create Pet
-	pet = VirtualPet( "assets/images/pet" )
+	Global.pet = VirtualPet( "assets/images/pet" )
+	pet = Global.pet
 
 	-- Create cursor
 	cursor = Cursor()
@@ -137,6 +139,16 @@ function scene:init()
 	uiButtons[4] = groomBtn
 	uiButtons[5] = sleepBtn
 
+	-- TODO: Create new icons and update
+	-- Add StatBars to table
+	statBars = {
+		hunger = StatBar( "assets/images/UI/heart", "hunger" ),
+		boredom = StatBar( "assets/images/UI/heart", "boredom" ),
+		friendship = StatBar( "assets/images/UI/heart", "friendship" ),
+		tired = StatBar( "assets/images/UI/heart", "tired" ),
+		groom = StatBar( "assets/images/UI/heart", "groom" ),
+	}
+
 end
 
 function scene:enter()
@@ -157,6 +169,13 @@ function scene:start()
 
 	-- Add Buttons to the Scene
 	setupButtons()
+
+	-- TOOD: These should not be hardcoded like this
+	statBars.hunger:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top )
+	statBars.boredom:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 10 )
+	statBars.friendship:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 20 )
+	statBars.tired:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 30 )
+	statBars.groom:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 40 )
 
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )

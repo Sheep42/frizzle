@@ -12,6 +12,7 @@ import "core/states/TestState2"
 
 import "core/UI/Cursor"
 import "core/UI/Button"
+import "core/UI/StatBar"
 import "core/dialogue/Dialogue"
 
 import "core/entities/VirtualPet/VirtualPet"
