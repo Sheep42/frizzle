@@ -122,6 +122,8 @@ function scene:init()
 
 		if dialogue:getState() == DialogueState.Hide then
 			dialogue:show()
+		elseif dialogue:getState() == DialogueState.Show then
+			dialogue:hide()
 		end
 
 		if bark:getState() == DialogueState.Hide then
