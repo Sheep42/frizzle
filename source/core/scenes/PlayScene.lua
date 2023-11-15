@@ -143,8 +143,10 @@ function scene:init()
 
 	-- TODO: Create new icons and update
 	-- Add StatBars to table
+
+	printTable( dialogue )
 	statBars = {
-		hunger = StatBar( "assets/images/UI/heart", "hunger" ),
+		hunger =  StatBar( "assets/images/UI/heart", "hunger" ),
 		boredom = StatBar( "assets/images/UI/heart", "boredom" ),
 		friendship = StatBar( "assets/images/UI/heart", "friendship" ),
 		tired = StatBar( "assets/images/UI/heart", "tired" ),
@@ -173,11 +175,11 @@ function scene:start()
 	setupButtons()
 
 	-- TOOD: These should not be hardcoded like this
-	statBars.hunger:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top )
-	statBars.boredom:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 10 )
-	statBars.friendship:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 20 )
-	statBars.tired:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 30 )
-	statBars.groom:add( Utilities.screenBounds().right - 50, Utilities.screenBounds().top + 40 )
+	statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
+	statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
+	statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
+	statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
+	statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
 
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
@@ -225,6 +227,9 @@ function scene:update()
 
 	dialogue:update()
 	bark:update()
+
+	statBars.hunger:update()
+	statBars.boredom:update()
 
 end
 

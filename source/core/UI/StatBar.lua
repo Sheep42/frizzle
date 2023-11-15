@@ -1,29 +1,52 @@
 StatBar = {}
 class( "StatBar" ).extends()
 
-StatBar.icon = nil
-StatBar.stat = ""
-
 function StatBar:init( icon, stat ) 
 
 	self.icon = icon
 	self.stat = stat
+	self.position = { x = 0, y = 0 }
+	self.sprites = {}
 
 end
 
 function StatBar:add( x, y ) 
 
-	-- TODO: There's gotta be a better way
-	local statVal = Global.pet.stats[self.stat]
-	-- local statVal = 5
+	self.position.x = x
+	self.position.y = y
 
-	for i = 1, statVal do
-		local sprite = NobleSprite( self.icon )
-		sprite:add( x + (10 * i), y )
-	end
+	self:addSprites()
 
 end
 
 function StatBar:update()
-	-- TODO: Update bar with current value
+
+	if #self.sprites ~= Global.pet.stats[self.stat] then
+		self:removeSprites()
+		self:addSprites()	
+	end
+
+end
+
+function StatBar:addSprites() 
+	
+	local statVal = Global.pet.stats[self.stat]
+	
+	for i = 0, statVal - 1 do
+		local sprite = NobleSprite( self.icon )
+		sprite:add( self.position.x + (10 * i), self.position.y )
+		table.insert( self.sprites, sprite )
+	end
+
+end
+
+function StatBar:removeSprites() 
+
+	for i = 1, #self.sprites do
+		local sprite = self.sprites[i]
+		sprite:remove()
+	end
+
+	self.sprites = {}
+
 end
