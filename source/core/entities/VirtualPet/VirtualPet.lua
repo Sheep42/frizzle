@@ -25,6 +25,15 @@ pet.stats = {
 
 function pet:init()
 
+	-- This is a really gross way to make VirtualPet a singleton, but I'm the 
+	-- only person who has to read this stinky code, so it's probably fine
+	-- Famous last words
+
+	if Global.pet ~= nil then
+		return
+	end
+	
+	Global.pet = self
 	-- Create Base NobleSprite
 	self:setSize( 64, 64 )
 
@@ -47,7 +56,7 @@ function pet:init()
 
 	-- Set up logic states
 	self._states = {
-		IdleState = PetState_Active( "active", self ),
+		IdleState = PetState_Active( "active" ),
 	}
 
 	self._stateMachine = StateMachine( self._states.IdleState, self._states )

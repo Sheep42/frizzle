@@ -104,8 +104,7 @@ function scene:init()
 	)
 
 	-- Create Pet
-	Global.pet = VirtualPet( "assets/images/pet" )
-	pet = Global.pet
+	pet = VirtualPet( "assets/images/pet" )
 
 	-- Create cursor
 	cursor = Cursor()
