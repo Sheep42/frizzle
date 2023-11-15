@@ -34,6 +34,7 @@ function pet:init()
 	end
 	
 	Global.pet = self
+
 	-- Create Base NobleSprite
 	self:setSize( 64, 64 )
 

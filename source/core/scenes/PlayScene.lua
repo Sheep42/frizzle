@@ -119,18 +119,35 @@ function scene:init()
 	-- TODO: Implement Button click handlers 
 	petBtn:setPressedCallback( function()
 
-		if dialogue:getState() == DialogueState.Hide then
-			dialogue:show()
-		elseif dialogue:getState() == DialogueState.Show then
-			dialogue:hide()
-		end
+		-- if dialogue:getState() == DialogueState.Hide then
+		-- 	dialogue:show()
+		-- elseif dialogue:getState() == DialogueState.Show then
+		-- 	dialogue:hide()
+		-- end
 
 		if bark:getState() == DialogueState.Hide then
 			bark:show()
 		end
 
 		-- petBtn:deactivate()
+		Global.pet.stats.friendship += 1
 
+	end)
+
+	feedBtn:setPressedCallback( function ()
+		Global.pet.stats.hunger += 1
+	end)
+
+	playBtn:setPressedCallback( function ()
+		Global.pet.stats.boredom += 1
+	end)
+
+	groomBtn:setPressedCallback( function ()
+		Global.pet.stats.groom += 1
+	end)
+
+	sleepBtn:setPressedCallback( function ()
+		Global.pet.stats.tired += 1
 	end)
 
 	-- Add UI Buttons to table
@@ -174,11 +191,11 @@ function scene:start()
 	setupButtons()
 
 	-- TOOD: These should not be hardcoded like this
-	statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
-	statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
-	statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
-	statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
-	statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
+	statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
+	statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
+	statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
+	statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
+	statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
 
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
@@ -227,8 +244,9 @@ function scene:update()
 	dialogue:update()
 	bark:update()
 
-	statBars.hunger:update()
-	statBars.boredom:update()
+	for i, statBar in pairs( statBars ) do
+		statBar:update()
+	end
 
 end
 
