@@ -1,26 +1,27 @@
 Cursor = {}
 class( "Cursor" ).extends( NobleSprite )
 
--- Member variables
-Cursor.velocity = {x = 0, y = 0}
-
--- private variables
-local CURSOR_IMAGE_PATH = "assets/images/UI/cursor"
-local MOVE_SPEED = 4
+-- Constants
+	Cursor._CURSOR_IMAGE_PATH = "assets/images/UI/cursor"
+	Cursor._MOVE_SPEED = 4
 
 function Cursor:init()
 
-	Cursor.super.init( self, CURSOR_IMAGE_PATH )
+	-- Member variables
+		self.velocity = { x = 0, y = 0 }
+
+	-- Super
+		Cursor.super.init( self, Cursor._CURSOR_IMAGE_PATH )
 	
-	self.velocity = {x = 0, y = 0}
-	self:setZIndex( 999 )
+	-- Set high Z Index
+		self:setZIndex( 999 )
 
 	-- Set up collisions
-	self:setCollideRect( 0, 0, self:getSize() )
-	self:setGroups( { Utilities.collisionGroups.cursor } )
-	self:setCollidesWithGroups( {
-		Utilities.collisionGroups.uiButtons,
-	} )
+		self:setCollideRect( 0, 0, self:getSize() )
+		self:setGroups( { Utilities.collisionGroups.cursor } )
+		self:setCollidesWithGroups( {
+			Utilities.collisionGroups.uiButtons,
+		} )
 
 end
 
@@ -57,7 +58,7 @@ function Cursor:move()
 			end
 
 		-- Move cursor
-			self:moveBy( self.velocity.x * MOVE_SPEED, self.velocity.y * MOVE_SPEED )
+			self:moveBy( self.velocity.x * Cursor._MOVE_SPEED, self.velocity.y * Cursor._MOVE_SPEED )
 
 	end
 
