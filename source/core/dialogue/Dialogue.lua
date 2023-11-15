@@ -17,144 +17,136 @@ DialogueState = {
 	Hide = 'hide',
 }
 
--- Member variables
-Dialogue.text = nil
-Dialogue.emote = nil
-Dialogue.x = 0
-Dialogue.y = 0
-Dialogue.backgroundColor = Graphics.kColorWhite
-Dialogue.borderColor = Graphics.kColorBlack
-Dialogue.textColor = Graphics.kColorBlack
-Dialogue.boxWidth = 0.75 * Utilities.screenSize().width -- 75% of screen
-Dialogue.boxHeight = 75
-Dialogue.borderWidth = 0
-Dialogue.borderHeight = 0
-Dialogue.dialogueType = DialogueType.Typewriter
-Dialogue.autohide = false
-Dialogue.textDuration = 0
-Dialogue.showDuration = 1000
-Dialogue.finished = false
-
--- Dispatch Callbacks
-Dialogue.onFinishCallback = function ()
-end
-
-Dialogue.onShowCallback = function ()
-end
-
-Dialogue.onHideCallback = function ()
-end
-
 -- Constants
 Dialogue._BASE_TIMER_DURATION = 100
 Dialogue._BASE_PITCH = 261.63 
 Dialogue._BASE_VOLUME = 0.5
 Dialogue._SYNTH_LENGTH = 0.15
 
--- Internals
-Dialogue._dialoguePointer = 0
-Dialogue._dialogueTimer = nil
-Dialogue._showTimer = nil
-Dialogue._canvas = nil
-Dialogue._textSound = nil
-Dialogue._state = DialogueState.Hide
-
--- Positioning 
-Dialogue._innerX = 0
-Dialogue._innerY = 0
-Dialogue._textX = 0
-Dialogue._textY = 0
-Dialogue._emoteX = 0
-Dialogue._emoteY = 0
-
 -- Creates a new Dialogue
 --
 -- @param string|NobleSprite say Text or Emote to initialize the Dialogue with
 function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
 
-	if say ~= nil then
+	-- Member variables
+		self.text = nil
+		self.emote = nil
+		self.x = 0
+		self.y = 0
+		self.backgroundColor = Graphics.kColorWhite
+		self.borderColor = Graphics.kColorBlack
+		self.textColor = Graphics.kColorBlack
+		self.boxWidth = 0.75 * Utilities.screenSize().width -- 75% of screen
+		self.boxHeight = 75
+		self.borderWidth = 0
+		self.borderHeight = 0
+		self.dialogueType = DialogueType.Typewriter
+		self.autohide = false
+		self.textDuration = 0
+		self.showDuration = 1000
+		self.finished = false	
 
-		if type( say ) == "string" then
-			self.text = say
-		elseif type( say ) == "table" then
-			self.emote = say	
+	-- Internals
+		self._dialoguePointer = 0
+		self._dialogueTimer = nil
+		self._showTimer = nil
+		self._canvas = nil
+		self._textSound = nil
+		self._state = DialogueState.Hide
+
+	-- Positioning 
+		self._innerX = 0
+		self._innerY = 0
+		self._textX = 0
+		self._textY = 0
+		self._emoteX = 0
+		self._emoteY = 0
+
+	-- Param Overrides
+		if say ~= nil then
+
+			if type( say ) == "string" then
+				self.text = say
+			elseif type( say ) == "table" then
+				self.emote = say	
+			end
+
 		end
 
-	end
+		if autohide ~= nil then
+			self.autohide = autohide	
+		end
 
-	if autohide ~= nil then
-		self.autohide = autohide	
-	end
+		if dialogueType ~= nil then
+			self.dialogueType = dialogueType
+		end
 
-	if dialogueType ~= nil then
-		self.dialogueType = dialogueType
-	end
+		if backgroundColor ~= nil then
+			self.backgroundColor = backgroundColor
+		end
 
-	if backgroundColor ~= nil then
-		self.backgroundColor = backgroundColor
-	end
+		if borderColor ~= nil then
+			self.borderColor = borderColor
+		end
 
-	if borderColor ~= nil then
-		self.borderColor = borderColor
-	end
+		if textColor ~= nil then
+			self.textColor = textColor
+		end
 
-	if textColor ~= nil then
-		self.textColor = textColor
-	end
+		if boxWidth ~= nil then
+			self.boxWidth = boxWidth
+		end
 
-	if boxWidth ~= nil then
-		self.boxWidth = boxWidth
-	end
+		if boxHeight ~= nil then
+			self.boxHeight = boxHeight
+		end
 
-	if boxHeight ~= nil then
-		self.boxHeight = boxHeight
-	end
+		self.borderWidth = 4
+		if borderWidth ~= nil then
+			self.borderWidth = borderWidth
+		end
 
-	self.borderWidth = 4
-	if borderWidth ~= nil then
-		self.borderWidth = borderWidth
-	end
+		self.borderHeight = 4
+		if borderHeight ~= nil then
+			self.borderHeight = borderHeight
+		end
 
-	self.borderHeight = 4
-	if borderHeight ~= nil then
-		self.borderHeight = borderHeight
-	end
+	-- Init Object
+		self.textDuration = self._BASE_TIMER_DURATION
+		self._canvas = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height )
 
-	self.textDuration = self._BASE_TIMER_DURATION
-	self._canvas = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height )
+	-- Init Positioning
+		if x ~= nil then
+			self.x = x
+		else
+			self.x = ( Utilities.screenSize().width / 2 ) - ( ( self.boxWidth + self.borderWidth ) / 2 )
+		end
 
-	-- Positioning
-	if x ~= nil then
-		self.x = x
-	else
-		self.x = ( Utilities.screenSize().width / 2 ) - ( ( self.boxWidth + self.borderWidth ) / 2 )
-	end
+		if y ~= nil then
+			self.y = y
+		else
+			self.y = Utilities.screenSize().height - self.boxHeight - 60
+		end
 
-	if y ~= nil then
-		self.y = y
-	else
-		self.y = Utilities.screenSize().height - self.boxHeight - 60
-	end
+		self._innerX = self.x + ( self.borderWidth / 2 )
+		self._innerY = self.y + ( self.borderHeight / 2 )
 
-	self._innerX = self.x + ( self.borderWidth / 2 )
-	self._innerY = self.y + ( self.borderHeight / 2 )
+		self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
+		self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ), self.y + ( self.boxHeight / 2 )
 
-	self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
-	self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ), self.y + ( self.boxHeight / 2 )
-
-	-- Set up dialogue timer
-	self:resetTimers()
+	-- Set up timers
+		self:resetTimers()
 
 	-- Set up dispatch callbacks
-	self.onShowCallback = function ()
-		self:startTimers()
-	end
+		self.onShowCallback = function ()
+			self:startTimers()
+		end
 
-	self.onHideCallback = function ()
-		self:reset()
-	end
-
-	return self
+		self.onHideCallback = function ()
+			self:reset()
+		end
+		
+		self.onFinishCallback = function () end
 
 end
 
