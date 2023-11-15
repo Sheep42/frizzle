@@ -1,29 +1,6 @@
 Button = {}
 class( "Button" ).extends( NobleSprite )
 
-Button.pressedCallback = function()
-	return
-end
-
-Button.hoverCallback = function()
-	return
-end
-
-Button.hoverOutCallback = function()
-	return
-end
-
-Button.onActivateeCallback = function ()
-	return
-end
-
-Button.onDeactivateCallback = function ()
-	return
-end
-
-Button._isActive = true
-Button._isHovered = false
-
 -- Create a Button 
 -- 
 -- @param string __spritesheet The path to the button's spritesheet
@@ -37,27 +14,53 @@ Button._isHovered = false
 -- When passing in __spritesheet pass in only path/to/sheetname
 function Button:init( __spritesheet, __frameDuration )
 
-	local frameDuration = 15
-	local anim = Noble.Animation.new( __spritesheet )
-	local frames, _ = anim.imageTable:getSize()
+	-- Member Variables
+		self._isActive = true
+		self._isHovered = false
 
-	if __frameDuration then
-		frameDuration = __frameDuration
-	end
+	-- Create dispatch callbacks
+		self.pressedCallback = function()
+			return
+		end
+		
+		self.hoverCallback = function()
+			return
+		end
+		
+		self.hoverOutCallback = function()
+			return
+		end
+		
+		self.onActivateeCallback = function ()
+			return
+		end
+		
+		self.onDeactivateCallback = function ()
+			return
+		end
+
+	-- Param Overrides
+		local frameDuration = 15
+		local anim = Noble.Animation.new( __spritesheet )
+		local frames, _ = anim.imageTable:getSize()
+
+		if __frameDuration then
+			frameDuration = __frameDuration
+		end
 
 	-- Set up animation
-	anim:addState( "default", 1, 1 )
-	anim:addState( "hover", 1, frames, nil, nil, nil, frameDuration )
+		anim:addState( "default", 1, 1 )
+		anim:addState( "hover", 1, frames, nil, nil, nil, frameDuration )
 
-	anim:setState( "default" )
+		anim:setState( "default" )
 
 	-- Create Base NobleSprite
-	Button.super.init( self, anim )
-	self:setSize( 32, 32 )
+		Button.super.init( self, anim )
+		self:setSize( 32, 32 )
 
 	-- Register collision groups
-	self:setGroups( { Utilities.collisionGroups.uiButtons } )
-	self:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
+		self:setGroups( { Utilities.collisionGroups.uiButtons } )
+		self:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
 
 end
 
