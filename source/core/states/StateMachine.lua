@@ -1,11 +1,6 @@
 StateMachine = {}
 class( "StateMachine" ).extends()
 
-StateMachine.currentState = nil
-StateMachine.defaultState = nil
-StateMachine.previousState = nil
-StateMachine.states = {}
-
 -- Create a new StateMachine
 --
 -- @param State defaultState The State to set as defualt for this StateMachine
@@ -13,30 +8,35 @@ StateMachine.states = {}
 -- @param Array<State> states A list of States to register for this StateMachine
 function StateMachine:init( defaultState, states )
 
-	if defaultState == nil then
-		error( "StateMachine requires a defaultState" )
-	end
+	-- Member Variables
+		self.currentState = nil
+		self.defaultState = nil
+		self.previousState = nil
+		self.states = {}
+
+	-- Param Overrides
+		if defaultState == nil then
+			error( "StateMachine requires a defaultState" )
+		end
 
 	-- Set up defaultState and run enter
-	self.currentState = defaultState
-	self.defaultState = defaultState
-	self.currentState:enter()
+		self.currentState = defaultState
+		self.defaultState = defaultState
+		self.currentState:enter()
 
 	-- Add defualt state to states list
-	self:addState( defaultState )
+		self:addState( defaultState )
 	
 	-- Add other states, if provided
-	if states ~= nil then
-		if type( states ) == "table" then
+		if states ~= nil then
+			if type( states ) == "table" then
 
-			for _, state in ipairs( states ) do
-				self:addState( state )
-			end
+				for _, state in ipairs( states ) do
+					self:addState( state )
+				end
 
-		end		
-	end
-
-	return self
+			end		
+		end
 
 end
 

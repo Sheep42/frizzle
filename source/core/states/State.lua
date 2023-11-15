@@ -2,15 +2,14 @@
 State = {}
 class( "State" ).extends()
 
--- State identifier
-State.id = ""
-State.stateMachine = nil
-State.owner = nil -- The owner object
-
 -- Constructor
 --
 -- @param String id The state ID - Should be unique
 function State:init( id )
+
+	self.id = ""
+	self.stateMachine = nil
+	self.owner = nil -- The owner object
 
 	if id == nil then
 		error( "State must have an ID" )
