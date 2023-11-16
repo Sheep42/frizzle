@@ -21,7 +21,7 @@ end
 
 function StatBar:update()
 
-	if #self.sprites ~= Global.pet.stats[self.stat] then
+	if #self.sprites ~= GameController.pet.stats[self.stat] then
 		self:removeSprites()
 		self:addSprites()	
 	end
@@ -30,7 +30,7 @@ end
 
 function StatBar:addSprites() 
 	
-	local statVal = Global.pet.stats[self.stat]
+	local statVal = GameController.pet.stats[self.stat]
 	
 	for i = 0, statVal - 1 do
 		local sprite = NobleSprite( self.icon )

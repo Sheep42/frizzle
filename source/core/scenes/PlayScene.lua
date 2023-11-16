@@ -130,24 +130,24 @@ function scene:init()
 		end
 
 		-- petBtn:deactivate()
-		Global.pet.stats.friendship += 1
+		GameController.pet.stats.friendship += 1
 
 	end)
 
 	feedBtn:setPressedCallback( function ()
-		Global.pet.stats.hunger += 1
+		GameController.pet.stats.hunger += 1
 	end)
 
 	playBtn:setPressedCallback( function ()
-		Global.pet.stats.boredom += 1
+		GameController.pet.stats.boredom += 1
 	end)
 
 	groomBtn:setPressedCallback( function ()
-		Global.pet.stats.groom += 1
+		GameController.pet.stats.groom += 1
 	end)
 
 	sleepBtn:setPressedCallback( function ()
-		Global.pet.stats.tired += 1
+		GameController.pet.stats.tired += 1
 	end)
 
 	-- Add UI Buttons to table
@@ -160,7 +160,6 @@ function scene:init()
 	-- TODO: Create new icons and update
 	-- Add StatBars to table
 
-	printTable( dialogue )
 	statBars = {
 		hunger =  StatBar( "assets/images/UI/heart", "hunger" ),
 		boredom = StatBar( "assets/images/UI/heart", "boredom" ),

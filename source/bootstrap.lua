@@ -1,6 +1,7 @@
 -- Imports
 import 'libraries/noble/Noble'
 import 'utilities/Utilities'
+import 'core/controllers/GameController'
 
 import 'core/scenes/TitleScene'
 import 'core/scenes/PlayScene'

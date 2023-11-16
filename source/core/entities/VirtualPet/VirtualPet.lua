@@ -29,11 +29,11 @@ function pet:init()
 	-- only person who has to read this stinky code, so it's probably fine
 	-- Famous last words
 
-	if Global.pet ~= nil then
+	if GameController.pet ~= nil then
 		return
 	end
 	
-	Global.pet = self
+	GameController.pet = self
 
 	-- Create Base NobleSprite
 	self:setSize( 64, 64 )

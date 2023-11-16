@@ -8,7 +8,7 @@ end
 
 -- Fires when a State is entered
 function state:enter() 
-	Global.pet.animation:setState( Global.pet._animations.idle.name )
+	GameController.pet.animation:setState( GameController.pet._animations.idle.name )
 end
 
 -- Fires when a State is exited
@@ -16,5 +16,5 @@ function state:exit() end
 
 -- Fires when the State Machine updates
 function state:tick() 
-	Global.pet:tickStats()
+	GameController.pet:tickStats()
 end
