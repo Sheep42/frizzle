@@ -20,7 +20,7 @@ local statBars = {}
 scene.baseColor = Graphics.kColorBlack
 scene.inputHandler = {
 	AButtonDown = function()
-		checkBtnPress()
+		checkABtnPress()
 	end,
 	downButtonUp = function ()
 		if cursor ~= nil then
@@ -89,8 +89,27 @@ function scene:init()
 	bgMusic = Sound.fileplayer.new( "assets/sound/tamagotchi-music.mp3" )
 
 	-- Create dialogue and bark objects
-	dialogue = Dialogue( "Hello, Game World" )
+	dialogue = Dialogue( GameController.advanceDialogueLine() )
 	dialogue:enableSound()
+	dialogue.buttonPressedCallback = function ()
+		
+		if dialogue.finished == false then
+			dialogue.finished = true
+			return	
+		end
+
+		if dialogue:getState() == DialogueState.Hide then
+			return
+		end
+
+		local line = GameController.advanceDialogueLine()
+		if line ~= nil then
+			dialogue:setText( line )
+		else 
+			dialogue:hide()
+		end
+
+	end
 
 	bark = Dialogue( 
 		NobleSprite( "assets/images/UI/heart" ), 
@@ -201,6 +220,8 @@ function scene:start()
 
 	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
+	dialogue:show()
+
 end
 
 function setupButtons()
@@ -217,10 +238,14 @@ function setupButtons()
 
 end
 
-function checkBtnPress()
+function checkABtnPress()
+
 	for i = 1, #uiButtons do
 		uiButtons[i]:press()
 	end
+
+	dialogue:buttonPressedCallback()
+
 end
 
 function scene:drawBackground()

@@ -44,7 +44,8 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.autohide = false
 		self.textDuration = 0
 		self.showDuration = 1000
-		self.finished = false	
+		self.finished = false
+		self.textSpeed = Noble.Settings.get( "text_speed" )
 
 	-- Internals
 		self._dialoguePointer = 0
@@ -146,6 +147,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 			self:reset()
 		end
 		
+		self.buttonPressedCallback = function() end
 		self.onFinishCallback = function () end
 
 end
@@ -238,6 +240,13 @@ function Dialogue:play()
 		
 end
 
+function Dialogue:restart() 
+	
+	self:reset()
+	self:startTimers()
+
+end
+
 function Dialogue:reset()
 
 	self._dialoguePointer = 0
@@ -246,7 +255,7 @@ function Dialogue:reset()
 	
 end
 
-function Dialogue:resetTimers( textSpeed )
+function Dialogue:resetTimers()
 	
 	self:resetAutohideTimer()
 	self:resetDialogueTimer()
@@ -267,12 +276,12 @@ function Dialogue:resetDialogueTimer()
 		return
 	end
 
-	if textSpeed == nil then
-		textSpeed = Noble.Settings.get( "text_speed" )
+	if self.textSpeed == nil then
+		self.textSpeed = Noble.Settings.get( "text_speed" )
 	end
 
-	if textSpeed < TextSpeed.Fast then
-		self.textDuration = self._BASE_TIMER_DURATION / textSpeed
+	if self.textSpeed < TextSpeed.Fast then
+		self.textDuration = self._BASE_TIMER_DURATION / self.textSpeed
 	else
 		self.textDuration = 0
 	end
@@ -310,7 +319,7 @@ function Dialogue:setText( text, textX, textY )
 		self._textY = self._innerY + textY
 	end
 
-	self:reset()
+	self:restart()
 
 end
 
@@ -334,7 +343,7 @@ function Dialogue:setEmote( emote, emoteX, emoteY )
 		self._emoteY = self._innerY + emoteY
 	end
 
-	self:reset()
+	self:restart()
 
 end
 
