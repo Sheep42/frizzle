@@ -2,22 +2,24 @@ GameController = {}
 class( "GameController" ).extends()
 
 GameController.pet = nil
-GameController.currentDialogueScript = 'intro'
-GameController.currentDialogeLine = 1
+GameController.dialogue = nil
+GameController.flags = {
+	currentDialogueScript = 'intro',
+	currentDialogueLine = 1,
+}
 GameController.dialogueLines = {
 	intro = {
 		"Welcome to the world of [GameTitle]!",
 		"You'll be responsible for the care of\nyour very own pet",
 		"Blah, blah, blah",
-		-- TODO: Allow execution of dialogue and game manipulation functions
 		"Blah, blah, blah",
 	}
 }
 
 function GameController.getDialogue( script, line )
 
-	local _script = GameController.currentDialogueScript
-	local _line = GameController.currentDialogeLine
+	local _script = GameController.flags.currentDialogueScript
+	local _line = GameController.flags.currentDialogueLine
 
 	if script ~= nil then
 		_script = script
@@ -35,8 +37,8 @@ function GameController.advanceDialogueLine()
 
 	local line = GameController.getDialogue()
 
-	if GameController.currentDialogeLine < #GameController.dialogueLines[GameController.currentDialogueScript] + 1 then
-		GameController.currentDialogeLine += 1
+	if GameController.flags.currentDialogueLine < #GameController.dialogueLines[GameController.flags.currentDialogueScript] + 1 then
+		GameController.flags.currentDialogueLine += 1
 		return line
 	end
 	
