@@ -105,7 +105,7 @@ function scene:init()
 		local line = GameController.advanceDialogueLine()
 		if line ~= nil then
 			dialogue:setText( line )
-		else 
+		else
 			dialogue:hide()
 		end
 
