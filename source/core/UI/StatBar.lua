@@ -8,6 +8,14 @@ function StatBar:init( icon, stat )
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}
 
+	-- States
+	self.states = {
+		paused = StatBarState_Paused( 'paused', self ),
+		active = StatBarState_Active( 'active', self ),
+	}
+
+	self.stateMachine = StateMachine( self.states.paused )
+
 end
 
 function StatBar:add( x, y ) 
@@ -21,10 +29,7 @@ end
 
 function StatBar:update()
 
-	if #self.sprites ~= GameController.pet.stats[self.stat] then
-		self:removeSprites()
-		self:addSprites()	
-	end
+	self.stateMachine:update()
 
 end
 

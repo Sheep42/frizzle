@@ -11,11 +11,13 @@ import "core/states/StateMachine"
 
 import "core/UI/Cursor"
 import "core/UI/Button"
+import "core/UI/StatBar/StatBarState_Active"
+import "core/UI/StatBar/StatBarState_Paused"
 import "core/UI/StatBar"
 import "core/dialogue/Dialogue"
 
-import "core/entities/VirtualPet/VirtualPet"
 import "core/entities/VirtualPet/PetState_Active"
+import "core/entities/VirtualPet/VirtualPet"
 
 -- Globals
 pd = playdate

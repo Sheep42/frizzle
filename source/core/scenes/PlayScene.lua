@@ -89,25 +89,34 @@ function scene:init()
 	bgMusic = Sound.fileplayer.new( "assets/sound/tamagotchi-music.mp3" )
 
 	-- Create dialogue and bark objects
-	dialogue = Dialogue( GameController.advanceDialogueLine() )
-	dialogue:enableSound()
-	dialogue.buttonPressedCallback = function ()
+	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
 		
-		if dialogue.finished == false then
-			dialogue.finished = true
-			return	
+		GameController.setFlag( 'dialogue.currentScript', 'intro' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+
+		dialogue = Dialogue( GameController.advanceDialogueLine() )
+		dialogue:enableSound()
+		dialogue.buttonPressedCallback = function ()
+			
+			if dialogue.finished == false then
+				dialogue.finished = true
+				return	
+			end
+	
+			if dialogue:getState() == DialogueState.Hide then
+				return
+			end
+	
+			local line = GameController.advanceDialogueLine()
+			if line ~= nil then
+				dialogue:setText( line )
+			else
+				dialogue:hide()
+			end
+	
 		end
 
-		if dialogue:getState() == DialogueState.Hide then
-			return
-		end
-
-		local line = GameController.advanceDialogueLine()
-		if line ~= nil then
-			dialogue:setText( line )
-		else
-			dialogue:hide()
-		end
+		GameController.dialogue = dialogue
 
 	end
 
