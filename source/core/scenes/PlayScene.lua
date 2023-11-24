@@ -22,6 +22,10 @@ scene.inputHandler = {
 	AButtonDown = function()
 		checkABtnPress()
 	end,
+	BButtonDown = function()
+		-- TODO: REMOVE ME
+		Noble.transition( PlayScene )
+	end,
 	downButtonUp = function ()
 		if cursor ~= nil then
 			if cursor.velocity.y < 0 then
@@ -118,6 +122,8 @@ function scene:init()
 
 		GameController.dialogue = dialogue
 
+	else 
+		dialogue = GameController.dialogue
 	end
 
 	bark = Dialogue( 
@@ -212,6 +218,7 @@ function scene:start()
 	scene.super.start(self)
 
 	-- Add Pet to Scene
+	-- TODO: Breaks reload of PlayScene
 	pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
 	-- Add Buttons to the Scene
@@ -229,7 +236,10 @@ function scene:start()
 
 	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
-	dialogue:show()
+	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
+		print( "SHOW DIALOGUE" )
+		dialogue:show()
+	end
 
 end
 

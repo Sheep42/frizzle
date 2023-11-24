@@ -23,6 +23,8 @@ function Cursor:init()
 			Utilities.collisionGroups.uiButtons,
 		} )
 
+		GameController.cursor = self 
+
 end
 
 function Cursor:update()

@@ -30,7 +30,7 @@ function pet:init()
 	-- Famous last words
 
 	if GameController.pet ~= nil then
-		return
+		return GameController.pet
 	end
 	
 	GameController.pet = self
