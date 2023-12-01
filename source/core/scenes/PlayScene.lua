@@ -24,7 +24,7 @@ scene.inputHandler = {
 	end,
 	BButtonDown = function()
 		-- TODO: REMOVE ME
-		Noble.transition( PlayScene )
+		Noble.transition( TitleScene )
 	end,
 	downButtonUp = function ()
 		if cursor ~= nil then
@@ -138,7 +138,7 @@ function scene:init()
 	)
 
 	-- Create Pet
-	pet = VirtualPet( "assets/images/pet" )
+	pet = GameController.pet
 
 	-- Create cursor
 	cursor = Cursor()
@@ -297,6 +297,9 @@ function scene:exit()
 
 	scene.super.exit( self )
 
+	pet:remove()
+	bgMusic:stop()
+	
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start();
 

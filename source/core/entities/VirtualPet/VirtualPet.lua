@@ -2,8 +2,6 @@ VirtualPet = {}
 class( "VirtualPet" ).extends( NobleSprite )
 local pet = VirtualPet
 
-pet._states = {}
-pet._stateMachine = nil
 pet._spritesheet = "assets/images/pet"
 pet._animations = {
 	idle = {
@@ -28,10 +26,6 @@ function pet:init()
 	-- This is a really gross way to make VirtualPet a singleton, but I'm the 
 	-- only person who has to read this stinky code, so it's probably fine
 	-- Famous last words
-
-	if GameController.pet ~= nil then
-		return GameController.pet
-	end
 	
 	GameController.pet = self
 

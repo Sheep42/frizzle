@@ -1,7 +1,7 @@
 GameController = {}
 class( "GameController" ).extends()
 
-GameController.pet = nil
+GameController.pet = VirtualPet( "assets/images/pet" )
 GameController.dialogue = nil
 GameController.flags = {
 	dialogue = {

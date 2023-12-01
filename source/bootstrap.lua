@@ -1,7 +1,6 @@
 -- Imports
 import 'libraries/noble/Noble'
 import 'utilities/Utilities'
-import 'core/controllers/GameController'
 
 import 'core/scenes/TitleScene'
 import 'core/scenes/PlayScene'
@@ -18,6 +17,8 @@ import "core/dialogue/Dialogue"
 
 import "core/entities/VirtualPet/PetState_Active"
 import "core/entities/VirtualPet/VirtualPet"
+
+import 'core/controllers/GameController'
 
 -- Globals
 pd = playdate
