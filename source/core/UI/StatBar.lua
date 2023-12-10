@@ -35,7 +35,7 @@ end
 
 function StatBar:addSprites() 
 	
-	local statVal = GameController.pet.stats[self.stat]
+	local statVal = GameController.pet.stats[self.stat].value
 	
 	for i = 0, statVal - 1 do
 		local sprite = NobleSprite( self.icon )

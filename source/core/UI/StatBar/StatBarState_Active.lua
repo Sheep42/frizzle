@@ -22,7 +22,7 @@ function state:tick()
 		self.owner.stateMachine:changeState( self.owner.states.paused )	
 	end
 
-	if #self.owner.sprites ~= GameController.pet.stats[self.owner.stat] then
+	if #self.owner.sprites ~= GameController.pet.stats[self.owner.stat].value then
 		self.owner:removeSprites()
 		self.owner:addSprites()	
 	end

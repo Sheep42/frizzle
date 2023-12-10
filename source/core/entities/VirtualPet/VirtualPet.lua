@@ -14,14 +14,46 @@ pet._animations = {
 pet._statTimer = nil
 
 pet.stats = {
-	hunger = 5,
-	boredom = 5,
-	groom = 5,
-	friendship = 5,
-	tired = 5,
-	anger = 0,
-	obsessiveness = 0,
-	selfAwareness = 0,
+	hunger = {
+		key = 'hunger',
+		value = 5,
+		hidden = false,
+	},
+	boredom = {
+		key = 'boredom',
+		value = 5,
+		hidden = false,
+	},
+	groom = {
+		key = 'groom',
+		value = 5,
+		hidden = false,
+	},
+	friendship = {
+		key = 'friendship',
+		value = 5,
+		hidden = false,
+	},
+	tired = {
+		key = 'tired',
+		value = 5,
+		hidden = false,
+	},
+	anger = {
+		key = 'anger',
+		value = 0,
+		hidden = true,
+	},
+	obsessiveness = {
+		key = 'obsessiveness',
+		value = 0,
+		hidden = true,
+	},
+	selfAwareness = {
+		key = 'selfAwareness',
+		value = 0,
+		hidden = true,
+	},
 }
 
 function pet:init()
@@ -80,24 +112,27 @@ function pet:tickStats()
 
 		self._statTimer = nil
 
-		if self.stats.hunger > 0 then
-			self.stats.hunger -= 1
-		end
-	
-		if self.stats.boredom > 0 then
-			self.stats.boredom -= 1
-		end
-	
-		if self.stats.friendship > 0 then
-			self.stats.friendship -= 1
-		end
-	
-		if self.stats.groom > 0 then
-			self.stats.groom -= 1
-		end
-	
-		if self.stats.tired > 0 then
-			self.stats.tired -= 1
+		for key, stat in pairs( self.stats ) do
+			
+			-- Don't touch hidden stats
+			if stat.hidden then
+				goto continue -- lol, Lua
+			end
+
+			-- Don't touch stats at 0
+			if self.stats[key].value <= 0 then
+				goto continue
+			end
+
+			-- 30% chance to skip a stat
+			if math.random() >= 0.3 then
+				goto continue
+			end
+
+			self.stats[key].value -= 1
+
+			::continue::
+
 		end
 
 	end

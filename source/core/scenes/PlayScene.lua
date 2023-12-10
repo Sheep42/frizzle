@@ -163,25 +163,18 @@ function scene:init()
 			bark:show()
 		end
 
-		-- petBtn:deactivate()
-		GameController.pet.stats.friendship += 1
-
 	end)
 
 	feedBtn:setPressedCallback( function ()
-		GameController.pet.stats.hunger += 1
 	end)
 
 	playBtn:setPressedCallback( function ()
-		GameController.pet.stats.boredom += 1
 	end)
 
 	groomBtn:setPressedCallback( function ()
-		GameController.pet.stats.groom += 1
 	end)
 
 	sleepBtn:setPressedCallback( function ()
-		GameController.pet.stats.tired += 1
 	end)
 
 	-- Add UI Buttons to table
