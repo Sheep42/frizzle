@@ -1,7 +1,14 @@
 GameController = {}
 class( "GameController" ).extends()
 
+
+-- This is a really gross way to make VirtualPet a singleton, but I'm the 
+-- only person who has to read this stinky code, so it's probably fine
+-- Famous last words
+	
+
 GameController.pet = VirtualPet( "assets/images/pet" )
+
 GameController.dialogue = nil
 GameController.flags = {
 	dialogue = {
@@ -12,6 +19,10 @@ GameController.flags = {
 	statBars = {
 		paused = true,
 	},
+	game = {
+		phase = 1,
+		playTime = 0,
+	}
 }
 
 function GameController.getDialogue( script, line )

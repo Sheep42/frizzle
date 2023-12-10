@@ -19,6 +19,9 @@ pet.stats = {
 	groom = 5,
 	friendship = 5,
 	tired = 5,
+	anger = 0,
+	obsessiveness = 0,
+	selfAwareness = 0,
 }
 
 function pet:init()
