@@ -4,6 +4,7 @@ import 'utilities/Utilities'
 
 import 'core/scenes/TitleScene'
 import 'core/scenes/PlayScene'
+import 'core/scenes/microgames/Petting_CrankGame'
 
 import "core/states/State"
 import "core/states/StateMachine"

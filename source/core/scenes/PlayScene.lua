@@ -17,79 +17,78 @@ local bgMusic = nil
 local uiButtons = {}
 local statBars = {}
 
-scene.baseColor = Graphics.kColorBlack
-scene.inputHandler = {
-	AButtonDown = function()
-		checkABtnPress()
-	end,
-	BButtonDown = function()
-		-- TODO: REMOVE ME
-		Noble.transition( TitleScene )
-	end,
-	downButtonUp = function ()
-		if cursor ~= nil then
-			if cursor.velocity.y < 0 then
-				return
-			end
-
-			cursor.velocity.y = 0
-		end
-	end,
-	upButtonUp = function ()
-		if cursor ~= nil then
-			if cursor.velocity.y > 0 then
-				return
-			end
-
-			cursor.velocity.y = 0
-		end	
-	end,
-	leftButtonUp = function ()
-		if cursor ~= nil then
-			if cursor.velocity.x > 0 then
-				return
-			end
-
-			cursor.velocity.x = 0
-		end	
-	end,
-	rightButtonUp = function ()
-		if cursor ~= nil then
-			if cursor.velocity.x < 0 then
-				return
-			end
-
-			cursor.velocity.x = 0
-		end	
-	end,
-	downButtonDown = function ()
-		if cursor ~= nil then
-			cursor.velocity.y = _CURSOR_SPEED_MULTIPLIER
-		end
-	end,
-	upButtonDown = function ()
-		if cursor ~= nil then
-			cursor.velocity.y = -_CURSOR_SPEED_MULTIPLIER
-		end	
-	end,
-	leftButtonDown = function ()
-		if cursor ~= nil then
-			cursor.velocity.x = -_CURSOR_SPEED_MULTIPLIER
-		end	
-	end,
-	rightButtonDown = function ()
-		if cursor ~= nil then
-			cursor.velocity.x = _CURSOR_SPEED_MULTIPLIER
-		end	
-	end,
-}
-
 function scene:init()
 
 	scene.super.init(self)
 
-	background = Graphics.image.new( "assets/images/background" )
+	scene.baseColor = Graphics.kColorBlack
+	scene.inputHandler = {
+		AButtonDown = function()
+			checkABtnPress()
+		end,
+		BButtonDown = function()
+			-- TODO: REMOVE ME
+			Noble.transition( TitleScene )
+		end,
+		downButtonUp = function ()
+			if cursor ~= nil then
+				if cursor.velocity.y < 0 then
+					return
+				end
 
+				cursor.velocity.y = 0
+			end
+		end,
+		upButtonUp = function ()
+			if cursor ~= nil then
+				if cursor.velocity.y > 0 then
+					return
+				end
+
+				cursor.velocity.y = 0
+			end	
+		end,
+		leftButtonUp = function ()
+			if cursor ~= nil then
+				if cursor.velocity.x > 0 then
+					return
+				end
+
+				cursor.velocity.x = 0
+			end	
+		end,
+		rightButtonUp = function ()
+			if cursor ~= nil then
+				if cursor.velocity.x < 0 then
+					return
+				end
+
+				cursor.velocity.x = 0
+			end	
+		end,
+		downButtonDown = function ()
+			if cursor ~= nil then
+				cursor.velocity.y = _CURSOR_SPEED_MULTIPLIER
+			end
+		end,
+		upButtonDown = function ()
+			if cursor ~= nil then
+				cursor.velocity.y = -_CURSOR_SPEED_MULTIPLIER
+			end	
+		end,
+		leftButtonDown = function ()
+			if cursor ~= nil then
+				cursor.velocity.x = -_CURSOR_SPEED_MULTIPLIER
+			end	
+		end,
+		rightButtonDown = function ()
+			if cursor ~= nil then
+				cursor.velocity.x = _CURSOR_SPEED_MULTIPLIER
+			end	
+		end,
+	}
+
+	background = Graphics.image.new( "assets/images/background" )
 	bgMusic = Sound.fileplayer.new( "assets/sound/tamagotchi-music.mp3" )
 
 	-- Create dialogue and bark objects
@@ -153,12 +152,8 @@ function scene:init()
 	-- TODO: Implement Button click handlers 
 	petBtn:setPressedCallback( function()
 
-		-- if dialogue:getState() == DialogueState.Hide then
-		-- 	dialogue:show()
-		-- elseif dialogue:getState() == DialogueState.Show then
-		-- 	dialogue:hide()
-		-- end
-
+		Noble.transition( Petting_CrankGame )
+		
 		if bark:getState() == DialogueState.Hide then
 			bark:show()
 		end
@@ -230,7 +225,6 @@ function scene:start()
 	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
 	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
-		print( "SHOW DIALOGUE" )
 		dialogue:show()
 	end
 
