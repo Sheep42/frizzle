@@ -171,13 +171,11 @@ end
 
 function Dialogue:show()
 	self._state = DialogueState.Show
-	GameController.setFlag( 'dialogue.show', true );
 	self.onShowCallback()
 end
 
 function Dialogue:hide()
 	self._state = DialogueState.Hide
-	GameController.setFlag( 'dialogue.show', false );
 	self.onHideCallback()
 end
 

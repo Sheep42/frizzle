@@ -15,7 +15,6 @@ GameController.flags = {
 		currentScript = 'intro',
 		currentLine = 1,
 		playedIntro = false,
-		show = true,
 	},
 	game = {
 		phase = 1,

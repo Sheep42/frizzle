@@ -15,7 +15,7 @@ function state:exit() end
 -- Fires when the State Machine updates
 function state:tick() 
 
-	if GameController.getFlag( 'dialogue.show' ) then
+	if GameController.dialogue:getState() == DialogueState.Show then
 		return
 	end
 

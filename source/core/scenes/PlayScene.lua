@@ -246,11 +246,17 @@ end
 
 function checkABtnPress()
 
-	for i = 1, #uiButtons do
-		uiButtons[i]:press()
-	end
+	if dialogue:getState() == DialogueState.Show then
+		
+		dialogue:buttonPressedCallback()
 
-	dialogue:buttonPressedCallback()
+	else
+
+		for i = 1, #uiButtons do
+			uiButtons[i]:press()
+		end
+
+	end
 
 end
 
