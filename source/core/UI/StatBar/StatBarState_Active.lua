@@ -18,7 +18,7 @@ function state:exit() end
 -- Fires when the State Machine updates
 function state:tick() 
 	
-	if GameController.getFlag( 'statBars.paused' ) then
+	if GameController.getFlag( 'dialogue.show' ) then
 		self.owner.stateMachine:changeState( self.owner.states.paused )	
 	end
 

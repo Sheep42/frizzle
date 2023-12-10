@@ -53,18 +53,19 @@ function pet:init()
 	pet.super.init( self, animation )
 
 	-- Set up logic states
-	self._states = {
-		IdleState = PetState_Active( "active" ),
+	self.states = {
+		paused = PetState_Paused( "paused" ),
+		active = PetState_Active( "active" ),
 	}
 
-	self._stateMachine = StateMachine( self._states.IdleState, self._states )
+	self.stateMachine = StateMachine( self.states.paused, self.states )
 
 end
 
 function pet:update()
 
 	pet.super.update( self )
-	self._stateMachine:update()
+	self.stateMachine:update()
 
 end
 

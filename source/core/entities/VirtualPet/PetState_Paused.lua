@@ -1,10 +1,9 @@
-StatBarState_Paused = {}
-class( "StatBarState_Paused" ).extends( State )
-local state = StatBarState_Paused
+PetState_Paused = {}
+class( "PetState_Paused" ).extends( State )
+local state = PetState_Paused
 
-function state:init( id, owner )
+function state:init( id )
 	state.super.init( self, id )
-	self.owner = owner
 end
 
 -- Fires when a State is entered
@@ -20,6 +19,6 @@ function state:tick()
 		return
 	end
 
-	self.owner.stateMachine:changeState( self.owner.states.active )
+	GameController.pet.stateMachine:changeState( GameController.pet.states.active )
 
 end
