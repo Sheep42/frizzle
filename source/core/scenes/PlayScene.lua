@@ -206,7 +206,6 @@ function scene:start()
 	scene.super.start(self)
 
 	-- Add Pet to Scene
-	-- TODO: Breaks reload of PlayScene
 	pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
 	-- Add Buttons to the Scene
