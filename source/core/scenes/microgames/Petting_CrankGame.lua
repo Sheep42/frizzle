@@ -14,10 +14,10 @@ local bgMusic = nil
 local hand = nil
 local face = nil
 local crankTick = 0
-local crankElapsed = 0
 local cranked = 0
 local crankDelta = 0
-local crankAccelleration = 0
+local crankAcceleration = 0
+local maxFrameDuration = 15
 local handState = HandStates.Move
 
 function scene:init()
@@ -29,7 +29,7 @@ function scene:init()
 			crankTick += change
 			cranked += change
 			crankDelta = change
-			crankAccelleration = acceleratedChange
+			crankAcceleration = acceleratedChange
 		end,
 		BButtonDown = function()
 			Noble.transition( PlayScene )
@@ -39,7 +39,7 @@ function scene:init()
 	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
 
 	faceAnim:addState( 'wait', 1, 1, nil, nil, nil, 0 )
-	faceAnim:addState( 'beingPet', 1, 2, nil, nil, nil, 15 )
+	faceAnim:addState( 'beingPet', 1, 2, nil, nil, nil, maxFrameDuration )
 	faceAnim:setState( 'wait' )
 
 	face = NobleSprite( faceAnim )
@@ -81,6 +81,7 @@ function scene:update()
 
 		if handState == HandStates.Rotate then
 			face.animation:setState( 'beingPet' )
+			face.animation.frameDuration = maxFrameDuration / math.clamp( crankAcceleration, 1, maxFrameDuration )
 		end
 	else
 		face.animation:setState( 'wait' )
@@ -104,7 +105,7 @@ function moveHand()
 	local x, y = hand:getPosition()
 	local faceX, faceY = face:getPosition()
 	local headPos = faceY - 30
-	local handSpeed = math.clamp( crankAccelleration, 0.001, 10 )
+	local handSpeed = math.clamp( crankAcceleration, 0.001, 10 )
 
 	if handState == HandStates.Move then
 		
