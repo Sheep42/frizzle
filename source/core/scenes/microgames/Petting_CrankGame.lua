@@ -4,10 +4,21 @@ local scene = Petting_CrankGame
 
 scene.baseColor = Graphics.kColorBlack
 
+local HandStates = {
+	Move = 'move',
+	Rotate = 'rotate',
+}
+
 local background
 local bgMusic = nil
+local hand = nil
 local face = nil
 local crankTick = 0
+local crankElapsed = 0
+local cranked = 0
+local crankDelta = 0
+local crankAccelleration = 0
+local handState = HandStates.Move
 
 function scene:init()
 
@@ -15,8 +26,10 @@ function scene:init()
 
 	scene.inputHandler = {
 		cranked = function(change, acceleratedChange)
-			crankTick = crankTick + change
-			print( crankTick )
+			crankTick += change
+			cranked += change
+			crankDelta = change
+			crankAccelleration = acceleratedChange
 		end,
 		BButtonDown = function()
 			Noble.transition( PlayScene )
@@ -30,7 +43,9 @@ function scene:init()
 	faceAnim:setState( 'wait' )
 
 	face = NobleSprite( faceAnim )
-	face:setSize( 81, 49 )
+	face:setSize( 150, 90 )
+
+	hand = NobleSprite( 'assets/images/hand-petting' )
 
 end
 
@@ -46,7 +61,9 @@ function scene:start()
 	Noble.Input.setCrankIndicatorStatus(true)
 
 	local faceWidth, faceHeight = face:getSize()
+
 	face:add( Utilities.screenSize().width / 2, Utilities.screenSize().height - ( faceHeight / 2 ) )
+	hand:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
 end
 
@@ -58,8 +75,13 @@ function scene:update()
 
 	scene.super.update( self )
 
-	if crankTick > 0 then
-		face.animation:setState( 'beingPet' )
+	if cranked > 0 then
+		cranked = 0
+		moveHand()
+
+		if handState == HandStates.Rotate then
+			face.animation:setState( 'beingPet' )
+		end
 	else
 		face.animation:setState( 'wait' )
 	end
@@ -74,4 +96,38 @@ end
 
 function scene:finish()
 	scene.super.finish(self)
+end
+
+
+function moveHand()
+	
+	local x, y = hand:getPosition()
+	local faceX, faceY = face:getPosition()
+	local headPos = faceY - 30
+	local handSpeed = math.clamp( crankAccelleration, 0.001, 10 )
+
+	if handState == HandStates.Move then
+		
+		hand:moveBy( 0, handSpeed )
+		if y >= headPos then
+			hand:moveTo( x, headPos )
+			handState = HandStates.Rotate
+		end
+	
+	elseif handState == HandStates.Rotate then
+
+		local radius = 10
+		local maxAngle = 2 * math.pi
+		local angle = (crankTick % 360) * (math.pi / 180)
+		angle = math.min( angle, maxAngle )
+		angle = math.max( angle, 0 )
+
+		local xOffset = radius * math.cos( angle )
+		local yOffset = radius * math.sin( angle )
+
+		hand:moveTo( faceX + xOffset, headPos + yOffset )
+
+	end
+
+
 end
