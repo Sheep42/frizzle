@@ -11,25 +11,41 @@ local HandStates = {
 
 function scene:init()
 
-	scene.super.init(self)
+	scene.super.init( self )
 
 	self.background = nil
 	self.bgMusic = nil
 	self.hand = nil
 	self.face = nil
 	self.crankTick = 0
+	self.lastCrankTick = 0
 	self.cranked = 0
 	self.crankDelta = 0
 	self.crankAcceleration = 0
 	self.maxFrameDuration = 15
 	self.handState = HandStates.Move
+	self.happinessVal = 0
+	self.win = false
 
 	scene.inputHandler = {
-		cranked = function(change, acceleratedChange)
-			self.crankTick += change
+		cranked = function( change, acceleratedChange )
+
+			if change < 0 then
+				return
+			end
+
 			self.cranked += change
 			self.crankDelta = change
 			self.crankAcceleration = acceleratedChange
+
+			self.lastCrankTick = self.crankTick
+			self.crankTick += change
+			
+			if self.crankTick >= 360 then
+				self.crankTick = ( self.crankTick % 360 )
+				self.happinessVal += 0.1
+			end
+
 		end,
 		BButtonDown = function()
 			Noble.transition( PlayScene )
@@ -78,6 +94,8 @@ function scene:update()
 	if self.cranked > 0 then
 		self.cranked = 0
 		moveHand( self )
+
+		print( self.happinessVal )
 
 		if self.handState == HandStates.Rotate then
 			self.face.animation:setState( 'beingPet' )
