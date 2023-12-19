@@ -15,6 +15,7 @@ GameController.flags = {
 		currentScript = 'intro',
 		currentLine = 1,
 		playedIntro = false,
+		showBark = nil,
 	},
 	game = {
 		phase = 1,

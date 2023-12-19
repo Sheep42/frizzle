@@ -13,6 +13,7 @@ function scene:init()
 
 	scene.super.init( self )
 
+	self.happinessLabel = "Happiness"
 	self.background = nil
 	self.bgMusic = nil
 	self.hand = nil
@@ -43,7 +44,10 @@ function scene:init()
 			
 			if self.crankTick >= 360 then
 				self.crankTick = ( self.crankTick % 360 )
-				self.happinessVal += 0.1
+
+				if self.happinessVal < 1.0 then
+					self.happinessVal += 0.1
+				end
 			end
 
 		end,
@@ -89,13 +93,28 @@ end
 
 function scene:update()
 
+	if self.win then
+		Noble.transition( PlayScene, 0.75, Noble.TransitionType.CROSS_DISSOLVE )
+		return
+	end
+
 	scene.super.update( self )
+
+	local labelWidth, labelHeight = Graphics.getTextSize( self.happinessLabel )
+
+	Graphics.fillRect( 100, 20, 200*self.happinessVal, 20 )
+
+	Noble.Text.draw( self.happinessLabel, 100 - labelWidth - 10, 20 )
+	Noble.Text.draw( math.floor( self.happinessVal * 100 ) .. "%", 100 - labelWidth - 10, 40 )
+
+	if self.happinessVal >= 1.0 then
+		self.win = true
+		return	
+	end
 
 	if self.cranked > 0 then
 		self.cranked = 0
 		moveHand( self )
-
-		print( self.happinessVal )
 
 		if self.handState == HandStates.Rotate then
 			self.face.animation:setState( 'beingPet' )
@@ -104,13 +123,14 @@ function scene:update()
 	else
 		self.face.animation:setState( 'wait' )
 	end
-	
+
 end
 
 function scene:exit()
 	scene.super.exit(self)
 
 	Noble.Input.setCrankIndicatorStatus( false )
+	GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
 end
 
 function scene:finish()

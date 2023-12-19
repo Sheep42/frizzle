@@ -126,7 +126,7 @@ function scene:init()
 	end
 
 	bark = Dialogue( 
-		NobleSprite( "assets/images/UI/heart" ), 
+		'', 
 		Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box
 		Utilities.screenBounds().top + 20, -- 20 px down from top of allowable screen area
 		true,
@@ -151,13 +151,7 @@ function scene:init()
 
 	-- TODO: Implement Button click handlers 
 	petBtn:setPressedCallback( function()
-
-		Noble.transition( Petting_CrankGame )
-		
-		if bark:getState() == DialogueState.Hide then
-			bark:show()
-		end
-
+		Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 	end)
 
 	feedBtn:setPressedCallback( function ()
@@ -207,6 +201,19 @@ function scene:start()
 
 	-- Add Pet to Scene
 	pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+
+	if GameController.getFlag( 'dialogue.showBark' ) ~= nil then
+
+		local emote = GameController.getFlag( 'dialogue.showBark' )
+		GameController.setFlag( 'dialogue.showBark', nil )
+
+		bark:setEmote( emote )	
+		
+		if bark:getState() == DialogueState.Hide then
+			bark:show()
+		end
+
+	end
 
 	-- Add Buttons to the Scene
 	setupButtons()
