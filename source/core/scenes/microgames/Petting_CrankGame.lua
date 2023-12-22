@@ -100,12 +100,7 @@ function scene:update()
 
 	scene.super.update( self )
 
-	local labelWidth, labelHeight = Graphics.getTextSize( self.happinessLabel )
-
-	Graphics.fillRect( 100, 20, 200*self.happinessVal, 20 )
-
-	Noble.Text.draw( self.happinessLabel, 100 - labelWidth - 10, 20 )
-	Noble.Text.draw( math.floor( self.happinessVal * 100 ) .. "%", 100 - labelWidth - 10, 40 )
+	drawHappinessBar( self )
 
 	if self.happinessVal >= 1.0 then
 		self.win = true
@@ -123,6 +118,17 @@ function scene:update()
 	else
 		self.face.animation:setState( 'wait' )
 	end
+
+end
+
+function drawHappinessBar( self ) 
+
+	local labelWidth, labelHeight = Graphics.getTextSize( self.happinessLabel )
+
+	Graphics.fillRect( 100, 20, 200*self.happinessVal, 20 )
+
+	Noble.Text.draw( self.happinessLabel, 100 - labelWidth - 10, 20 )
+	Noble.Text.draw( math.floor( self.happinessVal * 100 ) .. "%", 100 - labelWidth - 10, 40 )
 
 end
 
