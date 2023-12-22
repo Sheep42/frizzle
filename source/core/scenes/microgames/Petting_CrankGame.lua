@@ -124,6 +124,14 @@ function scene:update()
 	self.dialogue:drawCanvas()
 	self.dialogue:update()
 
+	if self.dialogue:getState() == DialogueState.Show then
+		return
+	end
+
+	if pd.isCrankDocked() then
+		return
+	end
+
 	drawHappinessBar( self )
 
 	if self.happinessVal >= 1.0 then
