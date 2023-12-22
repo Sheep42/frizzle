@@ -13,6 +13,9 @@ function scene:init()
 
 	scene.super.init( self )
 
+	local introText = "CRANK!"
+	local textW, textH = Graphics.getTextSize( introText )
+
 	self.happinessLabel = "Happiness"
 	self.background = nil
 	self.bgMusic = nil
@@ -27,6 +30,22 @@ function scene:init()
 	self.handState = HandStates.Move
 	self.happinessVal = 0
 	self.win = false
+	self.dialogue = Dialogue( 
+		introText, 
+		(Utilities.screenSize().width / 2) - ((textW + 20) / 2), 
+		(Utilities.screenSize().height / 2) - ((textH + 20) / 2),  
+		true, 
+		textW + 20, 
+		textH + 20,
+		4,
+		4,
+		DialogueType.Instant,
+		2000
+	)
+	self.gameTime = 5
+	self.timer = Timer.new( self.gameTime, 0, self.gameTime )
+	self.timer:pause()
+	self.timer:reset()
 
 	scene.inputHandler = {
 		cranked = function( change, acceleratedChange )
@@ -85,6 +104,8 @@ function scene:start()
 	self.face:add( Utilities.screenSize().width / 2, Utilities.screenSize().height - ( faceHeight / 2 ) )
 	self.hand:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
+	self.dialogue:show()
+
 end
 
 function scene:drawBackground()
@@ -99,6 +120,9 @@ function scene:update()
 	end
 
 	scene.super.update( self )
+
+	self.dialogue:drawCanvas()
+	self.dialogue:update()
 
 	drawHappinessBar( self )
 

@@ -26,7 +26,7 @@ Dialogue._SYNTH_LENGTH = 0.15
 -- Creates a new Dialogue
 --
 -- @param string|NobleSprite say Text or Emote to initialize the Dialogue with
-function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, backgroundColor, borderColor, textColor )
+function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, showDuration, backgroundColor, borderColor, textColor )
 
 	-- Member variables
 		self.text = nil
@@ -110,6 +110,10 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.borderHeight = 4
 		if borderHeight ~= nil then
 			self.borderHeight = borderHeight
+		end
+
+		if showDuration ~= nil then
+			self.showDuration = showDuration
 		end
 
 	-- Init Object
@@ -294,8 +298,13 @@ end
 
 function Dialogue:startTimers()
 
-	self._dialogueTimer:start()
-	self._showTimer:start()
+	if self._showTimer ~= nil then
+		self._showTimer:start()
+	end
+
+	if self._dialogueTimer ~= nil then
+		self._dialogueTimer:start()
+	end
 
 end
 
