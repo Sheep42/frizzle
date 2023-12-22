@@ -1,8 +1,8 @@
-name=A Noble Engine Game
-author=A Lovely Developer
+name=Tamagochi Game
+author=Unicorner Games
 description=This is a Noble Engine game.
-bundleID=com.yourdomain.GameName
-version=0.0.1
+bundleID=com.unicorner.tamagochi
+version=0.0.1a
 buildNumber=1
 imagePath=assets/launcher/
 launchSoundPath=assets/launcher/sound.wav
