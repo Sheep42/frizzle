@@ -26,7 +26,7 @@ Dialogue._SYNTH_LENGTH = 0.15
 -- Creates a new Dialogue
 --
 -- @param string|NobleSprite say Text or Emote to initialize the Dialogue with
-function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, showDuration, backgroundColor, borderColor, textColor )
+function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, borderHeight, dialogueType, showDuration, font, backgroundColor, borderColor, textColor )
 
 	-- Member variables
 		self.text = nil
@@ -46,6 +46,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.showDuration = 1000
 		self.finished = false
 		self.textSpeed = Noble.Settings.get( "text_speed" )
+		self.font = Noble.Text.getCurrentFont()
 
 	-- Internals
 		self._dialoguePointer = 0
@@ -114,6 +115,10 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 
 		if showDuration ~= nil then
 			self.showDuration = showDuration
+		end
+
+		if font ~= nil then
+			self.font = font
 		end
 
 	-- Init Object
@@ -413,7 +418,7 @@ function Dialogue:drawText( text, align )
 	end
 
 	Graphics.lockFocus( self._canvas )
-	Noble.Text.draw( text, self._textX, self._textY, align )
+	Noble.Text.draw( text, self._textX, self._textY, align, nil, self.font )
 	Graphics.unlockFocus()
 
 end
