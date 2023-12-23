@@ -20,6 +20,9 @@ GameController.flags = {
 	game = {
 		phase = 1,
 		playTime = 0,
+	},
+	statBars = {
+		paused = true,
 	}
 }
 

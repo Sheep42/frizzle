@@ -98,6 +98,7 @@ function scene:init()
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 
 		dialogue = Dialogue( GameController.advanceDialogueLine() )
+
 		dialogue:enableSound()
 		dialogue.buttonPressedCallback = function ()
 			
@@ -126,14 +127,14 @@ function scene:init()
 	end
 
 	bark = Dialogue( 
-		'', 
+		'',
 		Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box
 		Utilities.screenBounds().top + 20, -- 20 px down from top of allowable screen area
 		true,
 		50,
 		50,
 		2,
-		2 
+		2
 	)
 
 	-- Create Pet
@@ -231,7 +232,15 @@ function scene:start()
 	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
 	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
+		
 		dialogue:show()
+
+	else 
+
+		if GameController.getFlag( 'statBars.paused' ) then
+			GameController.setFlag( 'statBars.paused', false )
+		end
+
 	end
 
 end
@@ -296,6 +305,7 @@ function scene:exit()
 
 	scene.super.exit( self )
 
+	GameController.setFlag( 'statBars.paused', true )
 	pet:remove()
 	bgMusic:stop()
 	
