@@ -129,7 +129,7 @@ function scene:update()
 		return
 	end
 
-	if pd.isCrankDocked() then
+	if pd.isCrankDocked() and self.timer.paused then
 		return
 	end
 
