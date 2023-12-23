@@ -60,14 +60,6 @@ function scene:init()
 
 			self.lastCrankTick = self.crankTick
 			self.crankTick += change
-			
-			if self.crankTick >= 360 then
-				self.crankTick = ( self.crankTick % 360 )
-
-				if self.happinessVal < 1.0 then
-					self.happinessVal += 0.1
-				end
-			end
 
 		end,
 		BButtonDown = function()
@@ -150,18 +142,18 @@ function scene:update()
 		return	
 	end
 
-	if self.cranked > 0 then
-		self.cranked = 0
-		moveHand( self )
+	handleCrank( self )
 
-		if self.handState == HandStates.Rotate then
-			self.face.animation:setState( 'beingPet' )
-			self.face.animation.frameDuration = self.maxFrameDuration / math.clamp( self.crankAcceleration, 1, self.maxFrameDuration )
-		end
-	else
-		self.face.animation:setState( 'wait' )
-	end
+end
 
+function scene:exit()
+	scene.super.exit(self)
+
+	Noble.Input.setCrankIndicatorStatus( false )
+end
+
+function scene:finish()
+	scene.super.finish( self )
 end
 
 function drawHappinessBar( self ) 
@@ -175,17 +167,31 @@ function drawHappinessBar( self )
 
 end
 
-function scene:exit()
-	scene.super.exit(self)
+function handleCrank( self ) 
 
-	Noble.Input.setCrankIndicatorStatus( false )
-	GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
+	if self.cranked > 0 then
+
+		self.cranked = 0
+		moveHand( self )
+
+		if self.handState == HandStates.Rotate then
+			self.face.animation:setState( 'beingPet' )
+			self.face.animation.frameDuration = self.maxFrameDuration / math.clamp( self.crankAcceleration, 1, self.maxFrameDuration )
+		end
+
+		if self.crankTick >= 360 then
+			self.crankTick = ( self.crankTick % 360 )
+
+			if self.happinessVal < 1.0 then
+				self.happinessVal += 0.1
+			end
+		end
+
+	else
+		self.face.animation:setState( 'wait' )
+	end
+
 end
-
-function scene:finish()
-	scene.super.finish( self )
-end
-
 
 function moveHand( self )
 	
