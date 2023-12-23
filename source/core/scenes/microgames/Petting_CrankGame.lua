@@ -42,7 +42,7 @@ function scene:init()
 		DialogueType.Instant,
 		2000
 	)
-	self.gameTime = 5
+	self.gameTime = 5000
 	self.timer = Timer.new( self.gameTime, 0, self.gameTime )
 	self.timer:pause()
 	self.timer:reset()
@@ -114,9 +114,16 @@ end
 
 function scene:update()
 
-	if self.win then
+	if self.timer.value >= self.gameTime or self.win then
+		
+		if self.win then
+			GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
+			GameController.pet.stats.friendship.value = math.clamp( GameController.pet.stats.friendship.value + math.random(3), 1, 5 )
+		end
+
 		Noble.transition( PlayScene, 0.75, Noble.TransitionType.CROSS_DISSOLVE )
 		return
+
 	end
 
 	scene.super.update( self )
@@ -130,6 +137,10 @@ function scene:update()
 
 	if pd.isCrankDocked() then
 		return
+	end
+
+	if self.timer.paused then
+		self.timer:start()
 	end
 
 	drawHappinessBar( self )
