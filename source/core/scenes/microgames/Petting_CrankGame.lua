@@ -165,9 +165,29 @@ end
 
 function drawHappinessBar( self ) 
 
-	local labelWidth, labelHeight = Graphics.getTextSize( self.happinessLabel )
+	local labelWidth, labelHeight = Graphics.getTextSize( self.happinessLabel, self.happinessFont )
 
-	Graphics.fillRect( 100, 20, 200*self.happinessVal, 20 )
+	Graphics.fillRect( 120, 20, 200*self.happinessVal, 20 )
+
+	Noble.Text.draw( 
+		self.happinessLabel,
+		Utilities.screenBounds().left,
+		20,
+		Noble.Text.ALIGN_LEFT,
+		nil,
+		self.happinessFont
+	)
+
+	Noble.Text.draw( 
+		math.floor( self.happinessVal * 100 ) .. "%",
+		Utilities.screenBounds().left,
+		40,
+		Noble.Text.ALIGN_LEFT,
+		nil,
+		self.happinessFont
+	)
+
+end
 
 function drawTimer( self ) 
 
