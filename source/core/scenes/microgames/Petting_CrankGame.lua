@@ -48,10 +48,9 @@ function scene:init()
 		2000,
 		introFont
 	)
-	self.gameTime = 5000
-	self.timer = Timer.new( self.gameTime, 0, self.gameTime )
-	self.timer:pause()
-	self.timer:reset()
+	self.gameTime = 5999
+
+	self:resetTimer()
 
 	scene.inputHandler = {
 		cranked = function( change, acceleratedChange )
@@ -89,6 +88,8 @@ end
 function scene:enter()
 	
 	scene.super.enter( self )
+	self:resetTimer()
+	self.dialogue:show()
 
 end
 
@@ -101,8 +102,6 @@ function scene:start()
 
 	self.face:add( Utilities.screenSize().width / 2, Utilities.screenSize().height - ( faceHeight / 2 ) )
 	self.hand:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
-
-	self.dialogue:show()
 
 end
 
@@ -133,8 +132,10 @@ function scene:update()
 		return
 	end
 
-	if pd.isCrankDocked() and self.timer.paused then
-		return
+	if pd.isCrankDocked() then
+		if self.timer.paused then
+			return
+		end
 	end
 
 	if self.timer.paused then
@@ -161,6 +162,14 @@ end
 
 function scene:finish()
 	scene.super.finish( self )
+end
+
+function scene:resetTimer() 
+	
+	self.timer = Timer.new( self.gameTime, 0, self.gameTime )
+	self.timer:pause()
+	self.timer:reset()
+
 end
 
 function drawHappinessBar( self ) 
@@ -205,7 +214,7 @@ function drawTimer( self )
 	)
 	
 	Noble.Text.draw(
-		math.floor( 5 - (self.timer.value / 1000) + 1 ),
+		math.floor( 5.999 - (self.timer.value / 1000)  ),
 		Utilities.screenBounds().left + labelWidth + 20,
 		Utilities.screenBounds().bottom - 10,
 		Noble.Text.ALIGN_LEFT,
