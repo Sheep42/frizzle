@@ -18,6 +18,10 @@ function scene:init()
 	local textW, textH = Graphics.getTextSize( introText, introFont )
 
 	self.happinessLabel = "Happiness"
+	self.happinessFont = Noble.Text.FONT_LARGE
+	self.timerLabel = "Time"
+	self.timerFont = Noble.Text.FONT_LARGE
+
 	self.background = nil
 	self.bgMusic = nil
 	self.hand = nil
@@ -138,6 +142,7 @@ function scene:update()
 	end
 
 	drawHappinessBar( self )
+	drawTimer( self )
 
 	if self.happinessVal >= 1.0 then
 		self.win = true
@@ -164,8 +169,29 @@ function drawHappinessBar( self )
 
 	Graphics.fillRect( 100, 20, 200*self.happinessVal, 20 )
 
-	Noble.Text.draw( self.happinessLabel, 100 - labelWidth - 10, 20 )
-	Noble.Text.draw( math.floor( self.happinessVal * 100 ) .. "%", 100 - labelWidth - 10, 40 )
+function drawTimer( self ) 
+
+	local labelWidth, labelHeight = Graphics.getTextSize( self.timerLabel, self.timerFont )
+
+	-- Graphics.fillRect( 100, 100, 200*self.timer.value, 20 )
+
+	Noble.Text.draw( 
+		self.timerLabel,
+		Utilities.screenBounds().left,
+		Utilities.screenBounds().bottom - 10,
+		Noble.Text.ALIGN_LEFT,
+		nil,
+		self.timerFont
+	)
+	
+	Noble.Text.draw(
+		math.floor( 5 - (self.timer.value / 1000) + 1 ),
+		Utilities.screenBounds().left + labelWidth + 20,
+		Utilities.screenBounds().bottom - 10,
+		Noble.Text.ALIGN_LEFT,
+		nil,
+		self.timerFont
+	)
 
 end
 
