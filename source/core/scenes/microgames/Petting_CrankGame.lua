@@ -14,7 +14,8 @@ function scene:init()
 	scene.super.init( self )
 
 	local introText = "CRANK!"
-	local textW, textH = Graphics.getTextSize( introText )
+	local introFont = Noble.Text.FONT_LARGE
+	local textW, textH = Graphics.getTextSize( introText, introFont )
 
 	self.happinessLabel = "Happiness"
 	self.background = nil
@@ -31,16 +32,17 @@ function scene:init()
 	self.happinessVal = 0
 	self.win = false
 	self.dialogue = Dialogue( 
-		introText, 
-		(Utilities.screenSize().width / 2) - ((textW + 20) / 2), 
-		(Utilities.screenSize().height / 2) - ((textH + 20) / 2),  
+		introText,
+		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
+		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
 		true, 
-		textW + 20, 
-		textH + 20,
+		textW + 50, 
+		textH + 15,
 		4,
 		4,
 		DialogueType.Instant,
-		2000
+		2000,
+		introFont
 	)
 	self.gameTime = 5000
 	self.timer = Timer.new( self.gameTime, 0, self.gameTime )
