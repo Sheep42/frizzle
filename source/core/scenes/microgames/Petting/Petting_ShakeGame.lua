@@ -47,21 +47,8 @@ function scene:update()
 
 	self:readAccelerometer()
 
-	renderDebugInfo( self )
-	handleShake( self )
-
-end
-
-function scene:exit()
-
-	pd.stopAccelerometer()
-	scene.super.exit( self )
-
-end
-
-function scene:finish()
-
-	scene.super.finish( self )
+	self:renderDebugInfo()
+	self:handleShake()
 
 end
 
@@ -77,15 +64,7 @@ function scene:readAccelerometer()
 	
 end
 
-function scene:getAccelerometerPos() 
-	return self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z
-end
-
-function scene:getAccelerometerLastPos() 
-	return self.accelerometerLastPos.x, self.accelerometerLastPos.y, self.accelerometerLastPos.z
-end
-
-function renderDebugInfo( self )
+function scene:renderDebugInfo()
 
 	if Noble.Settings.get( "debug_mode" ) ~= true then
 		return
@@ -111,7 +90,7 @@ function renderDebugInfo( self )
 
 end
 
-function handleShake( self ) 
+function scene:handleShake() 
 
 	local x, y, z = self:getAccelerometerPos()
 	local lastX, lastY, lastZ = self:getAccelerometerLastPos()
@@ -120,12 +99,12 @@ function handleShake( self )
 
 	if dx >= self.minMovement or dx <= -self.minMovement then
 		self.happinessVal += math.abs(dx)
-		moveHand( self )
+		self:moveHand()
 	end
 
 end
 
-function moveHand( self ) 
+function scene:moveHand() 
 
 	self.rotation += 15
 	if self.rotation > 360 then
@@ -144,5 +123,26 @@ function moveHand( self )
 	local yOffset = radius * math.sin( angle )
 
 	self.hand:moveTo( (screenSize.width / 2) + xOffset, (screenSize.height / 2) + yOffset )
+
+end
+
+function scene:getAccelerometerPos() 
+	return self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z
+end
+
+function scene:getAccelerometerLastPos() 
+	return self.accelerometerLastPos.x, self.accelerometerLastPos.y, self.accelerometerLastPos.z
+end
+
+function scene:exit()
+
+	pd.stopAccelerometer()
+	scene.super.exit( self )
+
+end
+
+function scene:finish()
+
+	scene.super.finish( self )
 
 end

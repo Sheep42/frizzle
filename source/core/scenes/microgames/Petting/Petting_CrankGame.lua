@@ -142,15 +142,15 @@ function scene:update()
 		self.timer:start()
 	end
 
-	drawHappinessBar( self )
-	drawTimer( self )
+	self:drawHappinessBar()
+	self:drawTimer()
 
 	if self.happinessVal >= 1.0 then
 		self.win = true
 		return	
 	end
 
-	handleCrank( self )
+	self:handleCrank()
 
 end
 
@@ -173,7 +173,7 @@ function scene:resetTimer()
 
 end
 
-function drawHappinessBar( self ) 
+function scene:drawHappinessBar() 
 
 	local labelWidth, labelHeight = Graphics.getTextSize( self.happinessLabel, self.happinessFont )
 
@@ -199,7 +199,7 @@ function drawHappinessBar( self )
 
 end
 
-function drawTimer( self ) 
+function scene:drawTimer() 
 
 	local labelWidth, labelHeight = Graphics.getTextSize( self.timerLabel, self.timerFont )
 
@@ -225,12 +225,12 @@ function drawTimer( self )
 
 end
 
-function handleCrank( self ) 
+function scene:handleCrank() 
 
 	if self.cranked > 0 then
 
 		self.cranked = 0
-		moveHand( self )
+		self:moveHand()
 
 		if self.handState == HandStates.Rotate then
 			self.face.animation:setState( 'beingPet' )
@@ -251,7 +251,7 @@ function handleCrank( self )
 
 end
 
-function moveHand( self )
+function scene:moveHand()
 	
 	local x, y = self.hand:getPosition()
 	local faceX, faceY = self.face:getPosition()
