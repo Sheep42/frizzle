@@ -155,9 +155,10 @@ function scene:update()
 end
 
 function scene:exit()
-	scene.super.exit(self)
 
+	scene.super.exit(self)
 	Noble.Input.setCrankIndicatorStatus( false )
+
 end
 
 function scene:finish()
