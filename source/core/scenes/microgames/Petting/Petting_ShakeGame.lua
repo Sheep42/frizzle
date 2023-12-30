@@ -14,7 +14,8 @@ function scene:init()
 	self.accelerometerPos = { x = 0, y = 0, z = 0 }
 	self.accelerometerLastPos = { x = 0, y = 0, z = 0 }
 	self.happinessVal = 0
-	-- self.hand = NobleSprite( 'assets/images/hand-petting' )
+	self.rotation = 0
+	self.hand = NobleSprite( 'assets/images/hand-petting' )
 
 end
 
@@ -24,7 +25,7 @@ function scene:enter()
 	pd.startAccelerometer()
 	self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z = pd.readAccelerometer()
 
-	-- self.hand:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+	self.hand:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
 end
 
@@ -105,7 +106,8 @@ function renderDebugInfo( self )
 	Noble.Text.draw(deltas, (Utilities.screenSize().width / 2) - (deltasW / 2), Utilities.screenBounds().top + 40)
 
 	-- Draw happinessVal
-	Noble.Text.draw(self.happinessVal, Utilities.screenSize().width / 2, Utilities.screenBounds().top + 70)
+	local valW, valH = Graphics.getTextSize( self.happinessVal )
+	Noble.Text.draw(self.happinessVal, (Utilities.screenSize().width / 2) - (valW / 2), Utilities.screenBounds().bottom - 20)
 
 end
 
@@ -116,8 +118,31 @@ function handleShake( self )
 
 	local dx, dy, dz = ( x - lastX ), ( y - lastY ), ( z - lastZ )
 
-	if dz >= self.minMovement or dz <= -self.minMovement then
-		self.happinessVal += math.abs(dz)
+	if dx >= self.minMovement or dx <= -self.minMovement then
+		self.happinessVal += math.abs(dx)
+		moveHand( self )
 	end
+
+end
+
+function moveHand( self ) 
+
+	self.rotation += 15
+	if self.rotation > 360 then
+		self.rotation = self.rotation % 360
+	end
+
+	local radius = 10
+	local maxAngle = 2 * math.pi
+	local angle = (self.rotation % 360) * (math.pi / 180)
+	local screenSize = Utilities.screenSize()
+
+	angle = math.min( angle, maxAngle )
+	angle = math.max( angle, 0 )
+
+	local xOffset = radius * math.cos( angle )
+	local yOffset = radius * math.sin( angle )
+
+	self.hand:moveTo( (screenSize.width / 2) + xOffset, (screenSize.height / 2) + yOffset )
 
 end
