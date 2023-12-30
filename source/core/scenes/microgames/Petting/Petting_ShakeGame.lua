@@ -97,8 +97,8 @@ function scene:handleShake()
 
 	local dx, dy, dz = ( x - lastX ), ( y - lastY ), ( z - lastZ )
 
-	if dx >= self.minMovement or dx <= -self.minMovement then
-		self.happinessVal += math.abs(dx)
+	if dz >= self.minMovement or dz <= -self.minMovement then
+		self.happinessVal += math.abs(dz)
 		self:moveHand()
 	end
 
