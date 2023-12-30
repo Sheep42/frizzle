@@ -78,10 +78,10 @@ function scene:init()
 	faceAnim:addState( 'beingPet', 1, 2, nil, nil, nil, self.maxFrameDuration )
 	faceAnim:setState( 'wait' )
 
-	scene.face = NobleSprite( faceAnim )
-	scene.face:setSize( 150, 90 )
+	self.face = NobleSprite( faceAnim )
+	self.face:setSize( 150, 90 )
 
-	scene.hand = NobleSprite( 'assets/images/hand-petting' )
+	self.hand = NobleSprite( 'assets/images/hand-petting' )
 
 end
 

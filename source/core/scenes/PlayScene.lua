@@ -152,7 +152,8 @@ function scene:init()
 
 	-- TODO: Implement Button click handlers 
 	petBtn:setPressedCallback( function()
-		Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		-- Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 	end)
 
 	feedBtn:setPressedCallback( function ()
