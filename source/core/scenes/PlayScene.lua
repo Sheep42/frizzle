@@ -22,6 +22,26 @@ function scene:init()
 	scene.super.init(self)
 
 	scene.baseColor = Graphics.kColorBlack
+
+	-- Create cursor
+	cursor = Cursor()
+
+	-- Debug Menu
+	dbgMenu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
+	dbgMenu:addItem( 
+		"Crank It", 
+		function() 
+			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+	dbgMenu:addItem( 
+		"Shake It", 
+		function() 
+			Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	-- Input Listener Callbacks
 	scene.inputHandler = {
 		AButtonDown = function()
 			checkABtnPress()
@@ -31,60 +51,62 @@ function scene:init()
 			Noble.transition( TitleScene )
 		end,
 		downButtonUp = function ()
+
 			if cursor ~= nil then
 				if cursor.velocity.y < 0 then
 					return
 				end
 
-				cursor.velocity.y = 0
+				setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
 			end
+
 		end,
 		upButtonUp = function ()
+
 			if cursor ~= nil then
 				if cursor.velocity.y > 0 then
 					return
 				end
 
-				cursor.velocity.y = 0
+				setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
 			end	
+
 		end,
 		leftButtonUp = function ()
+
 			if cursor ~= nil then
 				if cursor.velocity.x > 0 then
 					return
 				end
 
-				cursor.velocity.x = 0
+				setCursorVelocity( { x = 0, y = cursor.velocity.y } )
 			end	
+
 		end,
 		rightButtonUp = function ()
+
 			if cursor ~= nil then
 				if cursor.velocity.x < 0 then
 					return
 				end
 
-				cursor.velocity.x = 0
+				setCursorVelocity( { x = 0, y = cursor.velocity.y } )
 			end	
+
 		end,
 		downButtonDown = function ()
-			if cursor ~= nil then
-				cursor.velocity.y = _CURSOR_SPEED_MULTIPLIER
-			end
+			dbgMenu:selectNext()
+			setCursorVelocity( { x = cursor.velocity.x, y =_CURSOR_SPEED_MULTIPLIER } )
 		end,
 		upButtonDown = function ()
-			if cursor ~= nil then
-				cursor.velocity.y = -_CURSOR_SPEED_MULTIPLIER
-			end	
+			dbgMenu:selectPrevious()
+			setCursorVelocity( { x = cursor.velocity.x, y = -_CURSOR_SPEED_MULTIPLIER } )
 		end,
 		leftButtonDown = function ()
-			if cursor ~= nil then
-				cursor.velocity.x = -_CURSOR_SPEED_MULTIPLIER
-			end	
+			setCursorVelocity( { x = -_CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
 		end,
 		rightButtonDown = function ()
-			if cursor ~= nil then
-				cursor.velocity.x = _CURSOR_SPEED_MULTIPLIER
-			end	
+			setCursorVelocity( { x = _CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
 		end,
 	}
 
@@ -139,9 +161,6 @@ function scene:init()
 
 	-- Create Pet
 	pet = GameController.pet
-
-	-- Create cursor
-	cursor = Cursor()
 	
 	-- Create UI Buttons
 	petBtn = Button( "assets/images/UI/button-pet" )
@@ -152,8 +171,16 @@ function scene:init()
 
 	-- TODO: Implement Button click handlers 
 	petBtn:setPressedCallback( function()
-		-- Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+
+		cursor.velocity = { x = 0, y = 0 }
+
+		if Noble.Settings.get( "debug_mode" ) then
+			dbgMenu:activate()
+		else
+			-- TODO: Load a random game type
+			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+
 	end)
 
 	feedBtn:setPressedCallback( function ()
@@ -268,6 +295,11 @@ function checkABtnPress()
 
 	else
 
+		if dbgMenu:isActive() then
+			dbgMenu:click()
+			return
+		end
+
 		for i = 1, #uiButtons do
 			uiButtons[i]:press()
 		end
@@ -296,6 +328,11 @@ function scene:update()
 	dialogue:update()
 	bark:update()
 
+	-- Draw Debug Menu
+	if dbgMenu:isActive() then
+		dbgMenu:draw( Utilities.screenBounds().left, Utilities.screenSize().height / 2 )
+	end
+
 	for i, statBar in pairs( statBars ) do
 		statBar:update()
 	end
@@ -317,4 +354,20 @@ end
 
 function scene:finish()
 	scene.super.finish( self )
+end
+
+function setCursorVelocity( velocity ) 
+
+	if type( velocity ) ~= "table" then
+		return
+	end
+
+	if dbgMenu:isActive() then
+		return
+	end
+
+	if cursor ~= nil then
+		cursor.velocity = velocity
+	end
+
 end
