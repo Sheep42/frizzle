@@ -1,5 +1,5 @@
 Petting_CrankGame = {}
-class( "Petting_CrankGame" ).extends( NobleScene )
+class( "Petting_CrankGame" ).extends( Microgame )
 local scene = Petting_CrankGame
 
 scene.baseColor = Graphics.kColorBlack
@@ -13,14 +13,21 @@ function scene:init()
 
 	scene.super.init( self )
 
-	local introText = "CRANK!"
-	local introFont = Noble.Text.FONT_LARGE
-	local textW, textH = Graphics.getTextSize( introText, introFont )
-
-	self.happinessLabel = "Happiness"
-	self.happinessFont = Noble.Text.FONT_LARGE
-	self.timerLabel = "Time"
-	self.timerFont = Noble.Text.FONT_LARGE
+	self.introText = "CRANK!"
+	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
+	self.dialogue = Dialogue( 
+		self.introText,
+		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
+		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
+		true, 
+		textW + 50,
+		textH + 15,
+		4,
+		4,
+		DialogueType.Instant,
+		2000,
+		self.introFont
+	)
 
 	self.background = nil
 	self.bgMusic = nil
@@ -33,24 +40,6 @@ function scene:init()
 	self.crankAcceleration = 0
 	self.maxFrameDuration = 15
 	self.handState = HandStates.Move
-	self.happinessVal = 0
-	self.win = false
-	self.dialogue = Dialogue( 
-		introText,
-		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
-		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
-		true, 
-		textW + 50, 
-		textH + 15,
-		4,
-		4,
-		DialogueType.Instant,
-		2000,
-		introFont
-	)
-	self.gameTime = 5999
-
-	self:resetTimer()
 
 	scene.inputHandler = {
 		cranked = function( change, acceleratedChange )
@@ -72,8 +61,8 @@ function scene:init()
 		end
 	}
 
+	-- Initialize face & hand
 	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
-
 	faceAnim:addState( 'wait', 1, 1, nil, nil, nil, 0 )
 	faceAnim:addState( 'beingPet', 1, 2, nil, nil, nil, self.maxFrameDuration )
 	faceAnim:setState( 'wait' )
@@ -86,11 +75,7 @@ function scene:init()
 end
 
 function scene:enter()
-	
 	scene.super.enter( self )
-	self:resetTimer()
-	self.dialogue:show()
-
 end
 
 function scene:start()
@@ -125,29 +110,17 @@ function scene:update()
 
 	scene.super.update( self )
 
-	self.dialogue:drawCanvas()
-	self.dialogue:update()
-
-	if self.dialogue:getState() == DialogueState.Show then
-		return
-	end
-
 	if pd.isCrankDocked() then
 		if self.timer.paused then
 			return
 		end
 	end
 
-	if self.timer.paused then
+	if self.startTimer then
 		self.timer:start()
-	end
-
-	self:drawHappinessBar()
-	self:drawTimer()
-
-	if self.happinessVal >= 1.0 then
-		self.win = true
-		return	
+		self.startTimer = false
+	else 
+		return
 	end
 
 	self:handleCrank()
@@ -163,66 +136,6 @@ end
 
 function scene:finish()
 	scene.super.finish( self )
-end
-
-function scene:resetTimer() 
-	
-	self.timer = Timer.new( self.gameTime, 0, self.gameTime )
-	self.timer:pause()
-	self.timer:reset()
-
-end
-
-function scene:drawHappinessBar() 
-
-	local labelWidth, labelHeight = Graphics.getTextSize( self.happinessLabel, self.happinessFont )
-
-	Graphics.fillRect( 120, 20, 200*self.happinessVal, 20 )
-
-	Noble.Text.draw( 
-		self.happinessLabel,
-		Utilities.screenBounds().left,
-		20,
-		Noble.Text.ALIGN_LEFT,
-		nil,
-		self.happinessFont
-	)
-
-	Noble.Text.draw( 
-		math.floor( self.happinessVal * 100 ) .. "%",
-		Utilities.screenBounds().left,
-		40,
-		Noble.Text.ALIGN_LEFT,
-		nil,
-		self.happinessFont
-	)
-
-end
-
-function scene:drawTimer() 
-
-	local labelWidth, labelHeight = Graphics.getTextSize( self.timerLabel, self.timerFont )
-
-	-- Graphics.fillRect( 100, 100, 200*self.timer.value, 20 )
-
-	Noble.Text.draw( 
-		self.timerLabel,
-		Utilities.screenBounds().left,
-		Utilities.screenBounds().bottom - 10,
-		Noble.Text.ALIGN_LEFT,
-		nil,
-		self.timerFont
-	)
-	
-	Noble.Text.draw(
-		math.floor( 5.999 - (self.timer.value / 1000)  ),
-		Utilities.screenBounds().left + labelWidth + 20,
-		Utilities.screenBounds().bottom - 10,
-		Noble.Text.ALIGN_LEFT,
-		nil,
-		self.timerFont
-	)
-
 end
 
 function scene:handleCrank() 
