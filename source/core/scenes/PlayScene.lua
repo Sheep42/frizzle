@@ -111,7 +111,8 @@ function scene:init()
 	}
 
 	background = Graphics.image.new( "assets/images/background" )
-	bgMusic = Sound.fileplayer.new( "assets/sound/tamagotchi-music.mp3" )
+	bgMusic = Sound.fileplayer.new( "assets/sound/gameplay.mp3" )
+	bgMusic:setVolume( 0.25 )
 
 	-- Create dialogue and bark objects
 	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
