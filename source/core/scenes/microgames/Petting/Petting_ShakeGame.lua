@@ -33,6 +33,16 @@ function scene:init()
 	self.happinessVal = 0
 	self.rotation = 0
 	self.hand = NobleSprite( 'assets/images/hand-petting' )
+	self.motionTimer = nil
+	
+	-- Initialize face & hand
+	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
+	faceAnim:addState( 'wait', 1, 1, nil, nil, nil, 0 )
+	faceAnim:addState( 'beingPet', 1, 2, nil, nil, nil, 15 )
+	faceAnim:setState( 'wait' )
+
+	self.face = NobleSprite( faceAnim )
+	self.face:setSize( 150, 90 )
 	
 	scene.inputHandler = {
 		BButtonDown = function()
@@ -48,13 +58,17 @@ function scene:enter()
 	pd.startAccelerometer()
 	self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z = pd.readAccelerometer()
 
-	self.hand:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
-
 end
 
 function scene:start()
 
 	scene.super.start( self )
+
+	local faceWidth, faceHeight = self.face:getSize()
+	self.face:add( Utilities.screenSize().width / 2, Utilities.screenSize().height - ( faceHeight / 2 ) )
+	
+	local faceX, faceY = self.face:getPosition()
+	self.hand:add( Utilities.screenSize().width / 2, faceY )
 
 end
 
@@ -130,10 +144,6 @@ function scene:renderDebugInfo()
 	Noble.Text.draw(pos, (Utilities.screenSize().width / 2) - (posW / 2), Utilities.screenBounds().top + 20)
 	Noble.Text.draw(deltas, (Utilities.screenSize().width / 2) - (deltasW / 2), Utilities.screenBounds().top + 40)
 
-	-- Draw happinessVal
-	local valW, valH = Graphics.getTextSize( self.happinessVal )
-	Noble.Text.draw(self.happinessVal, (Utilities.screenSize().width / 2) - (valW / 2), Utilities.screenBounds().bottom - 20)
-
 end
 
 function scene:handleShake() 
@@ -146,6 +156,14 @@ function scene:handleShake()
 	if dz >= self.minMovement or dz <= -self.minMovement then
 		self.happinessVal += 0.01
 		self:moveHand()
+
+		self.face.animation:setState( 'beingPet' )
+		self.motionTimer = nil
+	else
+		-- xxx: Note this does not work great on the simulator, but looks pretty good on the playdate
+		self.motionTimer = Timer.new( 500, function() 
+			self.face.animation:setState( 'wait' ) 
+		end)
 	end
 
 end
@@ -161,6 +179,7 @@ function scene:moveHand()
 	local maxAngle = 2 * math.pi
 	local angle = (self.rotation % 360) * (math.pi / 180)
 	local screenSize = Utilities.screenSize()
+	local faceX, faceY = self.face:getPosition()
 
 	angle = math.min( angle, maxAngle )
 	angle = math.max( angle, 0 )
@@ -168,7 +187,7 @@ function scene:moveHand()
 	local xOffset = radius * math.cos( angle )
 	local yOffset = radius * math.sin( angle )
 
-	self.hand:moveTo( (screenSize.width / 2) + xOffset, (screenSize.height / 2) + yOffset )
+	self.hand:moveTo( (screenSize.width / 2) + xOffset, faceY + yOffset )
 
 end
 
