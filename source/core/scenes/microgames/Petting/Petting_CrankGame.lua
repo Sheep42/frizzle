@@ -28,6 +28,9 @@ function scene:init()
 		2000,
 		self.introFont
 	)
+	self.dialogue.onHideCallback = function ()
+		self.startTimer = true
+	end
 
 	self.background = nil
 	self.bgMusic = nil

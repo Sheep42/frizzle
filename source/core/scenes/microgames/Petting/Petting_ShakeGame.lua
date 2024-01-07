@@ -26,6 +26,9 @@ function scene:init()
 		2000,
 		self.introFont
 	)
+	self.dialogue.onHideCallback = function ()
+		self.startTimer = true
+	end
 
 	self.minMovement = 0.1
 	self.accelerometerPos = { x = 0, y = 0, z = 0 }

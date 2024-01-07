@@ -64,8 +64,6 @@ function scene:update()
 	
 		if self.dialogue:getState() == DialogueState.Show then
 			return
-		else
-			self.startTimer = true
 		end
 
 	end
