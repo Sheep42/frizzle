@@ -29,15 +29,21 @@ function scene:init()
 	-- Debug Menu
 	dbgMenu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
 	dbgMenu:addItem( 
-		"Crank It", 
+		"Pet: Crank It", 
 		function() 
 			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 	dbgMenu:addItem( 
-		"Shake It", 
+		"Pet: Shake It", 
 		function() 
 			Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+	dbgMenu:addItem( 
+		"Feed: Shake It", 
+		function() 
+			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 
@@ -185,6 +191,14 @@ function scene:init()
 	end)
 
 	feedBtn:setPressedCallback( function ()
+		cursor.velocity = { x = 0, y = 0 }
+
+		if Noble.Settings.get( "debug_mode" ) then
+			dbgMenu:activate()
+		else
+			-- TODO: Load a random game type
+			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
 	end)
 
 	playBtn:setPressedCallback( function ()
