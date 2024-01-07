@@ -237,7 +237,7 @@ function scene:start()
 		local emote = GameController.getFlag( 'dialogue.showBark' )
 		GameController.setFlag( 'dialogue.showBark', nil )
 
-		bark:setEmote( emote )	
+		bark:setEmote( emote, nil, nil, "assets/sound/win-game.mp3" )	
 		
 		if bark:getState() == DialogueState.Hide then
 			bark:show()

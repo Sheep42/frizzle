@@ -54,6 +54,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self._showTimer = nil
 		self._canvas = nil
 		self._textSound = nil
+		self._emoteSound = nil
 		self._state = DialogueState.Hide
 
 	-- Positioning 
@@ -243,6 +244,12 @@ function Dialogue:play()
 		end
 
 		self.emote:add( self._emoteX, self._emoteY )
+
+		if self._emoteSound ~= nil then
+			self._emoteSound:play()
+			self._emoteSound = nil
+		end
+
 		self:finish()
 
 	end
@@ -344,7 +351,9 @@ end
 -- @param int textX Optional x position for the emote, relative to innerX
 --
 -- @param int textY Optional y position for the emote, relative to innerY
-function Dialogue:setEmote( emote, emoteX, emoteY )
+-- 
+-- @param string soundPath Optional path to sample to play when emote is shown
+function Dialogue:setEmote( emote, emoteX, emoteY, soundPath )
 
 	self.emote = emote
 	self.text = nil
@@ -355,6 +364,14 @@ function Dialogue:setEmote( emote, emoteX, emoteY )
 
 	if emoteY ~= nil then
 		self._emoteY = self._innerY + emoteY
+	end
+
+	if soundPath ~= nil and soundPath ~= "" then
+		self._emoteSound = Sound.fileplayer.new( soundPath )
+
+		if self._emoteSound ~= nil then
+			self._emoteSound:setVolume( 0.5 )
+		end
 	end
 
 	self:restart()
@@ -370,6 +387,7 @@ end
 
 function Dialogue:disableSound()
 	self._textSound = nil
+	self._emoteSound = nil
 end
 
 function Dialogue:getState()
