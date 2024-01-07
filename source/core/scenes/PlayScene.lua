@@ -46,6 +46,12 @@ function scene:init()
 			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
+	dbgMenu:addItem( 
+		"Sleep: Say It", 
+		function() 
+			Noble.transition( Sleeping_MicGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
 
 	-- Input Listener Callbacks
 	scene.inputHandler = {

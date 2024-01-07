@@ -8,6 +8,7 @@ import 'core/scenes/microgames/Microgame'
 import 'core/scenes/microgames/Petting/Petting_CrankGame'
 import 'core/scenes/microgames/Petting/Petting_ShakeGame'
 import 'core/scenes/microgames/Feeding/Feeding_ShakeGame'
+import 'core/scenes/microgames/Sleeping/Sleeping_MicGame'
 
 import "core/states/State"
 import "core/states/StateMachine"
