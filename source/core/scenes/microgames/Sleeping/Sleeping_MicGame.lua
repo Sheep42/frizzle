@@ -8,6 +8,11 @@ function scene:init()
 
 	scene.super.init( self )
 
+	self._INCREMENT_FREQ = 750
+	self._INCREMENT_AMT = 0.25
+	self._THRESHOLD_TIME = 0.25
+	self._LEVEL_AMPLIFIER = 1000
+
 	self.background = nil
 	self.bgMusic = nil
 	self.micSource = "device"
@@ -36,7 +41,7 @@ function scene:init()
 		self.startTimer = true
 	end
 
-	self.noiseThreshold = 0.05
+	self.noiseThreshold = (10 / self._LEVEL_AMPLIFIER) -- 10% == 0.010
 
 	scene.inputHandler = {
 		AButtonDown = function()
@@ -93,7 +98,7 @@ function scene:update()
 	scene.super.update( self )
 
 	if self.startTimer then
-		-- self.timer:start()
+		self.timer:start()
 		self.startTimer = false
 	else
 		return
@@ -105,19 +110,19 @@ function scene:update()
 
 		-- Delay the initial setting by 1 second, then use a repeat timer to
 		-- continue increasing each second
-		self.happinessTimer = Timer.new( 1000, function()
-			self.happinessTimer = Timer.keyRepeatTimerWithDelay(1000, 1000, function()
+		self.happinessTimer = Timer.new( self._INCREMENT_FREQ, function()
+			self.happinessTimer = Timer.keyRepeatTimerWithDelay(self._INCREMENT_FREQ, self._INCREMENT_FREQ, function()
 
 				if self.passThreshold then
 					return
 				end
 
-				if self.happinessVal + 0.25 <= 1 then
-					self.happinessVal += 0.25
+				if self.happinessVal + self._INCREMENT_AMT <= 1 then
+					self.happinessVal += self._INCREMENT_AMT
 				else
 					self.happinessVal = 1
 				end
-				
+
 			end)
 		end)
 
@@ -145,10 +150,10 @@ function scene:checkNoiseThreshold()
 			playdate.resetElapsedTime()
 		end
 
-		if playdate.getElapsedTime() >= 0.5 then
+		if playdate.getElapsedTime() >= self._THRESHOLD_TIME then
 
-			if self.happinessVal -= 0.25 >= 0 then
-				self.happinessVal -= 0.25
+			if self.happinessVal - self._INCREMENT_AMT >= 0 then
+				self.happinessVal -= self._INCREMENT_AMT
 			else
 				self.happinessVal = 0
 			end
@@ -158,12 +163,12 @@ function scene:checkNoiseThreshold()
 		end
 
 	else
-		
+
 		if playdate.getElapsedTime() >= 0.5 then
 
 			self.passThreshold = false
 			playdate.resetElapsedTime()
-		
+
 		end
 
 	end
@@ -179,7 +184,7 @@ function scene:renderDebugInfo()
 	local source = "Input Source: " .. self.micSource
 	local sourceW, _ = Graphics.getTextSize(source)
 
-	local level = "Input Level: " .. math.floor( self.micLevel * 1000 ) .. "%"
+	local level = "Input Level: " .. math.floor( self.micLevel * self._LEVEL_AMPLIFIER ) .. "%"
 	local levelW, _ = Graphics.getTextSize(level)
 
 	Noble.Text.draw(source, (Utilities.screenSize().width / 2) - (sourceW / 2), Utilities.screenBounds().top + 20)
