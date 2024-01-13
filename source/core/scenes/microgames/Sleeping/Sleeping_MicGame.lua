@@ -13,15 +13,17 @@ function scene:init()
 	self.micSource = "device"
 	self.micLevel = 0
 	self.buffer = nil
+	self.happinessTimer = nil
+	self.passThreshold = false
 
 	self.introText = "SHHH!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
-	self.dialogue = Dialogue( 
+	self.dialogue = Dialogue(
 		self.introText,
 		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
 		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
-		true, 
-		textW + 50, 
+		true,
+		textW + 50,
 		textH + 15,
 		4,
 		4,
@@ -34,15 +36,16 @@ function scene:init()
 		self.startTimer = true
 	end
 
-	self.happinessVal = 0
-	
-	scene.inputHandler = {
-		AButtonDown = function() 
+	self.noiseThreshold = 0.05
 
-			self.buffer = playdate.sound.sample.new( 5, playdate.sound.kFormat16bitMono )
-			Sound.micinput.recordToSample( self.buffer, function ()
-				self.buffer:play()
-			end)
+	scene.inputHandler = {
+		AButtonDown = function()
+
+		-- POC: Record Player Audio
+			-- self.buffer = playdate.sound.sample.new( 5, playdate.sound.kFormat16bitMono )
+			-- Sound.micinput.recordToSample( self.buffer, function ()
+			-- 	self.buffer:play()
+			-- end)
 
 		end,
 		BButtonDown = function()
@@ -61,6 +64,7 @@ end
 function scene:start()
 
 	scene.super.start( self )
+
 	Sound.micinput.startListening()
 	self:checkMicInput()
 
@@ -75,7 +79,7 @@ end
 function scene:update()
 
 	if self.timer.value >= self.gameTime or self.win then
-		
+
 		if self.win then
 			GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
 			GameController.pet.stats.tired.value = math.clamp( GameController.pet.stats.tired.value + math.random(3), 1, 5 )
@@ -95,15 +99,74 @@ function scene:update()
 		return
 	end
 
+	-- TODO: Animation for Pet reactions
+
+	if self.happinessTimer == nil then
+
+		-- Delay the initial setting by 1 second, then use a repeat timer to
+		-- continue increasing each second
+		self.happinessTimer = Timer.new( 1000, function()
+			self.happinessTimer = Timer.keyRepeatTimerWithDelay(1000, 1000, function()
+
+				if self.passThreshold then
+					return
+				end
+
+				if self.happinessVal + 0.25 <= 1 then
+					self.happinessVal += 0.25
+				else
+					self.happinessVal = 1
+				end
+				
+			end)
+		end)
+
+	end
+
 	self:checkMicInput()
+	self:checkNoiseThreshold()
 	self:renderDebugInfo()
 
 end
 
-function scene:checkMicInput() 
-	
+function scene:checkMicInput()
+
 	self.micSource = Sound.micinput.getSource()
 	self.micLevel = Sound.micinput.getLevel()
+
+end
+
+function scene:checkNoiseThreshold()
+
+	if self.micLevel >= self.noiseThreshold then
+
+		if not self.passThreshold then
+			self.passThreshold = true
+			playdate.resetElapsedTime()
+		end
+
+		if playdate.getElapsedTime() >= 0.5 then
+
+			if self.happinessVal -= 0.25 >= 0 then
+				self.happinessVal -= 0.25
+			else
+				self.happinessVal = 0
+			end
+
+			playdate.resetElapsedTime()
+
+		end
+
+	else
+		
+		if playdate.getElapsedTime() >= 0.5 then
+
+			self.passThreshold = false
+			playdate.resetElapsedTime()
+		
+		end
+
+	end
 
 end
 
@@ -114,10 +177,10 @@ function scene:renderDebugInfo()
 	end
 
 	local source = "Input Source: " .. self.micSource
-	local sourceW, sourceH = Graphics.getTextSize(source)
-	
-	local level = "Input Level: " .. math.floor( self.micLevel * 100 ) .. "%"
-	local levelW, levelH = Graphics.getTextSize(level)
+	local sourceW, _ = Graphics.getTextSize(source)
+
+	local level = "Input Level: " .. math.floor( self.micLevel * 1000 ) .. "%"
+	local levelW, _ = Graphics.getTextSize(level)
 
 	Noble.Text.draw(source, (Utilities.screenSize().width / 2) - (sourceW / 2), Utilities.screenBounds().top + 20)
 	Noble.Text.draw(level, (Utilities.screenSize().width / 2) - (levelW / 2), Utilities.screenBounds().top + 50)
