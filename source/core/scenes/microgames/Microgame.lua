@@ -58,10 +58,10 @@ function scene:update()
 	scene.super.update( self )
 
 	if self.dialogue ~= nil then
-		
+
 		self.dialogue:drawCanvas()
 		self.dialogue:update()
-	
+
 		if self.dialogue:getState() == DialogueState.Show then
 			return
 		end
@@ -73,13 +73,13 @@ function scene:update()
 
 	if self.happinessVal >= 1.0 then
 		self.win = true
-		return	
+		return
 	end
 
 end
 
-function scene:resetTimer() 
-	
+function scene:resetTimer()
+
 	self.timer = Timer.new( self.gameTime, 0, self.gameTime )
 	self.timer:pause()
 	self.timer:reset()
@@ -126,7 +126,7 @@ function scene:drawTimer()
 		nil,
 		self.timerFont
 	)
-	
+
 	Noble.Text.draw(
 		math.floor( 5.999 - (self.timer.value / 1000)  ),
 		Utilities.screenBounds().left + labelWidth + 20,

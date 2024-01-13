@@ -13,12 +13,12 @@ function scene:init()
 
 	self.introText = "SHAKE!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
-	self.dialogue = Dialogue( 
+	self.dialogue = Dialogue(
 		self.introText,
 		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
 		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
-		true, 
-		textW + 50, 
+		true,
+		textW + 50,
 		textH + 15,
 		4,
 		4,
@@ -37,7 +37,7 @@ function scene:init()
 	self.rotation = 0
 	self.hand = NobleSprite( 'assets/images/hand-petting' )
 	self.motionTimer = nil
-	
+
 	-- Initialize face & hand
 	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
 	faceAnim:addState( 'wait', 1, 1, nil, nil, nil, 0 )
@@ -46,7 +46,7 @@ function scene:init()
 
 	self.face = NobleSprite( faceAnim )
 	self.face:setSize( 150, 90 )
-	
+
 	scene.inputHandler = {
 		BButtonDown = function()
 			Noble.transition( PlayScene )
@@ -69,7 +69,7 @@ function scene:start()
 
 	local faceWidth, faceHeight = self.face:getSize()
 	self.face:add( Utilities.screenSize().width / 2, Utilities.screenSize().height - ( faceHeight / 2 ) )
-	
+
 	local faceX, faceY = self.face:getPosition()
 	self.hand:add( Utilities.screenSize().width / 2, faceY )
 
@@ -84,7 +84,7 @@ end
 function scene:update()
 
 	if self.timer.value >= self.gameTime or self.win then
-		
+
 		if self.win then
 			GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
 			GameController.pet.stats.friendship.value = math.clamp( GameController.pet.stats.friendship.value + math.random(3), 1, 5 )
@@ -111,7 +111,7 @@ function scene:update()
 
 end
 
-function scene:readAccelerometer() 
+function scene:readAccelerometer()
 
 	if pd.accelerometerIsRunning() == false then
 		return
@@ -124,7 +124,7 @@ function scene:readAccelerometer()
 	}
 
 	self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z = pd.readAccelerometer()
-	
+
 end
 
 function scene:renderDebugInfo()
@@ -149,7 +149,7 @@ function scene:renderDebugInfo()
 
 end
 
-function scene:handleShake() 
+function scene:handleShake()
 
 	local x, y, z = self:getAccelerometerPos()
 	local lastX, lastY, lastZ = self:getAccelerometerLastPos()
@@ -164,14 +164,14 @@ function scene:handleShake()
 		self.motionTimer = nil
 	else
 		-- xxx: Note this does not work great on the simulator, but looks pretty good on the playdate
-		self.motionTimer = Timer.new( 500, function() 
-			self.face.animation:setState( 'wait' ) 
+		self.motionTimer = Timer.new( 500, function()
+			self.face.animation:setState( 'wait' )
 		end)
 	end
 
 end
 
-function scene:moveHand() 
+function scene:moveHand()
 
 	self.rotation += 15
 	if self.rotation > 360 then
@@ -194,11 +194,11 @@ function scene:moveHand()
 
 end
 
-function scene:getAccelerometerPos() 
+function scene:getAccelerometerPos()
 	return self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z
 end
 
-function scene:getAccelerometerLastPos() 
+function scene:getAccelerometerLastPos()
 	return self.accelerometerLastPos.x, self.accelerometerLastPos.y, self.accelerometerLastPos.z
 end
 
