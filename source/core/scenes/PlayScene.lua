@@ -123,8 +123,8 @@ function scene:init()
 	}
 
 	background = Graphics.image.new( "assets/images/background" )
-	bgMusic = Sound.fileplayer.new( "assets/sound/gameplay.mp3" )
-	bgMusic:setVolume( 0.25 )
+	-- bgMusic = Sound.fileplayer.new( "assets/sound/gameplay.mp3" )
+	-- bgMusic:setVolume( 0.25 )
 
 	-- Create dialogue and bark objects
 	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
@@ -278,7 +278,7 @@ function scene:start()
 	-- Add Cursor to the Scene
 	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
 
-	bgMusic:play( 0 ) -- repeatCount 0 = loop forever
+	-- bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
 	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
 		
@@ -366,7 +366,7 @@ function scene:exit()
 
 	GameController.setFlag( 'statBars.paused', true )
 	pet:remove()
-	bgMusic:stop()
+	-- bgMusic:stop()
 	
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start();
