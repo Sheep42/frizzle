@@ -361,9 +361,7 @@ function scene:update()
 		statBar:update()
 	end
 
-	if GameController.getFlag( 'game.playTime' ) >= GameController.PHASE_2_TIME_TRIGGER then
-		print( "PHASE 2 TRIGGER" )
-	end
+	self:handlePhaseChange()
 
 end
 
@@ -396,6 +394,18 @@ function scene:setCursorVelocity( velocity )
 
 	if cursor ~= nil then
 		cursor.velocity = velocity
+	end
+
+end
+
+function scene:handlePhaseChange()
+
+	if GameController.getFlag( 'game.phase' ) == 1 then
+		GameController.phaseHandlers.phase1()
+		return
+	elseif GameController.getFlag( 'game.phase' ) == 2 then
+		GameController.phaseHandlers.phase2()
+		return
 	end
 
 end

@@ -34,13 +34,53 @@ GameController.flags = {
 }
 
 GameController.PHASE_2_TIME_TRIGGER = 300
-GameController.PHASE_2_GAME_TRIGGER = 1
+GameController.PHASE_2_GAME_TRIGGERS = {
+	petting = 1,
+	feeding = 1,
+	sleeping = 1,
+	grooming = 0,
+	playing = 0,
+}
 
 GameController.playTimer = nil
 GameController.playTimerCallback = function() 
 	GameController.flags.game.playTime += 1
 	GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
 end
+
+GameController.phaseHandlers = {
+	phase1 = function()
+
+		if GameController.getFlag( 'game.playTime' ) >= GameController.PHASE_2_TIME_TRIGGER then
+			GameController.setFlag( 'game.phase', 2 )
+			return
+		end
+
+		local change = true
+		for k, v in pairs( GameController.PHASE_2_GAME_TRIGGERS ) do
+
+			local flagVal = GameController.getFlag( 'game.gamesPlayed.' .. k )
+			if flagVal < v then
+				change = false
+			end
+
+		end
+
+		if change then
+			GameController.setFlag( 'game.phase', 2 )
+		end
+
+	end,
+	phase2 = function()
+		print( 'HANDLE PHASE 2' )
+	end,
+	phase3 = function()
+		print( 'HANDLE PHASE 3' )
+	end,
+	phase3 = function()
+		print( 'HANDLE PHASE 4' )
+	end,
+}
 
 function GameController.getDialogue( script, line )
 
