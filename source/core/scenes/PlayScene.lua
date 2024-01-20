@@ -69,7 +69,7 @@ function scene:init()
 					return
 				end
 
-				setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
+				self:setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
 			end
 
 		end,
@@ -80,7 +80,7 @@ function scene:init()
 					return
 				end
 
-				setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
+				self:setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
 			end	
 
 		end,
@@ -91,7 +91,7 @@ function scene:init()
 					return
 				end
 
-				setCursorVelocity( { x = 0, y = cursor.velocity.y } )
+				self:setCursorVelocity( { x = 0, y = cursor.velocity.y } )
 			end	
 
 		end,
@@ -102,23 +102,23 @@ function scene:init()
 					return
 				end
 
-				setCursorVelocity( { x = 0, y = cursor.velocity.y } )
+				self:setCursorVelocity( { x = 0, y = cursor.velocity.y } )
 			end	
 
 		end,
 		downButtonDown = function ()
 			dbgMenu:selectNext()
-			setCursorVelocity( { x = cursor.velocity.x, y =_CURSOR_SPEED_MULTIPLIER } )
+			self:setCursorVelocity( { x = cursor.velocity.x, y =_CURSOR_SPEED_MULTIPLIER } )
 		end,
 		upButtonDown = function ()
 			dbgMenu:selectPrevious()
-			setCursorVelocity( { x = cursor.velocity.x, y = -_CURSOR_SPEED_MULTIPLIER } )
+			self:setCursorVelocity( { x = cursor.velocity.x, y = -_CURSOR_SPEED_MULTIPLIER } )
 		end,
 		leftButtonDown = function ()
-			setCursorVelocity( { x = -_CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
+			self:setCursorVelocity( { x = -_CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
 		end,
 		rightButtonDown = function ()
-			setCursorVelocity( { x = _CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
+			self:setCursorVelocity( { x = _CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
 		end,
 	}
 
@@ -384,7 +384,7 @@ function scene:finish()
 	scene.super.finish( self )
 end
 
-function setCursorVelocity( velocity ) 
+function scene:setCursorVelocity( velocity ) 
 
 	if type( velocity ) ~= "table" then
 		return
