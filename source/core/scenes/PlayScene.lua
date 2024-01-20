@@ -23,6 +23,11 @@ function scene:init()
 
 	scene.baseColor = Graphics.kColorBlack
 
+	scene.phases = {
+		phase1 = GamePhase_Phase1(),
+	}
+	scene.phaseManager = StateMachine( scene.phases.phase1, scene.phases )
+
 	-- Create cursor
 	cursor = Cursor()
 
@@ -362,6 +367,7 @@ function scene:update()
 	end
 
 	self:handlePhaseChange()
+	self.phaseManager:update()
 
 end
 

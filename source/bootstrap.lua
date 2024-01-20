@@ -20,6 +20,8 @@ import "core/UI/StatBar/StatBarState_Paused"
 import "core/UI/StatBar"
 import "core/dialogue/Dialogue"
 
+import "core/scenes/GamePhase/GamePhase_Phase1"
+
 import "core/entities/VirtualPet/PetState_Active"
 import "core/entities/VirtualPet/PetState_Paused"
 import "core/entities/VirtualPet/VirtualPet"
