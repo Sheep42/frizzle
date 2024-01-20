@@ -21,6 +21,7 @@ import "core/UI/StatBar"
 import "core/dialogue/Dialogue"
 
 import "core/scenes/GamePhase/GamePhase_Phase1"
+import "core/scenes/GamePhase/GamePhase_Phase2"
 
 import "core/entities/VirtualPet/PetState_Active"
 import "core/entities/VirtualPet/PetState_Paused"

@@ -24,7 +24,8 @@ function scene:init()
 	scene.baseColor = Graphics.kColorBlack
 
 	scene.phases = {
-		phase1 = GamePhase_Phase1(),
+		phase1 = GamePhase_Phase1( self ),
+		phase2 = GamePhase_Phase2( self ),
 	}
 	scene.phaseManager = StateMachine( scene.phases.phase1, scene.phases )
 
@@ -366,7 +367,6 @@ function scene:update()
 		statBar:update()
 	end
 
-	self:handlePhaseChange()
 	self.phaseManager:update()
 
 end
@@ -378,7 +378,7 @@ function scene:exit()
 	GameController.setFlag( 'statBars.paused', true )
 	pet:remove()
 	-- bgMusic:stop()
-	
+
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
 	sequence:start();
 
@@ -400,18 +400,6 @@ function scene:setCursorVelocity( velocity )
 
 	if cursor ~= nil then
 		cursor.velocity = velocity
-	end
-
-end
-
-function scene:handlePhaseChange()
-
-	if GameController.getFlag( 'game.phase' ) == 1 then
-		GameController.phaseHandlers.phase1()
-		return
-	elseif GameController.getFlag( 'game.phase' ) == 2 then
-		GameController.phaseHandlers.phase2()
-		return
 	end
 
 end
