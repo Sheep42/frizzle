@@ -42,6 +42,7 @@ function scene:init()
 	end
 
 	self.noiseThreshold = (10 / self._LEVEL_AMPLIFIER) -- 10% == 0.010
+	self.category = MicrogameType.sleeping
 
 	scene.inputHandler = {
 		AButtonDown = function()

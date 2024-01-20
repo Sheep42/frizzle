@@ -19,12 +19,28 @@ GameController.flags = {
 	},
 	game = {
 		phase = 1,
+		gamesPlayed = {
+			petting = 0,
+			feeding = 0,
+			sleeping = 0,
+			grooming = 0,
+			playing = 0,
+		},
 		playTime = 0,
 	},
 	statBars = {
 		paused = true,
 	}
 }
+
+GameController.PHASE_2_TIME_TRIGGER = 300
+GameController.PHASE_2_GAME_TRIGGER = 1
+
+GameController.playTimer = nil
+GameController.playTimerCallback = function() 
+	GameController.flags.game.playTime += 1
+	GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
+end
 
 function GameController.getDialogue( script, line )
 
@@ -43,7 +59,7 @@ function GameController.getDialogue( script, line )
 
 end
 
-function GameController.advanceDialogueLine() 
+function GameController.advanceDialogueLine()
 
 	local line = GameController.getDialogue()
 
@@ -57,28 +73,29 @@ function GameController.advanceDialogueLine()
 		GameController.flags.dialogue.currentLine += 1
 		return line
 	end
-	
+
 	return nil
 
 end
 
 function GameController.setFlag( flag, value )
- 
+
 	local keys = {}
     local current = GameController.flags
 
-    for key in string.gmatch( flag, "[^%.]+" ) do     
+    for key in string.gmatch( flag, "[^%.]+" ) do
 		keys[#keys + 1] = key
 	end
 
 	for i = 1, #keys - 1 do
-		
+
 		current = current[keys[i]]
 
-		-- Cannot create flags this way
+		-- Cannot create flags this way because I said so, define game flags 
+		-- in the flags table, ya nerd
 		if current == nil then
 			warn( "WARNING: Cannot create a flag with setFlag. Skipping. flag: " .. flag )
-            return 
+            return
         end
 
     end
@@ -86,14 +103,18 @@ function GameController.setFlag( flag, value )
     local lastKey = keys[#keys]
     current[lastKey] = value
 
+    if Noble.Settings.get( "debug_mode" ) then
+    	print( "Set " .. flag .. " = " .. tostring( value ) )
+    end
+
 end
 
 function GameController.getFlag( flag )
-	 
+
     local current = GameController.flags
 
     for key in string.gmatch( flag, "[^%.]+" ) do
-        
+
 		current = current[key]
 
 		-- Cannot create flags this way
@@ -110,11 +131,19 @@ end
 
 GameController.dialogueLines = {
 	intro = {
-		"Welcome to the world of [GameTitle]!",
-		"You'll be responsible for the care of\nyour very own pet",
-		"Blah, blah, blah",
-		"Blah, blah, blah",
+		"Congratulations on meeting your new\nbest friend Frizzle!",
+		"Frizzle needs your love and attention\nin order to thrive.",
+		"Make sure you keep an eye on their\nstats in the upper right.",
+		"You can use the buttons at the\nbottom of your screen to interact\nwith Frizzle.",
+		"Good luck, and have fun!",
 		function() GameController.setFlag( 'dialogue.playedIntro', true ) end,
 		function() GameController.setFlag( 'statBars.paused', false ) end,
-	}
+	},
+	lowStatNag = {
+		"Hey there, I noticed that Frizzle doesn't seem too happy right now.",
+		"Are you having trouble playing the game, or do you just like that terrible noise?",
+		"It looks like Frizzle needs (show list of stats at 0).",
+		"Let me help you with that. Give this game a try.",
+		function() end -- TODO: load random minigame relevant to stats at 0
+	},
 }

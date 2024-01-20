@@ -36,6 +36,7 @@ function scene:init()
 	self.accelerometerLastPos = { x = 0, y = 0, z = 0 }
 	self.happinessVal = 0
 	self.motionTimer = nil
+	self.category = MicrogameType.feeding
 	
 	scene.inputHandler = {
 		BButtonDown = function()

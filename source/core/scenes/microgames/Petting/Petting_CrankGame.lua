@@ -43,6 +43,7 @@ function scene:init()
 	self.crankAcceleration = 0
 	self.maxFrameDuration = 15
 	self.handState = HandStates.Move
+	self.category = MicrogameType.petting
 
 	scene.inputHandler = {
 		cranked = function( change, acceleratedChange )

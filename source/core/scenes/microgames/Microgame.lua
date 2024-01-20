@@ -2,6 +2,14 @@ Microgame = {}
 class( "Microgame" ).extends( NobleScene )
 local scene = Microgame
 
+MicrogameType = {
+	petting = "petting",
+	feeding = "feeding",
+	sleeping = "sleeping",
+	grooming = "grooming",
+	playing = "playing",
+}
+
 scene.baseColor = Graphics.kColorBlack
 
 function scene:init()
@@ -23,6 +31,7 @@ function scene:init()
 	self.dialogue = nil
 	self.gameTime = 5999
 	self.startTimer = false
+	self.category = ""
 
 	self:resetTimer()
 
@@ -35,13 +44,18 @@ function scene:init()
 end
 
 function scene:enter()
-	
+
 	scene.super.enter( self )
 	self:resetTimer()
+
+	local totalGames = GameController.getFlag( 'game.gamesPlayed.' .. self.category ) + 1
+	GameController.setFlag( 'game.gamesPlayed.' .. self.category, totalGames )
 
 	if self.dialogue ~= nil then
 		self.dialogue:show()
 	end
+
+	-- print( self.className )
 
 end
 

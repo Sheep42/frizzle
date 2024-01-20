@@ -37,6 +37,7 @@ function scene:init()
 	self.rotation = 0
 	self.hand = NobleSprite( 'assets/images/hand-petting' )
 	self.motionTimer = nil
+	self.category = MicrogameType.petting
 
 	-- Initialize face & hand
 	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )

@@ -234,6 +234,9 @@ function scene:init()
 		groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
 
+	if GameController.playTimer == nil then
+		GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
+	end
 end
 
 function scene:enter()
@@ -356,6 +359,10 @@ function scene:update()
 
 	for i, statBar in pairs( statBars ) do
 		statBar:update()
+	end
+
+	if GameController.getFlag( 'game.playTime' ) >= GameController.PHASE_2_TIME_TRIGGER then
+		print( "PHASE 2 TRIGGER" )
 	end
 
 end
