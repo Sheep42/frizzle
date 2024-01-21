@@ -33,7 +33,7 @@ function scene:init()
 
 	-- Create dialogue and bark objects
 	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
-		
+
 		GameController.setFlag( 'dialogue.currentScript', 'intro' )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 
@@ -41,32 +41,32 @@ function scene:init()
 
 		dialogue:enableSound()
 		dialogue.buttonPressedCallback = function ()
-			
+
 			if dialogue.finished == false then
 				dialogue.finished = true
-				return	
+				return
 			end
-	
+
 			if dialogue:getState() == DialogueState.Hide then
 				return
 			end
-	
+
 			local line = GameController.advanceDialogueLine()
 			if line ~= nil then
 				dialogue:setText( line )
 			else
 				dialogue:hide()
 			end
-	
+
 		end
 
 		GameController.dialogue = dialogue
 
-	else 
+	else
 		dialogue = GameController.dialogue
 	end
 
-	bark = Dialogue( 
+	bark = Dialogue(
 		'',
 		Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box
 		Utilities.screenBounds().top + 20, -- 20 px down from top of allowable screen area
@@ -79,7 +79,7 @@ function scene:init()
 
 	-- Create Pet
 	pet = GameController.pet
-	
+
 	-- Create UI Buttons
 	self.petBtn = Button( "assets/images/UI/button-pet" )
 	self.feedBtn = Button( "assets/images/UI/button-feed" )
@@ -129,7 +129,7 @@ function scene:enter()
 end
 
 function scene:start()
-	
+
 	scene.super.start(self)
 
 	-- Add Pet to Scene
@@ -140,8 +140,8 @@ function scene:start()
 		local emote = GameController.getFlag( 'dialogue.showBark' )
 		GameController.setFlag( 'dialogue.showBark', nil )
 
-		bark:setEmote( emote, nil, nil, "assets/sound/win-game.mp3" )	
-		
+		bark:setEmote( emote, nil, nil, "assets/sound/win-game.mp3" ) -- Should change to wav
+
 		if bark:getState() == DialogueState.Hide then
 			bark:show()
 		end
@@ -164,10 +164,10 @@ function scene:start()
 	-- bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
 	if GameController.getFlag( 'dialogue.playedIntro' ) == false then
-		
+
 		dialogue:show()
 
-	else 
+	else
 
 		if GameController.getFlag( 'statBars.paused' ) then
 			GameController.setFlag( 'statBars.paused', false )
@@ -178,7 +178,7 @@ function scene:start()
 end
 
 function scene:setupButtons()
-	
+
 	local totalButtons = #uiButtons
 	local buttonPanelWidth = ( Button.getDimensions().width + Button.getPadding() ) * totalButtons - Button.getPadding()
 	local startX = math.floor( ( Utilities.screenSize().width - buttonPanelWidth ) / 2 + ( Button.getDimensions().width / 2 ) )
@@ -194,9 +194,7 @@ end
 function scene:checkABtnPress()
 
 	if dialogue:getState() == DialogueState.Show then
-		
 		dialogue:buttonPressedCallback()
-
 	else
 
 		if self.dbgMenu:isActive() then
@@ -218,7 +216,7 @@ function scene:drawBackground()
 	-- background:draw( 0, 0 )
 
 	-- Draw Bark Canvas
-	bark:drawCanvas()	
+	bark:drawCanvas()
 
 end
 
@@ -266,7 +264,7 @@ function scene:buildDebugMenu()
 
 	self.dbgMenu:addItem(
 		"game_phase",
-		function() 
+		function()
 			local phase = GameController.getFlag( 'game.phase' )
 			local nextPhase = math.ringInt( phase + 1, 1, 4 )
 			GameController.setFlag( 'game.phase', nextPhase )
@@ -276,37 +274,37 @@ function scene:buildDebugMenu()
 		"Game phase: " .. GameController.getFlag( 'game.phase' )
 	)
 
-	self.dbgMenu:addItem( 
-		"Pet: Crank It", 
-		function() 
+	self.dbgMenu:addItem(
+		"Pet: Crank It",
+		function()
 			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 
-	self.dbgMenu:addItem( 
-		"Pet: Shake It", 
-		function() 
+	self.dbgMenu:addItem(
+		"Pet: Shake It",
+		function()
 			Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 
-	self.dbgMenu:addItem( 
-		"Feed: Shake It", 
-		function() 
+	self.dbgMenu:addItem(
+		"Feed: Shake It",
+		function()
 			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 
-	self.dbgMenu:addItem( 
-		"Sleep: Say It", 
-		function() 
+	self.dbgMenu:addItem(
+		"Sleep: Say It",
+		function()
 			Noble.transition( Sleeping_MicGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 
 end
 
-function scene:setCursorVelocity( velocity ) 
+function scene:setCursorVelocity( velocity )
 
 	if type( velocity ) ~= "table" then
 		return
@@ -339,7 +337,7 @@ function scene:handleBtnPress( gameType, games )
 
 end
 
-function scene:loadRandomGameOfType( gameType, games ) 
+function scene:loadRandomGameOfType( gameType, games )
 
 	if type( games ) ~= "table" then
 		warn( "Cannot load game. Invalid value provided for games table." )
