@@ -5,8 +5,25 @@ local phase = GamePhase_Phase1
 
 -- Constructor
 function phase:init( scene )
+
 	phase.super.init( self, "phase-1" )
 	self.owner = scene
+
+	self.games = {
+		feeding = {
+			Feeding_ShakeGame,
+		},
+		petting = {
+			Petting_CrankGame,
+			Petting_ShakeGame,
+		},
+		playing = {},
+		grooming = {},
+		sleeping = {
+			Sleeping_MicGame,
+		},
+	}
+
 end
 
 -- Fires when the Phase is entered
@@ -81,32 +98,13 @@ function phase:enter()
 		end,
 	}
 
-
 	-- Button Press Handlers
 	self.owner.petBtn:setPressedCallback( function()
-
-		self.owner.cursor.velocity = { x = 0, y = 0 }
-
-		if Noble.Settings.get( "debug_mode" ) then
-			self.owner.dbgMenu:activate()
-			self.owner.dbgMenu:select( 1 )
-		else
-			-- TODO: Load a random game type
-			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-
+		self.owner:handleBtnPress( MicrogameType.petting, self.games )
 	end)
 
 	self.owner.feedBtn:setPressedCallback( function ()
-		self.owner.cursor.velocity = { x = 0, y = 0 }
-
-		if Noble.Settings.get( "debug_mode" ) then
-			self.owner.dbgMenu:activate()
-			self.owner.dbgMenu:select( 1 )
-		else
-			-- TODO: Load a random game type
-			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
+		self.owner:handleBtnPress( MicrogameType.feeding, self.games )
 	end)
 
 	self.owner.playBtn:setPressedCallback( function ()
@@ -116,6 +114,7 @@ function phase:enter()
 	end)
 
 	self.owner.sleepBtn:setPressedCallback( function ()
+		self.owner:handleBtnPress( MicrogameType.sleeping, self.games )
 	end)
 
 end

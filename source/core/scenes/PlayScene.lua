@@ -25,41 +25,7 @@ function scene:init()
 
 	-- Debug Menu
 	self.dbgMenu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
-	self.dbgMenu:addItem(
-		"game_phase",
-		function() 
-			local phase = GameController.getFlag( 'game.phase' )
-			local nextPhase = math.ringInt( phase + 1, 1, 4 )
-			GameController.setFlag( 'game.phase', nextPhase )
-			self.dbgMenu:setItemDisplayName( 'game_phase', "Game phase: " .. nextPhase )
-		end,
-		nil,
-		"Game phase: " .. GameController.getFlag( 'game.phase' )
-	)
-	self.dbgMenu:addItem( 
-		"Pet: Crank It", 
-		function() 
-			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-	)
-	self.dbgMenu:addItem( 
-		"Pet: Shake It", 
-		function() 
-			Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-	)
-	self.dbgMenu:addItem( 
-		"Feed: Shake It", 
-		function() 
-			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-	)
-	self.dbgMenu:addItem( 
-		"Sleep: Say It", 
-		function() 
-			Noble.transition( Sleeping_MicGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-	)
+	self:buildDebugMenu()
 
 	background = Graphics.image.new( "assets/images/background" )
 	-- bgMusic = Sound.fileplayer.new( "assets/sound/gameplay.mp3" )
@@ -296,6 +262,50 @@ function scene:finish()
 	scene.super.finish( self )
 end
 
+function scene:buildDebugMenu()
+
+	self.dbgMenu:addItem(
+		"game_phase",
+		function() 
+			local phase = GameController.getFlag( 'game.phase' )
+			local nextPhase = math.ringInt( phase + 1, 1, 4 )
+			GameController.setFlag( 'game.phase', nextPhase )
+			self.dbgMenu:setItemDisplayName( 'game_phase', "Game phase: " .. nextPhase )
+		end,
+		nil,
+		"Game phase: " .. GameController.getFlag( 'game.phase' )
+	)
+
+	self.dbgMenu:addItem( 
+		"Pet: Crank It", 
+		function() 
+			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem( 
+		"Pet: Shake It", 
+		function() 
+			Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem( 
+		"Feed: Shake It", 
+		function() 
+			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem( 
+		"Sleep: Say It", 
+		function() 
+			Noble.transition( Sleeping_MicGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+end
+
 function scene:setCursorVelocity( velocity ) 
 
 	if type( velocity ) ~= "table" then
@@ -309,5 +319,54 @@ function scene:setCursorVelocity( velocity )
 	if self.cursor ~= nil then
 		self.cursor.velocity = velocity
 	end
+
+end
+
+function scene:stopCursor() 
+	self.cursor.velocity = { x = 0, y = 0 }
+end
+
+function scene:handleBtnPress( gameType, games )
+
+	self:stopCursor()
+
+	if Noble.Settings.get( "debug_mode" ) then
+		self.dbgMenu:activate()
+		self.dbgMenu:select( 1 )
+	else
+		self:loadRandomGameOfType( gameType, games )
+	end
+
+end
+
+function scene:loadRandomGameOfType( gameType, games ) 
+
+	if type( games ) ~= "table" then
+		warn( "Cannot load game. Invalid value provided for games table." )
+		return
+	end
+
+	local validType = false
+	for k, v in pairs( MicrogameType ) do
+		if gameType == v then
+			validType = true
+			break
+		end
+	end
+
+	if not validType then
+		warn( "Cannot load game. Invalid value provided for game type." )
+		return
+	end
+
+	local gameList = games[gameType]
+	local game = gameList[math.random( #gameList )]
+
+	if game == nil then
+		warn( "Cannot load game. Something went wrong." )
+		return
+	end
+
+	Noble.transition( game, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 
 end
