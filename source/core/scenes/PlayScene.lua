@@ -1,21 +1,18 @@
 PlayScene = {}
 class("PlayScene").extends(NobleScene)
 
-local _CURSOR_SPEED_MULTIPLIER = 1
-
 local scene = PlayScene
+
 local background
 local sequence
 local pet = nil
 local dialogue = nil
 local bark = nil
-local cursor = nil
-local petBtn = nil
-local feedBtn = nil
-local playBtn = nil
 local bgMusic = nil
 local uiButtons = {}
 local statBars = {}
+
+scene._CURSOR_SPEED_MULTIPLIER = 1
 
 function scene:init()
 
@@ -23,110 +20,46 @@ function scene:init()
 
 	scene.baseColor = Graphics.kColorBlack
 
-	scene.phases = {
-		phase1 = GamePhase_Phase1( self ),
-		phase2 = GamePhase_Phase2( self ),
-	}
-	scene.phaseManager = StateMachine( scene.phases.phase1, scene.phases )
-
 	-- Create cursor
-	cursor = Cursor()
+	self.cursor = Cursor()
 
 	-- Debug Menu
-	dbgMenu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
-	dbgMenu:addItem( 
+	self.dbgMenu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
+	self.dbgMenu:addItem(
+		"game_phase",
+		function() 
+			local phase = GameController.getFlag( 'game.phase' )
+			local nextPhase = math.ringInt( phase + 1, 1, 4 )
+			GameController.setFlag( 'game.phase', nextPhase )
+			self.dbgMenu:setItemDisplayName( 'game_phase', "Game phase: " .. nextPhase )
+		end,
+		nil,
+		"Game phase: " .. GameController.getFlag( 'game.phase' )
+	)
+	self.dbgMenu:addItem( 
 		"Pet: Crank It", 
 		function() 
 			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
-	dbgMenu:addItem( 
+	self.dbgMenu:addItem( 
 		"Pet: Shake It", 
 		function() 
 			Noble.transition( Petting_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
-	dbgMenu:addItem( 
+	self.dbgMenu:addItem( 
 		"Feed: Shake It", 
 		function() 
 			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
-	dbgMenu:addItem( 
+	self.dbgMenu:addItem( 
 		"Sleep: Say It", 
 		function() 
 			Noble.transition( Sleeping_MicGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
-
-	-- Input Listener Callbacks
-	scene.inputHandler = {
-		AButtonDown = function()
-			checkABtnPress()
-		end,
-		BButtonDown = function()
-			-- TODO: REMOVE ME
-			Noble.transition( TitleScene )
-		end,
-		downButtonUp = function ()
-
-			if cursor ~= nil then
-				if cursor.velocity.y < 0 then
-					return
-				end
-
-				self:setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
-			end
-
-		end,
-		upButtonUp = function ()
-
-			if cursor ~= nil then
-				if cursor.velocity.y > 0 then
-					return
-				end
-
-				self:setCursorVelocity( { x = cursor.velocity.x, y = 0 } )
-			end	
-
-		end,
-		leftButtonUp = function ()
-
-			if cursor ~= nil then
-				if cursor.velocity.x > 0 then
-					return
-				end
-
-				self:setCursorVelocity( { x = 0, y = cursor.velocity.y } )
-			end	
-
-		end,
-		rightButtonUp = function ()
-
-			if cursor ~= nil then
-				if cursor.velocity.x < 0 then
-					return
-				end
-
-				self:setCursorVelocity( { x = 0, y = cursor.velocity.y } )
-			end	
-
-		end,
-		downButtonDown = function ()
-			dbgMenu:selectNext()
-			self:setCursorVelocity( { x = cursor.velocity.x, y =_CURSOR_SPEED_MULTIPLIER } )
-		end,
-		upButtonDown = function ()
-			dbgMenu:selectPrevious()
-			self:setCursorVelocity( { x = cursor.velocity.x, y = -_CURSOR_SPEED_MULTIPLIER } )
-		end,
-		leftButtonDown = function ()
-			self:setCursorVelocity( { x = -_CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
-		end,
-		rightButtonDown = function ()
-			self:setCursorVelocity( { x = _CURSOR_SPEED_MULTIPLIER, y = cursor.velocity.y } )
-		end,
-	}
 
 	background = Graphics.image.new( "assets/images/background" )
 	-- bgMusic = Sound.fileplayer.new( "assets/sound/gameplay.mp3" )
@@ -182,52 +115,18 @@ function scene:init()
 	pet = GameController.pet
 	
 	-- Create UI Buttons
-	petBtn = Button( "assets/images/UI/button-pet" )
-	feedBtn = Button( "assets/images/UI/button-feed" )
-	playBtn = Button( "assets/images/UI/button-play" )
-	groomBtn = Button( "assets/images/UI/button-groom" )
-	sleepBtn = Button( "assets/images/UI/button-sleep" )
-
-	-- TODO: Implement Button click handlers 
-	petBtn:setPressedCallback( function()
-
-		cursor.velocity = { x = 0, y = 0 }
-
-		if Noble.Settings.get( "debug_mode" ) then
-			dbgMenu:activate()
-		else
-			-- TODO: Load a random game type
-			Noble.transition( Petting_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-
-	end)
-
-	feedBtn:setPressedCallback( function ()
-		cursor.velocity = { x = 0, y = 0 }
-
-		if Noble.Settings.get( "debug_mode" ) then
-			dbgMenu:activate()
-		else
-			-- TODO: Load a random game type
-			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-	end)
-
-	playBtn:setPressedCallback( function ()
-	end)
-
-	groomBtn:setPressedCallback( function ()
-	end)
-
-	sleepBtn:setPressedCallback( function ()
-	end)
+	self.petBtn = Button( "assets/images/UI/button-pet" )
+	self.feedBtn = Button( "assets/images/UI/button-feed" )
+	self.playBtn = Button( "assets/images/UI/button-play" )
+	self.groomBtn = Button( "assets/images/UI/button-groom" )
+	self.sleepBtn = Button( "assets/images/UI/button-sleep" )
 
 	-- Add UI Buttons to table
-	uiButtons[1] = petBtn
-	uiButtons[2] = feedBtn
-	uiButtons[3] = playBtn
-	uiButtons[4] = groomBtn
-	uiButtons[5] = sleepBtn
+	uiButtons[1] = self.petBtn
+	uiButtons[2] = self.feedBtn
+	uiButtons[3] = self.playBtn
+	uiButtons[4] = self.groomBtn
+	uiButtons[5] = self.sleepBtn
 
 	-- TODO: Create new icons and update
 	-- Add StatBars to table
@@ -240,9 +139,18 @@ function scene:init()
 		groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
 
+	-- Start the playTimer if it hasn't started
 	if GameController.playTimer == nil then
 		GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
 	end
+
+	-- Create the game states
+	scene.phases = {
+		phase1 = GamePhase_Phase1( self ),
+		phase2 = GamePhase_Phase2( self ),
+	}
+	scene.phaseManager = StateMachine( scene.phases.phase1, scene.phases )
+
 end
 
 function scene:enter()
@@ -275,7 +183,7 @@ function scene:start()
 	end
 
 	-- Add Buttons to the Scene
-	setupButtons()
+	self:setupButtons()
 
 	-- TOOD: These should not be hardcoded like this
 	statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
@@ -285,7 +193,7 @@ function scene:start()
 	statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
 
 	-- Add Cursor to the Scene
-	cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
+	self.cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
 
 	-- bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
@@ -303,7 +211,7 @@ function scene:start()
 
 end
 
-function setupButtons()
+function scene:setupButtons()
 	
 	local totalButtons = #uiButtons
 	local buttonPanelWidth = ( Button.getDimensions().width + Button.getPadding() ) * totalButtons - Button.getPadding()
@@ -317,7 +225,7 @@ function setupButtons()
 
 end
 
-function checkABtnPress()
+function scene:checkABtnPress()
 
 	if dialogue:getState() == DialogueState.Show then
 		
@@ -325,8 +233,8 @@ function checkABtnPress()
 
 	else
 
-		if dbgMenu:isActive() then
-			dbgMenu:click()
+		if self.dbgMenu:isActive() then
+			self.dbgMenu:click()
 			return
 		end
 
@@ -359,8 +267,8 @@ function scene:update()
 	bark:update()
 
 	-- Draw Debug Menu
-	if dbgMenu:isActive() then
-		dbgMenu:draw( Utilities.screenBounds().left, Utilities.screenSize().height / 2 )
+	if self.dbgMenu:isActive() then
+		self.dbgMenu:draw( Utilities.screenBounds().left, Utilities.screenSize().height / 2 )
 	end
 
 	for i, statBar in pairs( statBars ) do
@@ -394,12 +302,12 @@ function scene:setCursorVelocity( velocity )
 		return
 	end
 
-	if dbgMenu:isActive() then
+	if self.dbgMenu:isActive() then
 		return
 	end
 
-	if cursor ~= nil then
-		cursor.velocity = velocity
+	if self.cursor ~= nil then
+		self.cursor.velocity = velocity
 	end
 
 end

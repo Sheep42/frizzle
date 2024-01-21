@@ -86,6 +86,7 @@ function scene:start()
 	scene.super.start(self)
 
 	menu:activate()
+	menu:select( 1 )
 	Noble.Input.setCrankIndicatorStatus(true)
 	-- bgMusic:play( 0 )
 end

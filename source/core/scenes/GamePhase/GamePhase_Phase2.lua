@@ -10,7 +10,11 @@ function phase:init( scene )
 end
 
 -- Fires when the Phase is entered
-function phase:enter() end
+function phase:enter() 
+
+	self.owner.inputHandler = {}
+	
+end
 
 -- Fires when the Phase is exited
 function phase:exit() end
