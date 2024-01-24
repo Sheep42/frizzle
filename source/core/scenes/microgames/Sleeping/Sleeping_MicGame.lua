@@ -54,9 +54,7 @@ function scene:init()
 			-- end)
 
 		end,
-		BButtonDown = function()
-			Noble.transition( PlayScene )
-		end
+		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 
 end

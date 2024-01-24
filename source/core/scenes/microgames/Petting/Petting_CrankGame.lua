@@ -60,9 +60,7 @@ function scene:init()
 			self.crankTick += change
 
 		end,
-		BButtonDown = function()
-			Noble.transition( PlayScene )
-		end
+		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 
 	-- Initialize face & hand

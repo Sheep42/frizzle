@@ -48,12 +48,6 @@ function scene:init()
 	self.face = NobleSprite( faceAnim )
 	self.face:setSize( 150, 90 )
 
-	scene.inputHandler = {
-		BButtonDown = function()
-			Noble.transition( PlayScene )
-		end
-	}
-
 end
 
 function scene:enter()

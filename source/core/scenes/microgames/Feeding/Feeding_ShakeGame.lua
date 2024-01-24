@@ -13,7 +13,7 @@ function scene:init()
 
 	self.introText = "SHAKE!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
-	self.dialogue = Dialogue( 
+	self.dialogue = Dialogue(
 		self.introText,
 		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
 		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
@@ -37,12 +37,6 @@ function scene:init()
 	self.happinessVal = 0
 	self.motionTimer = nil
 	self.category = MicrogameType.feeding
-	
-	scene.inputHandler = {
-		BButtonDown = function()
-			Noble.transition( PlayScene )
-		end
-	}
 
 end
 

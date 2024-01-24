@@ -37,7 +37,9 @@ function scene:init()
 
 	scene.inputHandler = {
 		BButtonDown = function()
-			Noble.transition( PlayScene )
+			if Noble.Settings.get( 'debug_mode' ) then
+				Noble.transition( PlayScene )
+			end
 		end
 	}
 
