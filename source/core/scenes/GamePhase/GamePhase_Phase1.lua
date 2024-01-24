@@ -35,8 +35,11 @@ function phase:enter()
 			self.owner:checkABtnPress()
 		end,
 		BButtonDown = function()
-			-- TODO: REMOVE ME
-			Noble.transition( TitleScene )
+
+			if Noble.Settings.get( 'debug_mode' ) then
+				Noble.transition( TitleScene )
+			end
+
 		end,
 		downButtonUp = function ()
 
@@ -107,11 +110,11 @@ function phase:enter()
 		self.owner:handleBtnPress( MicrogameType.feeding, self.games )
 	end)
 
-	self.owner.playBtn:setPressedCallback( function ()
-	end)
+	-- self.owner.playBtn:setPressedCallback( function ()
+	-- end)
 
-	self.owner.groomBtn:setPressedCallback( function ()
-	end)
+	-- self.owner.groomBtn:setPressedCallback( function ()
+	-- end)
 
 	self.owner.sleepBtn:setPressedCallback( function ()
 		self.owner:handleBtnPress( MicrogameType.sleeping, self.games )

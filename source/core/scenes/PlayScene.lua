@@ -83,16 +83,16 @@ function scene:init()
 	-- Create UI Buttons
 	self.petBtn = Button( "assets/images/UI/button-pet" )
 	self.feedBtn = Button( "assets/images/UI/button-feed" )
-	self.playBtn = Button( "assets/images/UI/button-play" )
-	self.groomBtn = Button( "assets/images/UI/button-groom" )
+	-- self.playBtn = Button( "assets/images/UI/button-play" )
+	-- self.groomBtn = Button( "assets/images/UI/button-groom" )
 	self.sleepBtn = Button( "assets/images/UI/button-sleep" )
 
 	-- Add UI Buttons to table
 	uiButtons[1] = self.petBtn
 	uiButtons[2] = self.feedBtn
-	uiButtons[3] = self.playBtn
-	uiButtons[4] = self.groomBtn
-	uiButtons[5] = self.sleepBtn
+	-- uiButtons[3] = self.playBtn
+	-- uiButtons[4] = self.groomBtn
+	uiButtons[3] = self.sleepBtn
 
 	-- TODO: Create new icons and update
 	-- Add StatBars to table
