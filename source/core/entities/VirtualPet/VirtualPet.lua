@@ -113,7 +113,7 @@ function pet:tickStats()
 		self._statTimer = nil
 
 		for key, stat in pairs( self.stats ) do
-			
+
 			-- Don't touch hidden stats
 			if stat.hidden then
 				goto continue -- lol, Lua

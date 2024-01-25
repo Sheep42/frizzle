@@ -10,7 +10,6 @@ local dialogue = nil
 local bark = nil
 local bgMusic = nil
 local uiButtons = {}
-local statBars = {}
 
 scene._CURSOR_SPEED_MULTIPLIER = 1
 
@@ -97,7 +96,7 @@ function scene:init()
 	-- TODO: Create new icons and update
 	-- Add StatBars to table
 
-	statBars = {
+	self.statBars = {
 		hunger =  StatBar( "assets/images/UI/heart", "hunger" ),
 		friendship = StatBar( "assets/images/UI/heart", "friendship" ),
 		tired = StatBar( "assets/images/UI/heart", "tired" ),
@@ -152,11 +151,11 @@ function scene:start()
 	self:setupButtons()
 
 	-- TOOD: These should not be hardcoded like this
-	statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
-	statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
-	-- statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
-	-- statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
-	statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
+	self.statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
+	self.statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
+	-- self.statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
+	-- self.statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
+	self.statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
 
 	-- Add Cursor to the Scene
 	self.cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
@@ -235,7 +234,7 @@ function scene:update()
 		self.dbgMenu:draw( Utilities.screenBounds().left, Utilities.screenSize().height / 2 )
 	end
 
-	for i, statBar in pairs( statBars ) do
+	for i, statBar in pairs( self.statBars ) do
 		statBar:update()
 	end
 

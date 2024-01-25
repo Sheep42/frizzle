@@ -5,6 +5,7 @@ function StatBar:init( icon, stat )
 
 	self.icon = icon
 	self.stat = stat
+	self.emptyTime = 0
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}
 
@@ -12,6 +13,7 @@ function StatBar:init( icon, stat )
 	self.states = {
 		paused = StatBarState_Paused( 'paused', self ),
 		active = StatBarState_Active( 'active', self ),
+		empty = StatBarState_Empty( 'empty', self ),
 	}
 
 	self.stateMachine = StateMachine( self.states.paused )

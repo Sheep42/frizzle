@@ -130,6 +130,11 @@ function phase:tick()
 
 	self:phaseChangeHandler()
 
+	-- TODO: Nag player based on statBar.emptyTime
+	-- for key, statBar in pairs( self.owner.statBars ) do
+	-- 	print( key .. ' emptyTime: ' .. statBar.emptyTime )
+	-- end
+
 end
 
 function phase:phaseChangeHandler() 

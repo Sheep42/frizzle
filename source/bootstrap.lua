@@ -16,6 +16,7 @@ import "core/states/StateMachine"
 import "core/UI/Cursor"
 import "core/UI/Button"
 import "core/UI/StatBar/StatBarState_Active"
+import "core/UI/StatBar/StatBarState_Empty"
 import "core/UI/StatBar/StatBarState_Paused"
 import "core/UI/StatBar"
 import "core/dialogue/Dialogue"
@@ -32,6 +33,7 @@ import 'core/controllers/GameController'
 -- Globals
 pd = playdate
 Sound = pd.sound
+ONE_SECOND = 1000
 
 -- Generic Setup
 local s, ms = pd.getSecondsSinceEpoch()

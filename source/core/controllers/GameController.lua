@@ -33,6 +33,9 @@ GameController.flags = {
 	}
 }
 
+GameController.STAT_BAR_FAIL_STAGE_1_TIME = 5
+GameController.STAT_BAR_FAIL_STAGE_2_TIME = 10
+
 GameController.PHASE_2_TIME_TRIGGER = 300
 GameController.PHASE_2_GAME_TRIGGERS = {
 	petting = 1,
