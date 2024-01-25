@@ -18,7 +18,7 @@ function StatBar:init( icon, stat )
 
 end
 
-function StatBar:add( x, y ) 
+function StatBar:add( x, y )
 
 	self.position.x = x
 	self.position.y = y
@@ -33,10 +33,10 @@ function StatBar:update()
 
 end
 
-function StatBar:addSprites() 
-	
+function StatBar:addSprites()
+
 	local statVal = GameController.pet.stats[self.stat].value
-	
+
 	for i = 0, statVal - 1 do
 		local sprite = NobleSprite( self.icon )
 		sprite:add( self.position.x + (10 * i), self.position.y )
@@ -45,7 +45,7 @@ function StatBar:addSprites()
 
 end
 
-function StatBar:removeSprites() 
+function StatBar:removeSprites()
 
 	for i = 1, #self.sprites do
 		local sprite = self.sprites[i]

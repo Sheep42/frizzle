@@ -99,10 +99,10 @@ function scene:init()
 
 	statBars = {
 		hunger =  StatBar( "assets/images/UI/heart", "hunger" ),
-		boredom = StatBar( "assets/images/UI/heart", "boredom" ),
 		friendship = StatBar( "assets/images/UI/heart", "friendship" ),
 		tired = StatBar( "assets/images/UI/heart", "tired" ),
-		groom = StatBar( "assets/images/UI/heart", "groom" ),
+		-- boredom = StatBar( "assets/images/UI/heart", "boredom" ),
+		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
 
 	-- Start the playTimer if it hasn't started
@@ -154,8 +154,8 @@ function scene:start()
 	-- TOOD: These should not be hardcoded like this
 	statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
 	statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
-	statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
-	statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
+	-- statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
+	-- statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
 	statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
 
 	-- Add Cursor to the Scene
