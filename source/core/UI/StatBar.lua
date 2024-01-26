@@ -3,10 +3,13 @@ class( "StatBar" ).extends()
 
 function StatBar:init( icon, stat, gameType )
 
+	self.FLAG_PREFIX = 'statBars.' .. stat
+	self.NAG_FLAG = self.FLAG_PREFIX .. '.nagged'
+
 	self.icon = icon
 	self.stat = stat
 	self.gameType = gameType
-	self.emptyTime = 0
+	self.emptyTime = GameController.getFlag( self.FLAG_PREFIX .. '.emptyTime' )
 	self.nag = false
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}
@@ -58,4 +61,19 @@ function StatBar:removeSprites()
 
 	self.sprites = {}
 
+end
+
+function StatBar:resetEmptyTime()
+
+	self.emptyTime = 0
+	GameController.setFlag( self.FLAG_PREFIX .. '.emptyTime', self.emptyTime )
+
+	self.nag = false
+	GameController.setFlag( self.NAG_FLAG, false )
+
+end
+
+function StatBar:tickEmptyTime()
+	self.emptyTime += 1
+	GameController.setFlag( self.FLAG_PREFIX .. '.emptyTime', self.emptyTime )
 end

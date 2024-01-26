@@ -21,23 +21,23 @@ function state:tick()
 
 	if GameController.getFlag( 'statBars.paused' ) then
 		self.owner.stateMachine:changeState( self.owner.states.paused )
+		return
 	end
 
 	if #self.owner.sprites > 0 then
-
-		self.owner.emptyTime = 0
-		self.owner.nag = false
-		GameController.setFlag( 'statBars.' .. self.owner.stat .. '.nagged', false )
+		self.owner:resetEmptyTime()
 		self.owner.stateMachine:changeState( self.owner.states.active )
-
+		return
 	end
 
 	if self.timer.value >= ONE_SECOND then
-		self.owner.emptyTime += 1
+		self.owner:tickEmptyTime()
 		self.timer = Timer.new( ONE_SECOND, 0, ONE_SECOND )
 	end
 
-	if self.owner.emptyTime >= GameController.STAT_BAR_FAIL_STAGE_1_TIME and not self.owner.nag then
+	local alreadyNagged = GameController.getFlag( self.owner.NAG_FLAG )
+	local passedFailStage1Threshold = self.owner.emptyTime >= GameController.STAT_BAR_FAIL_STAGE_1_TIME
+	if passedFailStage1Threshold and not alreadyNagged then
 		self.owner.nag = true
 	end
 

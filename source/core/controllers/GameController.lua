@@ -33,18 +33,23 @@ GameController.flags = {
 		paused = true,
 		friendship = {
 			nagged = false,
+			emptyTime = 0,
 		},
 		hunger = {
 			nagged = false,
+			emptyTime = 0,
 		},
 		tired = {
 			nagged = false,
+			emptyTime = 0,
 		},
 		groom = {
 			nagged = false,
+			emptyTime = 0,
 		},
 		boredom = {
 			nagged = false,
+			emptyTime = 0,
 		},
 	}
 }

@@ -135,9 +135,9 @@ function phase:tick()
 	if not GameController.getFlag( 'statBars.paused' ) then
 
 		for key, statBar in pairs( self.owner.statBars ) do
-			if statBar.nag and not GameController.getFlag( 'statBars.' .. statBar.stat .. '.nagged' ) and not GameController.getFlag( 'game.startLowStatGame' ) then
+			if statBar.nag and not GameController.getFlag( statBar.NAG_FLAG ) and not GameController.getFlag( 'game.startLowStatGame' ) then
 				table.insert( self.lowStats, statBar.gameType )
-				GameController.setFlag( 'statBars.' .. statBar.stat .. '.nagged', true )
+				GameController.setFlag( statBar.NAG_FLAG, true )
 				GameController.setFlag( 'dialogue.currentScript', 'lowStatNag' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
@@ -150,8 +150,8 @@ function phase:tick()
 	if GameController.getFlag( 'game.startLowStatGame' ) then
 
 		local type = self.lowStats[math.random( #self.lowStats )]
-		self.owner:loadRandomGameOfType( type, self.games )
 		GameController.setFlag( 'game.startLowStatGame', false )
+		self.owner:loadRandomGameOfType( type, self.games )
 		self.lowStats = {}
 
 	end
@@ -162,6 +162,7 @@ function phase:phaseChangeHandler()
 
 	if GameController.getFlag( 'game.phase' ) == 2 then
 		self.stateMachine:changeState( self.owner.phases.phase2 )
+		return
 	end
 
 	if GameController.getFlag( 'game.playTime' ) >= GameController.PHASE_2_TIME_TRIGGER then
