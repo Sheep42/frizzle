@@ -16,7 +16,7 @@ pet._statTimer = nil
 pet.stats = {
 	hunger = {
 		key = 'hunger',
-		value = 5,
+		value = 0,
 		hidden = false,
 	},
 	boredom = {

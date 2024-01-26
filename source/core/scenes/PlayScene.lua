@@ -97,9 +97,9 @@ function scene:init()
 	-- Add StatBars to table
 
 	self.statBars = {
-		hunger =  StatBar( "assets/images/UI/heart", "hunger" ),
-		friendship = StatBar( "assets/images/UI/heart", "friendship" ),
-		tired = StatBar( "assets/images/UI/heart", "tired" ),
+		friendship = StatBar( "assets/images/UI/heart", pet.stats.friendship.key, MicrogameType.petting ),
+		hunger =  StatBar( "assets/images/UI/heart", pet.stats.hunger.key, MicrogameType.feeding ),
+		tired = StatBar( "assets/images/UI/heart", "tired", pet.stats.tired.key, MicrogameType.sleeping ),
 		-- boredom = StatBar( "assets/images/UI/heart", "boredom" ),
 		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
@@ -339,7 +339,7 @@ end
 function scene:loadRandomGameOfType( gameType, games )
 
 	if type( games ) ~= "table" then
-		warn( "Cannot load game. Invalid value provided for games table." )
+		print( "WARNING: Cannot load game. Invalid value provided for games table." )
 		return
 	end
 
@@ -352,7 +352,7 @@ function scene:loadRandomGameOfType( gameType, games )
 	end
 
 	if not validType then
-		warn( "Cannot load game. Invalid value provided for game type." )
+		print( "WARNING: Cannot load game. Invalid value provided for game type. got: " .. gameType )
 		return
 	end
 
@@ -360,7 +360,7 @@ function scene:loadRandomGameOfType( gameType, games )
 	local game = gameList[math.random( #gameList )]
 
 	if game == nil then
-		warn( "Cannot load game. Something went wrong." )
+		print( "WARNING: Cannot load game. Something went wrong." )
 		return
 	end
 

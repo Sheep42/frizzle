@@ -139,9 +139,7 @@ function scene:handleShake()
 		self.happinessVal += 0.01
 		self.motionTimer = nil
 	else
-		self.motionTimer = Timer.new( 500, function() 
-			print( "stopped" )
-		end)
+		self.motionTimer = Timer.new( 500, function() end)
 	end
 
 end

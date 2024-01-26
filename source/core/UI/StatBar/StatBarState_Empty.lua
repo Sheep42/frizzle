@@ -26,11 +26,16 @@ function state:tick()
 	if #self.owner.sprites > 0 then
 		self.owner.stateMachine:changeState( self.owner.states.active )
 		self.owner.emptyTime = 0
+		self.owner.nagged = false
 	end
 
 	if self.timer.value >= ONE_SECOND then
 		self.owner.emptyTime += 1
 		self.timer = Timer.new( ONE_SECOND, 0, ONE_SECOND )
+	end
+
+	if self.owner.emptyTime >= GameController.STAT_BAR_FAIL_STAGE_1_TIME and not self.owner.nagged then
+		self.owner.nagged = true
 	end
 
 end

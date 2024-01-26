@@ -26,6 +26,7 @@ GameController.flags = {
 			grooming = 0,
 			playing = 0,
 		},
+		startLowStatGame = false,
 		playTime = 0,
 	},
 	statBars = {
@@ -103,7 +104,7 @@ function GameController.setFlag( flag, value )
 		-- Cannot create flags this way because I said so, define game flags 
 		-- in the flags table, ya nerd
 		if current == nil then
-			warn( "WARNING: Cannot create a flag with setFlag. Skipping. flag: " .. flag )
+			print( "WARNING: Cannot create a flag with setFlag. Skipping. flag: " .. flag )
             return
         end
 
@@ -128,7 +129,7 @@ function GameController.getFlag( flag )
 
 		-- Cannot create flags this way
 		if current == nil then
-			warn( "WARNING: Flag not found. Returning nil. flag: " .. flag )
+			print( "WARNING: Flag not found. Returning nil. flag: " .. flag )
             return nil
         end
 
@@ -149,10 +150,14 @@ GameController.dialogueLines = {
 		function() GameController.setFlag( 'statBars.paused', false ) end,
 	},
 	lowStatNag = {
-		"Hey there, I noticed that Frizzle doesn't seem too happy right now.",
-		"Are you having trouble playing the game, or do you just like that terrible noise?",
-		"It looks like Frizzle needs (show list of stats at 0).",
-		"Let me help you with that. Give this game a try.",
-		function() end -- TODO: load random minigame relevant to stats at 0
+		function() GameController.setFlag( 'statBars.paused', true ) end,
+		"Hey there, I noticed that Frizzle\ndoesn't seem too happy right now.",
+		"Are you having trouble playing the\ngame, or do you just like that\nterrible noise?",
+		"It looks like Frizzle just needs some\nlove.",
+		"Let me help you with that.\nGive this game a try.",
+		function()
+			GameController.setFlag( 'statBars.paused', false )
+			GameController.setFlag( 'game.startLowStatGame', true )
+		end,
 	},
 }

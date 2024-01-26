@@ -1,11 +1,13 @@
 StatBar = {}
 class( "StatBar" ).extends()
 
-function StatBar:init( icon, stat ) 
+function StatBar:init( icon, stat, gameType )
 
 	self.icon = icon
 	self.stat = stat
+	self.gameType = gameType
 	self.emptyTime = 0
+	self.nagged = false
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}
 

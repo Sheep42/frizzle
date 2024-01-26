@@ -8,6 +8,7 @@ function phase:init( scene )
 
 	phase.super.init( self, "phase-1" )
 	self.owner = scene
+	self.lowStats = {}
 
 	self.games = {
 		feeding = {
@@ -71,7 +72,7 @@ function phase:enter()
 				end
 
 				self.owner:setCursorVelocity( { x = 0, y = self.owner.cursor.velocity.y } )
-			end	
+			end
 
 		end,
 		rightButtonUp = function ()
@@ -82,7 +83,7 @@ function phase:enter()
 				end
 
 				self.owner:setCursorVelocity( { x = 0, y = self.owner.cursor.velocity.y } )
-			end	
+			end
 
 		end,
 		downButtonDown = function ()
@@ -130,14 +131,33 @@ function phase:tick()
 
 	self:phaseChangeHandler()
 
-	-- TODO: Nag player based on statBar.emptyTime
-	-- for key, statBar in pairs( self.owner.statBars ) do
-	-- 	print( key .. ' emptyTime: ' .. statBar.emptyTime )
-	-- end
+	-- Nag player based on statBar.emptyTime
+	if not GameController.getFlag( 'statBars.paused' ) then
+
+		for key, statBar in pairs( self.owner.statBars ) do
+			if statBar.nagged and not GameController.getFlag( 'game.startLowStatGame' ) then
+				table.insert( self.lowStats, statBar.gameType )
+				GameController.setFlag( 'dialogue.currentScript', 'lowStatNag' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end
+		end
+
+	end
+
+	if GameController.getFlag( 'game.startLowStatGame' ) then
+
+		local type = self.lowStats[math.random( #self.lowStats )]
+		self.owner:loadRandomGameOfType( type, self.games )
+		GameController.setFlag( 'game.startLowStatGame', false )
+		self.lowStats = {}
+
+	end
 
 end
 
-function phase:phaseChangeHandler() 
+function phase:phaseChangeHandler()
 
 	if GameController.getFlag( 'game.phase' ) == 2 then
 		self.stateMachine:changeState( self.owner.phases.phase2 )
