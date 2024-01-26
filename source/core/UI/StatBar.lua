@@ -7,7 +7,7 @@ function StatBar:init( icon, stat, gameType )
 	self.stat = stat
 	self.gameType = gameType
 	self.emptyTime = 0
-	self.nagged = false
+	self.nag = false
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}
 

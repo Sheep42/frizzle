@@ -31,4 +31,8 @@ function state:tick()
 		self.owner:addSprites()
 	end
 
+	if GameController.getFlag( 'statBars.' .. self.owner.stat .. '.nagged' ) then
+		GameController.setFlag( 'statBars.' .. self.owner.stat .. '.nagged', false )
+	end
+	
 end

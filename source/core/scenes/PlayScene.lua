@@ -93,13 +93,13 @@ function scene:init()
 	-- uiButtons[4] = self.groomBtn
 	uiButtons[3] = self.sleepBtn
 
+	-- bug: statBars are recreated every time PlayScene is created which blows away the nag state
 	-- TODO: Create new icons and update
 	-- Add StatBars to table
-
 	self.statBars = {
 		friendship = StatBar( "assets/images/UI/heart", pet.stats.friendship.key, MicrogameType.petting ),
 		hunger =  StatBar( "assets/images/UI/heart", pet.stats.hunger.key, MicrogameType.feeding ),
-		tired = StatBar( "assets/images/UI/heart", "tired", pet.stats.tired.key, MicrogameType.sleeping ),
+		tired = StatBar( "assets/images/UI/heart", pet.stats.tired.key, MicrogameType.sleeping ),
 		-- boredom = StatBar( "assets/images/UI/heart", "boredom" ),
 		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}

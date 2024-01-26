@@ -31,6 +31,21 @@ GameController.flags = {
 	},
 	statBars = {
 		paused = true,
+		friendship = {
+			nagged = false,
+		},
+		hunger = {
+			nagged = false,
+		},
+		tired = {
+			nagged = false,
+		},
+		groom = {
+			nagged = false,
+		},
+		boredom = {
+			nagged = false,
+		},
 	}
 }
 

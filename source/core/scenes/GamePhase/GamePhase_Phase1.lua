@@ -135,8 +135,9 @@ function phase:tick()
 	if not GameController.getFlag( 'statBars.paused' ) then
 
 		for key, statBar in pairs( self.owner.statBars ) do
-			if statBar.nagged and not GameController.getFlag( 'game.startLowStatGame' ) then
+			if statBar.nag and not GameController.getFlag( 'statBars.' .. statBar.stat .. '.nagged' ) and not GameController.getFlag( 'game.startLowStatGame' ) then
 				table.insert( self.lowStats, statBar.gameType )
+				GameController.setFlag( 'statBars.' .. statBar.stat .. '.nagged', true )
 				GameController.setFlag( 'dialogue.currentScript', 'lowStatNag' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
