@@ -132,10 +132,15 @@ function phase:tick()
 	self:phaseChangeHandler()
 
 	-- Nag player based on statBar.emptyTime
-	if not GameController.getFlag( 'statBars.paused' ) then
+	local launchingGame = GameController.getFlag( 'game.startLowStatGame' )
+	local statBarsPaused = GameController.getFlag( 'statBars.paused' )
+
+	if not statBarsPaused and not launchingGame then
 
 		for key, statBar in pairs( self.owner.statBars ) do
-			if statBar.nag and not GameController.getFlag( statBar.NAG_FLAG ) and not GameController.getFlag( 'game.startLowStatGame' ) then
+
+			local alreadyNagged = GameController.getFlag( statBar.NAG_FLAG )
+			if statBar.nag and not alreadyNagged then
 				table.insert( self.lowStats, statBar.gameType )
 				GameController.setFlag( statBar.NAG_FLAG, true )
 				GameController.setFlag( 'dialogue.currentScript', 'lowStatNag' )
@@ -143,11 +148,12 @@ function phase:tick()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()
 			end
+
 		end
 
 	end
 
-	if GameController.getFlag( 'game.startLowStatGame' ) then
+	if launchingGame then
 
 		local type = self.lowStats[math.random( #self.lowStats )]
 		GameController.setFlag( 'game.startLowStatGame', false )
