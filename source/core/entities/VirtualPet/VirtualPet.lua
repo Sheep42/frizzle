@@ -11,61 +11,62 @@ pet._animations = {
 	},
 }
 
-pet._statTimer = nil
-
-pet.stats = {
-	hunger = {
-		key = 'hunger',
-		value = 5,
-		hidden = false,
-	},
-	boredom = {
-		key = 'boredom',
-		value = 5,
-		hidden = false,
-	},
-	groom = {
-		key = 'groom',
-		value = 5,
-		hidden = false,
-	},
-	friendship = {
-		key = 'friendship',
-		value = 5,
-		hidden = false,
-	},
-	tired = {
-		key = 'tired',
-		value = 5,
-		hidden = false,
-	},
-	anger = {
-		key = 'anger',
-		value = 0,
-		hidden = true,
-	},
-	obsessiveness = {
-		key = 'obsessiveness',
-		value = 0,
-		hidden = true,
-	},
-	selfAwareness = {
-		key = 'selfAwareness',
-		value = 0,
-		hidden = true,
-	},
-}
-
 function pet:init()
 
 	-- This is a really gross way to make VirtualPet a singleton, but I'm the 
 	-- only person who has to read this stinky code, so it's probably fine
 	-- Famous last words
-	
+
 	GameController.pet = self
 
 	-- Create Base NobleSprite
 	self:setSize( 64, 64 )
+
+	self._statTimer = nil
+	self.stats = {
+		hunger = {
+			key = 'hunger',
+			value = 5,
+			hidden = false,
+		},
+		boredom = {
+			key = 'boredom',
+			value = 5,
+			hidden = false,
+		},
+		groom = {
+			key = 'groom',
+			value = 5,
+			hidden = false,
+		},
+		friendship = {
+			key = 'friendship',
+			value = 5,
+			hidden = false,
+		},
+		tired = {
+			key = 'tired',
+			value = 5,
+			hidden = false,
+		},
+		anger = {
+			key = 'anger',
+			value = 0,
+			hidden = true,
+		},
+		obsessiveness = {
+			key = 'obsessiveness',
+			value = 0,
+			hidden = true,
+		},
+		selfAwareness = {
+			key = 'selfAwareness',
+			value = 0,
+			hidden = true,
+		},
+	}
+
+	self.lowStats = {}
 
 	-- Set up animation states
 	local animation = Noble.Animation.new( self._spritesheet )

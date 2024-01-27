@@ -10,6 +10,7 @@ function StatBar:init( icon, stat, gameType )
 	self.stat = stat
 	self.gameType = gameType
 	self.emptyTime = GameController.getFlag( self.FLAG_PREFIX .. '.emptyTime' )
+	self.ignored = false
 	self.nag = false
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}

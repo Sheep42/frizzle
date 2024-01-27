@@ -41,4 +41,9 @@ function state:tick()
 		self.owner.nag = true
 	end
 
+	local passedFailStage2Threshold = self.owner.emptyTime >= GameController.STAT_BAR_FAIL_STAGE_2_TIME
+	if passedFailStage2Threshold and alreadyNagged then
+		self.owner.ignored = true
+	end
+
 end

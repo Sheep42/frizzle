@@ -7,6 +7,21 @@ local phase = GamePhase_Phase2
 function phase:init( scene )
 	phase.super.init( self, "phase-2" )
 	self.owner = scene
+
+	self.games = {
+		feeding = {
+			Feeding_ShakeGame,
+		},
+		petting = {
+			Petting_CrankGame,
+			Petting_ShakeGame,
+		},
+		playing = {},
+		grooming = {},
+		sleeping = {
+			Sleeping_MicGame,
+		},
+	}
 end
 
 -- Fires when the Phase is entered
@@ -110,9 +125,10 @@ function phase:exit() end
 function phase:tick()
 
 	self:phaseHandler()
+	self.owner:handleStatNag( self.games )
 
 end
 
-function phase:phaseHandler() 
+function phase:phaseHandler()
 
 end

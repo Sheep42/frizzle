@@ -5,54 +5,57 @@ class( "GameController" ).extends()
 -- This is a really gross way to make VirtualPet a singleton, but I'm the 
 -- only person who has to read this stinky code, so it's probably fine
 -- Famous last words
-	
 
 GameController.pet = VirtualPet( "assets/images/pet" )
 
 GameController.dialogue = nil
-GameController.flags = {
-	dialogue = {
-		currentScript = 'intro',
-		currentLine = 1,
-		playedIntro = false,
-		showBark = nil,
-	},
-	game = {
-		phase = 1,
-		gamesPlayed = {
-			petting = 0,
-			feeding = 0,
-			sleeping = 0,
-			grooming = 0,
-			playing = 0,
+
+function GameController.getDefaultFlags()
+	return {
+		dialogue = {
+			currentScript = 'intro',
+			currentLine = 1,
+			playedIntro = false,
+			showBark = nil,
 		},
-		startLowStatGame = false,
-		playTime = 0,
-	},
-	statBars = {
-		paused = true,
-		friendship = {
-			nagged = false,
-			emptyTime = 0,
+		game = {
+			phase = 1,
+			gamesPlayed = {
+				petting = 0,
+				feeding = 0,
+				sleeping = 0,
+				grooming = 0,
+				playing = 0,
+			},
+			startLowStatGame = false,
+			playTime = 0,
 		},
-		hunger = {
-			nagged = false,
-			emptyTime = 0,
-		},
-		tired = {
-			nagged = false,
-			emptyTime = 0,
-		},
-		groom = {
-			nagged = false,
-			emptyTime = 0,
-		},
-		boredom = {
-			nagged = false,
-			emptyTime = 0,
-		},
+		statBars = {
+			paused = true,
+			friendship = {
+				nagged = false,
+				emptyTime = 0,
+			},
+			hunger = {
+				nagged = false,
+				emptyTime = 0,
+			},
+			tired = {
+				nagged = false,
+				emptyTime = 0,
+			},
+			groom = {
+				nagged = false,
+				emptyTime = 0,
+			},
+			boredom = {
+				nagged = false,
+				emptyTime = 0,
+			},
+		}
 	}
-}
+end
+GameController.flags = GameController.getDefaultFlags()
 
 GameController.STAT_BAR_FAIL_STAGE_1_TIME = 5
 GameController.STAT_BAR_FAIL_STAGE_2_TIME = 10
@@ -159,6 +162,19 @@ function GameController.getFlag( flag )
 
 end
 
+function GameController.reset()
+
+	if Noble.Settings.get( 'debug_mode' ) then
+		print( 'RESET GAME' )
+	end
+
+	Noble.transition( TitleScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+	GameController.flags = GameController.getDefaultFlags()
+	GameController.pet = VirtualPet( 'assets/images/pet' )
+	GameController.playTimer = nil
+
+end
+
 GameController.dialogueLines = {
 	intro = {
 		"Congratulations on meeting your new\nbest friend Frizzle!",
@@ -179,5 +195,11 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'game.startLowStatGame', true )
 		end,
+	},
+	ignoredStat = {
+		function() GameController.setFlag( 'statBars.paused', true ) end,
+		"Okay, I tried to give you the benefit of\nthe doubt but it seems that you just\nsuck at playing video games.",
+		"Git gud.",
+		function() GameController.reset() end,
 	},
 }

@@ -8,7 +8,6 @@ function phase:init( scene )
 
 	phase.super.init( self, "phase-1" )
 	self.owner = scene
-	self.lowStats = {}
 
 	self.games = {
 		feeding = {
@@ -28,7 +27,7 @@ function phase:init( scene )
 end
 
 -- Fires when the Phase is entered
-function phase:enter() 
+function phase:enter()
 
 	-- Input Listener Callbacks
 	self.owner.inputHandler = {
@@ -130,37 +129,7 @@ function phase:exit() end
 function phase:tick()
 
 	self:phaseChangeHandler()
-
-	-- Nag player based on statBar.emptyTime
-	local launchingGame = GameController.getFlag( 'game.startLowStatGame' )
-	local statBarsPaused = GameController.getFlag( 'statBars.paused' )
-
-	if not statBarsPaused and not launchingGame then
-
-		for key, statBar in pairs( self.owner.statBars ) do
-
-			local alreadyNagged = GameController.getFlag( statBar.NAG_FLAG )
-			if statBar.nag and not alreadyNagged then
-				table.insert( self.lowStats, statBar.gameType )
-				GameController.setFlag( statBar.NAG_FLAG, true )
-				GameController.setFlag( 'dialogue.currentScript', 'lowStatNag' )
-				GameController.setFlag( 'dialogue.currentLine', 1 )
-				GameController.dialogue:setText( GameController.advanceDialogueLine() )
-				GameController.dialogue:show()
-			end
-
-		end
-
-	end
-
-	if launchingGame then
-
-		local type = self.lowStats[math.random( #self.lowStats )]
-		GameController.setFlag( 'game.startLowStatGame', false )
-		self.owner:loadRandomGameOfType( type, self.games )
-		self.lowStats = {}
-
-	end
+	self.owner:handleStatNag( self.games )
 
 end
 

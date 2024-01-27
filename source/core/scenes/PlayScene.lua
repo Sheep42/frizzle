@@ -352,7 +352,7 @@ function scene:loadRandomGameOfType( gameType, games )
 	end
 
 	if not validType then
-		print( "WARNING: Cannot load game. Invalid value provided for game type. got: " .. gameType )
+		print( "WARNING: Cannot load game. Invalid value provided for game type. got: " .. tostring( gameType ) )
 		return
 	end
 
@@ -365,5 +365,45 @@ function scene:loadRandomGameOfType( gameType, games )
 	end
 
 	Noble.transition( game, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+
+end
+
+function scene:handleStatNag( games )
+
+	local launchingGame = GameController.getFlag( 'game.startLowStatGame' )
+	local statBarsPaused = GameController.getFlag( 'statBars.paused' )
+
+	if not statBarsPaused and not launchingGame then
+
+		for key, statBar in pairs( self.statBars ) do
+
+			local alreadyNagged = GameController.getFlag( statBar.NAG_FLAG )
+			if statBar.ignored then
+				GameController.setFlag( 'dialogue.currentScript', 'ignoredStat' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+				return
+			end
+
+			if statBar.nag and not alreadyNagged then
+				table.insert( pet.lowStats, statBar.gameType )
+				GameController.setFlag( statBar.NAG_FLAG, true )
+				GameController.setFlag( 'dialogue.currentScript', 'lowStatNag' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end
+
+		end
+
+	end
+
+	if launchingGame then
+		local type = pet.lowStats[math.random( #pet.lowStats )]
+		GameController.setFlag( 'game.startLowStatGame', false )
+		pet.lowStats = {}
+		self:loadRandomGameOfType( type, games )
+	end
 
 end
