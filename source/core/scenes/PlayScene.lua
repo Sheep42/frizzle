@@ -97,9 +97,9 @@ function scene:init()
 	-- TODO: Create new icons and update
 	-- Add StatBars to table
 	self.statBars = {
-		friendship = StatBar( "assets/images/UI/heart", pet.stats.friendship.key, MicrogameType.petting ),
-		hunger =  StatBar( "assets/images/UI/heart", pet.stats.hunger.key, MicrogameType.feeding ),
-		tired = StatBar( "assets/images/UI/heart", pet.stats.tired.key, MicrogameType.sleeping ),
+		friendship = StatBar( pet.stats.friendship ),
+		hunger =  StatBar( pet.stats.hunger ),
+		tired = StatBar( pet.stats.tired ),
 		-- boredom = StatBar( "assets/images/UI/heart", "boredom" ),
 		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}

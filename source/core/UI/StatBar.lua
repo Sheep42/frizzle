@@ -1,14 +1,14 @@
 StatBar = {}
 class( "StatBar" ).extends()
 
-function StatBar:init( icon, stat, gameType )
+function StatBar:init( stat )
 
-	self.FLAG_PREFIX = 'statBars.' .. stat
+	self.FLAG_PREFIX = 'statBars.' .. stat.key
 	self.NAG_FLAG = self.FLAG_PREFIX .. '.nagged'
 
-	self.icon = icon
-	self.stat = stat
-	self.gameType = gameType
+	self.icon = stat.icon
+	self.stat = stat.key
+	self.gameType = stat.gameType
 	self.emptyTime = GameController.getFlag( self.FLAG_PREFIX .. '.emptyTime' )
 	self.ignored = false
 	self.nag = false
