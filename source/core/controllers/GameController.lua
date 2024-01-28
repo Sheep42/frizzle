@@ -33,6 +33,7 @@ function GameController.getDefaultFlags()
 		},
 		statBars = {
 			paused = true,
+			playCry = false,
 			friendship = {
 				nagged = false,
 				emptyTime = 0,
@@ -58,6 +59,7 @@ function GameController.getDefaultFlags()
 end
 GameController.flags = GameController.getDefaultFlags()
 
+GameController.STAT_BAR_CRY_TIME = 2
 GameController.STAT_BAR_FAIL_STAGE_1_TIME = 5
 GameController.STAT_BAR_FAIL_STAGE_2_TIME = 10
 

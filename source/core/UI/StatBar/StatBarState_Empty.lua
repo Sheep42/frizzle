@@ -35,6 +35,10 @@ function state:tick()
 		self.timer = Timer.new( ONE_SECOND, 0, ONE_SECOND )
 	end
 
+	if self.owner.emptyTime >= GameController.STAT_BAR_CRY_TIME and not self.owner.playCry then
+		self.owner.playCry = true
+	end
+
 	local alreadyNagged = GameController.getFlag( self.owner.NAG_FLAG )
 	local passedFailStage1Threshold = self.owner.emptyTime >= GameController.STAT_BAR_FAIL_STAGE_1_TIME
 	if passedFailStage1Threshold and not alreadyNagged then

@@ -28,6 +28,7 @@ function pet:init()
 			key = 'hunger',
 			icon = 'assets/images/UI/heart',
 			gameType = MicrogameType.feeding,
+			crySound = 'assets/sound/cry.wav',
 			value = 5,
 			hidden = false,
 		},
@@ -35,6 +36,7 @@ function pet:init()
 			key = 'boredom',
 			icon = 'assets/images/UI/heart',
 			gameType = MicrogameType.playing,
+			crySound = 'assets/sound/cry.wav',
 			value = 5,
 			hidden = true,
 		},
@@ -42,6 +44,7 @@ function pet:init()
 			key = 'groom',
 			icon = 'assets/images/UI/heart',
 			gameType = MicrogameType.grooming,
+			crySound = 'assets/sound/cry.wav',
 			value = 5,
 			hidden = true,
 		},
@@ -49,6 +52,7 @@ function pet:init()
 			key = 'friendship',
 			icon = 'assets/images/UI/heart',
 			gameType = MicrogameType.petting,
+			crySound = 'assets/sound/cry.wav',
 			value = 5,
 			hidden = false,
 		},
@@ -56,12 +60,14 @@ function pet:init()
 			key = 'tired',
 			icon = 'assets/images/UI/heart',
 			gameType = MicrogameType.sleeping,
+			crySound = 'assets/sound/cry.wav',
 			value = 5,
 			hidden = false,
 		},
 		anger = {
 			key = 'anger',
 			icon = 'assets/images/UI/heart',
+			crySound = 'assets/sound/cry.wav',
 			gameType = nil,
 			value = 0,
 			hidden = true,
@@ -69,6 +75,7 @@ function pet:init()
 		obsessiveness = {
 			key = 'obsessiveness',
 			icon = 'assets/images/UI/heart',
+			crySound = 'assets/sound/cry.wav',
 			gameType = nil,
 			value = 0,
 			hidden = true,
@@ -76,6 +83,7 @@ function pet:init()
 		selfAwareness = {
 			key = 'selfAwareness',
 			icon = 'assets/images/UI/heart',
+			crySound = 'assets/sound/cry.wav',
 			gameType = nil,
 			value = 0,
 			hidden = true,
@@ -108,8 +116,6 @@ function pet:init()
 	}
 
 	self.stateMachine = StateMachine( self.states.paused, self.states )
-	self._crySample = pd.sound.sampleplayer.new( 'assets/sound/cry.wav' )
-	self._crySample:setVolume( 1 )
 
 end
 
@@ -156,33 +162,4 @@ function pet:tickStats()
 
 	end
 
-	local emptyStats = false
-	for k, stat in pairs( self.stats ) do
-
-		if stat.hidden then
-			goto continue
-		end
-
-		if stat.value <= 0 then
-
-			emptyStats = true
-
-			if not self._crySample:isPlaying() then
-				self._crySample:play( 0 )
-			end
-
-		end
-
-	    ::continue::
-
-	end
-
-	if not emptyStats then
-		self._crySample:stop()
-	end
-
-end
-
-function pet:stopSounds()
-	self._crySample:stop()
 end

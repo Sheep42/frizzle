@@ -8,10 +8,12 @@ function StatBar:init( stat )
 
 	self.icon = stat.icon
 	self.stat = stat.key
+	self.crySound = stat.crySound
 	self.gameType = stat.gameType
 	self.emptyTime = GameController.getFlag( self.FLAG_PREFIX .. '.emptyTime' )
 	self.ignored = false
 	self.nag = false
+	self.playCry = false
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}
 
@@ -71,6 +73,8 @@ function StatBar:resetEmptyTime()
 
 	self.nag = false
 	GameController.setFlag( self.NAG_FLAG, false )
+
+	self.playCry = false
 
 end
 

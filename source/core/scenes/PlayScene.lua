@@ -252,7 +252,6 @@ function scene:exit()
 	scene.super.exit( self )
 
 	GameController.setFlag( 'statBars.paused', true )
-	pet:stopSounds()
 	pet:remove()
 	-- bgMusic:stop()
 
@@ -399,6 +398,12 @@ function scene:handleStatNag( games )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()
+			end
+
+			if statBar.playCry and bark:getState() == DialogueState.Hide then
+				bark:setEmote( NobleSprite( statBar.icon ), nil, nil, statBar.crySound )
+				statBar.playCry = false
+				bark:show()
 			end
 
 		end
