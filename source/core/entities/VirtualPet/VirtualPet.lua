@@ -36,14 +36,14 @@ function pet:init()
 			icon = 'assets/images/UI/heart',
 			gameType = MicrogameType.playing,
 			value = 5,
-			hidden = false,
+			hidden = true,
 		},
 		groom = {
 			key = 'groom',
 			icon = 'assets/images/UI/heart',
 			gameType = MicrogameType.grooming,
 			value = 5,
-			hidden = false,
+			hidden = true,
 		},
 		friendship = {
 			key = 'friendship',
