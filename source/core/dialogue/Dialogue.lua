@@ -204,13 +204,13 @@ function Dialogue:clearCanvas()
 end
 
 function Dialogue:draw()
-	
+
 	Graphics.lockFocus( self._canvas )
 
 	-- Draw the outer dialogue box
 	Graphics.setColor( self.borderColor )
 	Graphics.fillRoundRect( self.x, self.y, self.boxWidth + self.borderWidth, self.boxHeight + self.borderHeight, 5 )
-	
+
 	-- Draw the inner dialogue box
 	Graphics.setColor( self.backgroundColor )
 	Graphics.fillRoundRect( self._innerX, self._innerY, self.boxWidth, self.boxHeight, 5 )
@@ -222,17 +222,17 @@ end
 function Dialogue:play()
 
 	if self.text ~= nil then
-		
+
 		if self.finished then
 			self:drawText( self.text )
 			return
 		end
 
 		if self.dialogueType == DialogueType.Instant then
-			
+
 			self:drawText( self.text )
 			self:finish()
-		
+
 		elseif self.dialogueType == DialogueType.Typewriter then
 			buildText( self )
 		end
@@ -253,11 +253,11 @@ function Dialogue:play()
 		self:finish()
 
 	end
-		
+
 end
 
-function Dialogue:restart() 
-	
+function Dialogue:restart()
+
 	self:reset()
 	self:startTimers()
 
@@ -268,11 +268,11 @@ function Dialogue:reset()
 	self._dialoguePointer = 0
 	self:resetTimers()
 	self.finished = false
-	
+
 end
 
 function Dialogue:resetTimers()
-	
+
 	self:resetAutohideTimer()
 	self:resetDialogueTimer()
 
@@ -357,7 +357,7 @@ function Dialogue:setEmote( emote, emoteX, emoteY, soundPath )
 
 	self.emote = emote
 	self.text = nil
-	
+
 	if emoteX ~= nil then
 		self._emoteX = self._innerX + emoteX
 	end
@@ -367,7 +367,7 @@ function Dialogue:setEmote( emote, emoteX, emoteY, soundPath )
 	end
 
 	if soundPath ~= nil and soundPath ~= "" then
-		self._emoteSound = Sound.fileplayer.new( soundPath )
+		self._emoteSound = Sound.sampleplayer.new( soundPath )
 
 		if self._emoteSound ~= nil then
 			self._emoteSound:setVolume( 0.5 )
@@ -379,7 +379,7 @@ function Dialogue:setEmote( emote, emoteX, emoteY, soundPath )
 end
 
 function Dialogue:enableSound()
-	
+
 	local textSound = Sound.synth.new( Sound.kWavePOVosim )
 	self._textSound = textSound
 

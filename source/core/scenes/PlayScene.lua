@@ -65,16 +65,24 @@ function scene:init()
 		dialogue = GameController.dialogue
 	end
 
-	bark = Dialogue(
-		'',
-		Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box
-		Utilities.screenBounds().top + 20, -- 20 px down from top of allowable screen area
-		true,
-		50,
-		50,
-		2,
-		2
-	)
+	if GameController.bark == nil then
+
+		bark = Dialogue(
+			'',
+			Utilities.screenSize().width / 2 - 26, -- center of screen minus half width of outer box
+			Utilities.screenBounds().top + 20, -- 20 px down from top of allowable screen area
+			true,
+			50,
+			50,
+			2,
+			2
+		)
+
+		GameController.bark = bark
+
+	else
+		bark = GameController.bark
+	end
 
 	-- Create Pet
 	pet = GameController.pet
@@ -134,12 +142,9 @@ function scene:start()
 	-- Add Pet to Scene
 	pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
 
-	if GameController.getFlag( 'dialogue.showBark' ) ~= nil then
+	if GameController.getFlag( 'dialogue.showBark' ) then
 
-		local emote = GameController.getFlag( 'dialogue.showBark' )
-		GameController.setFlag( 'dialogue.showBark', nil )
-
-		bark:setEmote( emote, nil, nil, "assets/sound/win-game.mp3" ) -- Should change to wav
+		GameController.setFlag( 'dialogue.showBark', false )
 
 		if bark:getState() == DialogueState.Hide then
 			bark:show()

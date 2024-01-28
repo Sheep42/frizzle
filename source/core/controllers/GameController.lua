@@ -9,6 +9,7 @@ class( "GameController" ).extends()
 GameController.pet = VirtualPet( "assets/images/pet" )
 
 GameController.dialogue = nil
+GameController.bark = nil
 
 function GameController.getDefaultFlags()
 	return {

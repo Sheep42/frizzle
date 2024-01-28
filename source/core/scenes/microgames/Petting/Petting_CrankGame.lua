@@ -44,6 +44,7 @@ function scene:init()
 	self.maxFrameDuration = 15
 	self.handState = HandStates.Move
 	self.category = MicrogameType.petting
+	self.stat = GameController.pet.stats.friendship
 
 	scene.inputHandler = {
 		cranked = function( change, acceleratedChange )
@@ -81,7 +82,7 @@ function scene:enter()
 end
 
 function scene:start()
-	
+
 	scene.super.start( self )
 	Noble.Input.setCrankIndicatorStatus( true )
 
@@ -99,9 +100,10 @@ end
 function scene:update()
 
 	if self.timer.value >= self.gameTime or self.win then
-		
+
 		if self.win then
-			GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
+			GameController.setFlag( 'dialogue.showBark', true )
+			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
 			GameController.pet.stats.friendship.value = math.clamp( GameController.pet.stats.friendship.value + math.random(3), 1, 5 )
 		end
 
@@ -140,7 +142,7 @@ function scene:finish()
 	scene.super.finish( self )
 end
 
-function scene:handleCrank() 
+function scene:handleCrank()
 
 	if self.cranked > 0 then
 
@@ -167,20 +169,20 @@ function scene:handleCrank()
 end
 
 function scene:moveHand()
-	
+
 	local x, y = self.hand:getPosition()
 	local faceX, faceY = self.face:getPosition()
 	local headPos = faceY - 30
 	local handSpeed = math.clamp( self.crankAcceleration, 0.001, 10 )
 
 	if self.handState == HandStates.Move then
-		
+
 		self.hand:moveBy( 0, handSpeed )
 		if y >= headPos then
 			self.hand:moveTo( x, headPos )
 			self.handState = HandStates.Rotate
 		end
-	
+
 	elseif self.handState == HandStates.Rotate then
 
 		local radius = 10

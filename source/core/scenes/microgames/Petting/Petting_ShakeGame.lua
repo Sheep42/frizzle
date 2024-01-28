@@ -38,6 +38,7 @@ function scene:init()
 	self.hand = NobleSprite( 'assets/images/hand-petting' )
 	self.motionTimer = nil
 	self.category = MicrogameType.petting
+	self.stat = GameController.pet.stats.friendship
 
 	-- Initialize face & hand
 	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
@@ -81,7 +82,8 @@ function scene:update()
 	if self.timer.value >= self.gameTime or self.win then
 
 		if self.win then
-			GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
+			GameController.setFlag( 'dialogue.showBark', true )
+			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
 			GameController.pet.stats.friendship.value = math.clamp( GameController.pet.stats.friendship.value + math.random(3), 1, 5 )
 		end
 

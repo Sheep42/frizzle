@@ -43,6 +43,7 @@ function scene:init()
 
 	self.noiseThreshold = (10 / self._LEVEL_AMPLIFIER) -- 10% == 0.010
 	self.category = MicrogameType.sleeping
+	self.stat = GameController.pet.stats.tired
 
 	scene.inputHandler = {
 		AButtonDown = function()
@@ -85,7 +86,8 @@ function scene:update()
 	if self.timer.value >= self.gameTime or self.win then
 
 		if self.win then
-			GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
+			GameController.setFlag( 'dialogue.showBark', true )
+			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
 			GameController.pet.stats.tired.value = math.clamp( GameController.pet.stats.tired.value + math.random(3), 1, 5 )
 		end
 

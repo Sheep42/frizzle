@@ -37,6 +37,7 @@ function scene:init()
 	self.happinessVal = 0
 	self.motionTimer = nil
 	self.category = MicrogameType.feeding
+	self.stat = GameController.pet.stats.hunger
 
 end
 
@@ -63,9 +64,10 @@ end
 function scene:update()
 
 	if self.timer.value >= self.gameTime or self.win then
-		
+
 		if self.win then
-			GameController.setFlag( 'dialogue.showBark', NobleSprite( 'assets/images/UI/heart' ) )
+			GameController.setFlag( 'dialogue.showBark', true )
+			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
 			GameController.pet.stats.hunger.value = math.clamp( GameController.pet.stats.hunger.value + math.random(3), 1, 5 )
 		end
 
