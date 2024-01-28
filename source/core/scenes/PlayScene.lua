@@ -247,6 +247,7 @@ function scene:exit()
 	scene.super.exit( self )
 
 	GameController.setFlag( 'statBars.paused', true )
+	pet:stopSounds()
 	pet:remove()
 	-- bgMusic:stop()
 

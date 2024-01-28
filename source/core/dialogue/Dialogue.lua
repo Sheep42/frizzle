@@ -19,7 +19,7 @@ DialogueState = {
 
 -- Constants
 Dialogue._BASE_TIMER_DURATION = 100
-Dialogue._BASE_PITCH = 261.63 
+Dialogue._BASE_PITCH = 261.63
 Dialogue._BASE_VOLUME = 0.5
 Dialogue._SYNTH_LENGTH = 0.15
 

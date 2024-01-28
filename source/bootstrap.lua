@@ -2,6 +2,15 @@
 import 'libraries/noble/Noble'
 import 'utilities/Utilities'
 
+-- Globals
+pd = playdate
+Sound = pd.sound
+ONE_SECOND = 1000
+
+-- Generic Setup
+local s, ms = pd.getSecondsSinceEpoch()
+math.randomseed( ms, s )
+
 import 'core/scenes/TitleScene'
 import 'core/scenes/PlayScene'
 import 'core/scenes/microgames/Microgame'
@@ -29,12 +38,3 @@ import "core/entities/VirtualPet/PetState_Paused"
 import "core/entities/VirtualPet/VirtualPet"
 
 import 'core/controllers/GameController'
-
--- Globals
-pd = playdate
-Sound = pd.sound
-ONE_SECOND = 1000
-
--- Generic Setup
-local s, ms = pd.getSecondsSinceEpoch()
-math.randomseed( ms, s )
