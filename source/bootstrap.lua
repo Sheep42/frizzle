@@ -11,8 +11,10 @@ ONE_SECOND = 1000
 local s, ms = pd.getSecondsSinceEpoch()
 math.randomseed( ms, s )
 
+import 'core/scenes/SplashScene'
 import 'core/scenes/TitleScene'
 import 'core/scenes/PlayScene'
+
 import 'core/scenes/microgames/Microgame'
 import 'core/scenes/microgames/Petting/Petting_CrankGame'
 import 'core/scenes/microgames/Petting/Petting_ShakeGame'
