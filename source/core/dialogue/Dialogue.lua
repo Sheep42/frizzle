@@ -47,6 +47,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.finished = false
 		self.textSpeed = Noble.Settings.get( "text_speed" )
 		self.font = Noble.Text.getCurrentFont()
+		self.btnSprite = Graphics.image.new( 'assets/images/UI/a-btn' )
 
 	-- Internals
 		self._dialoguePointer = 0
@@ -56,6 +57,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self._textSound = nil
 		self._emoteSound = nil
 		self._state = DialogueState.Hide
+		self._showIndicator = false
 
 	-- Positioning 
 		self._innerX = 0
@@ -71,13 +73,13 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 			if type( say ) == "string" then
 				self.text = say
 			elseif type( say ) == "table" then
-				self.emote = say	
+				self.emote = say
 			end
 
 		end
 
 		if autohide ~= nil then
-			self.autohide = autohide	
+			self.autohide = autohide
 		end
 
 		if dialogueType ~= nil then
@@ -125,6 +127,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 	-- Init Object
 		self.textDuration = self._BASE_TIMER_DURATION
 		self._canvas = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height )
+		self._overlayCanvas = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height )
 
 	-- Init Positioning
 		if x ~= nil then
@@ -156,16 +159,22 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.onHideCallback = function ()
 			self:reset()
 		end
-		
+
 		self.buttonPressedCallback = function() end
 		self.onFinishCallback = function () end
 
 end
 
 function Dialogue:update()
-	
+
 	if self.autohide and self._showTimer.value >= self.showDuration then
 		self:hide()
+	end
+
+	if not self.autohide and self._indicatorTimer == nil then
+		self._indicatorTimer = Timer.keyRepeatTimerWithDelay(ONE_SECOND / 1.5, ONE_SECOND / 1.5, function()
+			self._showIndicator = not self._showIndicator
+		end)
 	end
 
 	-- Yeah, I could use a real state machine here but, honestly, it feels a
@@ -186,11 +195,13 @@ end
 
 function Dialogue:hide()
 	self._state = DialogueState.Hide
+	self.showIndicator = false
 	self.onHideCallback()
 end
 
 function Dialogue:drawCanvas()
 	self._canvas:draw( 0, 0 )
+	self._overlayCanvas:draw( 0, 0 )
 end
 
 function Dialogue:clearCanvas()
@@ -200,6 +211,7 @@ function Dialogue:clearCanvas()
 	end
 
 	self._canvas:clear( Graphics.kColorClear )
+	self._overlayCanvas:clear( Graphics.kColorClear )
 
 end
 
@@ -214,6 +226,14 @@ function Dialogue:draw()
 	-- Draw the inner dialogue box
 	Graphics.setColor( self.backgroundColor )
 	Graphics.fillRoundRect( self._innerX, self._innerY, self.boxWidth, self.boxHeight, 5 )
+
+	Graphics.pushContext( self._overlayCanvas )
+	if self._showIndicator then
+		self.btnSprite:draw( self._innerX + self.boxWidth - 10, self._innerY + self.boxHeight - 10 )
+	else
+		self._overlayCanvas:clear( Graphics.kColorClear )
+	end
+	Graphics.popContext()
 
 	Graphics.unlockFocus()
 
