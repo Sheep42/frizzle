@@ -17,14 +17,20 @@ function scene:init()
 		end
 	}
 
+	self.sample = Sound.sampleplayer.new( 'assets/sound/startup' )
+
 end
 
 function scene:enter()
 	scene.super.enter(self)
+	Timer.new( ONE_SECOND * 0.5, function()
+		self.sample:play()
+	end)
 end
 
 function scene:start()
 	scene.super.start(self)
+
 	Timer.new( ONE_SECOND, function()
 		self:transitionToTitle()
 	end)
