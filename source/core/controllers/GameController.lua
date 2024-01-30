@@ -29,7 +29,9 @@ function GameController.getDefaultFlags()
 				playing = 0,
 			},
 			startLowStatGame = false,
+			listenForName = false,
 			playTime = 0,
+			nameSample = nil,
 		},
 		statBars = {
 			paused = true,
@@ -205,4 +207,22 @@ GameController.dialogueLines = {
 		"Git gud.",
 		function() GameController.reset() end,
 	},
+	petIntro = {
+		function() GameController.setFlag( 'statBars.paused', true ) end,
+		"Hey, it's me... Frizzle\n",
+		"Yeah, I know... I can talk...\nI'm supposed to stay quiet, but you\nhave been doing such a good job.",
+		"I just wanted to say thanks.",
+		"...",
+		"...",
+		"Hey... can you do me one more favor?",
+		"I hope it's not weird, but can you say\nmy name? I just like hearing you say\nit.",
+		"Just say \"Frizzle\" after you press A.\nI'll wait...",
+		function()
+			GameController.setFlag( 'game.listenForName', true )
+		end,
+	},
+	nameRecorded = {
+		"Thanks, I really appreciate it!",
+		function() GameController.setFlag( 'statBars.paused', false ) end,
+	}
 }

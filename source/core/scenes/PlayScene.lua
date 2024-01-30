@@ -273,6 +273,7 @@ function scene:buildDebugMenu()
 			local nextPhase = math.ringInt( phase + 1, 1, 4 )
 			GameController.setFlag( 'game.phase', nextPhase )
 			self.dbgMenu:setItemDisplayName( 'game_phase', "Game phase: " .. nextPhase )
+			self.dbgMenu:deactivate()
 		end,
 		nil,
 		"Game phase: " .. GameController.getFlag( 'game.phase' )

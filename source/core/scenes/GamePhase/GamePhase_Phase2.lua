@@ -8,6 +8,9 @@ function phase:init( scene )
 	phase.super.init( self, "phase-2" )
 	self.owner = scene
 
+	self.buffer = playdate.sound.sample.new( 3, playdate.sound.kFormat16bitMono )
+	self.listening = false
+
 	self.games = {
 		feeding = {
 			Feeding_ShakeGame,
@@ -25,7 +28,7 @@ function phase:init( scene )
 end
 
 -- Fires when the Phase is entered
-function phase:enter() 
+function phase:enter()
 
 	self.owner.inputHandler = {
 		AButtonDown = function()
@@ -105,6 +108,8 @@ function phase:enter()
 	end)
 
 	self.owner.feedBtn:setPressedCallback( function ()
+		GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
+		GameController.dialogue:show()
 	end)
 
 	-- self.owner.playBtn:setPressedCallback( function ()
@@ -114,6 +119,15 @@ function phase:enter()
 	-- end)
 
 	self.owner.sleepBtn:setPressedCallback( function ()
+		GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
+		GameController.dialogue:show()
+	end)
+
+	Timer.new( ONE_SECOND * 3, function()
+		GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
 	end)
 
 end
@@ -124,11 +138,48 @@ function phase:exit() end
 -- Fires when the State Machine updates
 function phase:tick()
 
+	if GameController.getFlag( 'game.listenForName' ) then
+		self:recordName()
+		return
+	end
+
 	self:phaseHandler()
 	self.owner:handleStatNag( self.games )
 
 end
 
 function phase:phaseHandler()
+
+end
+
+function phase:recordName()
+
+	if not self.listening then
+		Sound.micinput.startListening()
+		self.listening = true
+
+		Timer.new( ONE_SECOND * 0.25, function()
+
+			-- TODO: Save buffer to file?
+			-- TODO: Live with whatever audio we get?
+			Sound.micinput.recordToSample( self.buffer, function ( sample )
+				Sound.micinput.stopListening()
+				self.listening = false
+
+				-- local path = 'sample.wav'
+				GameController.setFlag( 'game.listenForName', false )
+				-- GameController.setFlag( 'game.nameSample', path )
+				-- sample:save( path )
+
+				self.player = Sound.sampleplayer.new( sample )
+				self.player:play()
+				GameController.setFlag( 'dialogue.currentScript', 'nameRecorded' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end)
+
+		end)
+	end
 
 end
