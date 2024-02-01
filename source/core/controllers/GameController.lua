@@ -32,6 +32,7 @@ function GameController.getDefaultFlags()
 			listenForName = false,
 			playTime = 0,
 			nameSample = nil,
+			playRecording = false,
 		},
 		statBars = {
 			paused = true,
@@ -223,6 +224,8 @@ GameController.dialogueLines = {
 	},
 	nameRecorded = {
 		"Thanks, I really appreciate it!",
+		"I hope it's not weird, but I\nrecorded you for safe keeping...",
+		function() GameController.setFlag( 'game.playRecording', true ) end,
 		function() GameController.setFlag( 'statBars.paused', false ) end,
 	}
 }

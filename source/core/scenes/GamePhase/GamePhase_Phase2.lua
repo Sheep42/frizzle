@@ -3,6 +3,8 @@ class( 'GamePhase_Phase2' ).extends( 'State' )
 
 local phase = GamePhase_Phase2
 
+phase.namePath = 'nameSample'
+
 -- Constructor
 function phase:init( scene )
 	phase.super.init( self, "phase-2" )
@@ -154,6 +156,11 @@ function phase:tick()
 		return
 	end
 
+	if GameController.getFlag( 'game.playRecording' ) then
+		self:playRecording()
+		GameController.setFlag( 'game.playRecording', false )
+	end
+
 	self:phaseHandler()
 	self.owner:handleStatNag( self.games )
 
@@ -171,16 +178,14 @@ function phase:recordName()
 
 		Timer.new( ONE_SECOND * 0.25, function()
 
-			-- TODO: Save buffer to file?
 			-- TODO: Live with whatever audio we get?
 			Sound.micinput.recordToSample( self.buffer, function ( sample )
 				Sound.micinput.stopListening()
 				self.listening = false
 
-				local path = 'name'
 				GameController.setFlag( 'game.listenForName', false )
-				GameController.setFlag( 'game.nameSample', path )
-				sample:save( path )
+				GameController.setFlag( 'game.nameSample', phase.namePath )
+				sample:save( phase.namePath )
 
 				GameController.setFlag( 'dialogue.currentScript', 'nameRecorded' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
@@ -190,5 +195,13 @@ function phase:recordName()
 
 		end)
 	end
+
+end
+
+function phase:playRecording()
+
+	self.buffer:load( self.namePath )
+	local player = Sound.sampleplayer.new( self.buffer )
+	player:play()
 
 end
