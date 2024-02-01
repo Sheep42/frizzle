@@ -24,13 +24,7 @@ function phase:init( scene )
 		},
 	}
 
-end
-
--- Fires when the Phase is entered
-function phase:enter()
-
-	-- Input Listener Callbacks
-	self.owner.inputHandler = {
+	self.inputHandler = {
 		AButtonDown = function()
 			self.owner:checkABtnPress()
 		end,
@@ -100,6 +94,14 @@ function phase:enter()
 			self.owner:setCursorVelocity( { x =  PlayScene._CURSOR_SPEED_MULTIPLIER, y = self.owner.cursor.velocity.y } )
 		end,
 	}
+
+end
+
+-- Fires when the Phase is entered
+function phase:enter()
+
+	-- Input Listener Callbacks
+	PlayScene.setInputHandler( self.inputHandler )
 
 	-- Button Press Handlers
 	self.owner.petBtn:setPressedCallback( function()

@@ -181,6 +181,10 @@ function scene:start()
 
 end
 
+function scene:softRestart()
+	scene.super.start( self )
+end
+
 function scene:setupButtons()
 
 	local totalButtons = #uiButtons
@@ -418,4 +422,8 @@ function scene:handleStatNag( games )
 		self:loadRandomGameOfType( type, games )
 	end
 
+end
+
+function scene.setInputHandler( inputHandler )
+	scene.inputHandler = inputHandler
 end

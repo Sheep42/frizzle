@@ -1,14 +1,14 @@
 GamePhase_Phase2 = {}
 class( 'GamePhase_Phase2' ).extends( 'State' )
 
-local phase = GamePhase_Phase2 
+local phase = GamePhase_Phase2
 
 -- Constructor
 function phase:init( scene )
 	phase.super.init( self, "phase-2" )
 	self.owner = scene
 
-	self.buffer = playdate.sound.sample.new( 3, playdate.sound.kFormat16bitMono )
+	self.buffer = playdate.sound.sample.new( 2, playdate.sound.kFormat16bitMono )
 	self.listening = false
 
 	self.games = {
@@ -25,19 +25,21 @@ function phase:init( scene )
 			Sleeping_MicGame,
 		},
 	}
-end
 
--- Fires when the Phase is entered
-function phase:enter()
-
-	self.owner.inputHandler = {
+	self.inputHandler = {
 		AButtonDown = function()
 			self.owner:checkABtnPress()
 		end,
 		BButtonDown = function()
 
 			if Noble.Settings.get( 'debug_mode' ) then
-				Noble.transition( TitleScene )
+			-- 	-- Noble.transition( TitleScene )
+				self.buffer:load( 'name' )
+
+				if self.buffer ~= nil then
+					local pl = Sound.sampleplayer.new( self.buffer )
+					pl:play()
+				end
 			end
 
 		end,
@@ -101,6 +103,13 @@ function phase:enter()
 		end,
 	}
 
+end
+
+-- Fires when the Phase is entered
+function phase:enter()
+
+	PlayScene.setInputHandler( self.inputHandler )
+
 	-- Button Press Handlers
 	self.owner.petBtn:setPressedCallback( function()
 		GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
@@ -129,6 +138,8 @@ function phase:enter()
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
 	end)
+
+	self.owner:softRestart()
 
 end
 
@@ -166,13 +177,11 @@ function phase:recordName()
 				Sound.micinput.stopListening()
 				self.listening = false
 
-				-- local path = 'sample.wav'
+				local path = 'name'
 				GameController.setFlag( 'game.listenForName', false )
-				-- GameController.setFlag( 'game.nameSample', path )
-				-- sample:save( path )
+				GameController.setFlag( 'game.nameSample', path )
+				sample:save( path )
 
-				self.player = Sound.sampleplayer.new( sample )
-				self.player:play()
 				GameController.setFlag( 'dialogue.currentScript', 'nameRecorded' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
