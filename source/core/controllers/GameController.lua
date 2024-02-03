@@ -34,6 +34,9 @@ function GameController.getDefaultFlags()
 			nameSample = nil,
 			playRecording = false,
 		},
+		buttons = {
+			active = true,
+		},
 		statBars = {
 			paused = true,
 			playCry = false,
@@ -209,7 +212,10 @@ GameController.dialogueLines = {
 		function() GameController.reset() end,
 	},
 	petIntro = {
-		function() GameController.setFlag( 'statBars.paused', true ) end,
+		function() 
+			GameController.setFlag( 'statBars.paused', true )
+			GameController.setFlag( 'buttons.active', false )
+		end,
 		"Hey, it's me... Frizzle\n",
 		"Yeah, I know... I can talk...\nI'm supposed to stay quiet, but you\nhave been doing such a good job.",
 		"I just wanted to say thanks.",
@@ -224,8 +230,46 @@ GameController.dialogueLines = {
 	},
 	nameRecorded = {
 		"Thanks, I really appreciate it!",
-		"I hope it's not weird, but I\nrecorded you for safe keeping...",
+		"I'll let you get back to the game now.",
+		function()
+			GameController.setFlag( 'dialogue.showBark', true )
+			GameController.bark:setEmote( NobleSprite( 'assets/images/UI/heart' ), nil, nil, 'assets/sound/win-game.wav' )
+			GameController.pet:resetStats()
+
+			Timer.new( ONE_SECOND * 2, function()
+				GameController.setFlag( 'dialogue.currentScript', 'narratorAfterPetIntro' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end)
+
+		end,
+	},
+	narratorAfterPetIntro = {
+		"Hi there, I noticed that you and Frizzle\nwere chatting. I think it would be in your\nbest interest to avoid direct",
+		"conversation with them.",
+		"It's just that Frizzle isn't really\nsupposed to talk to you. It ruins the\nimmersion, you know?",
+		"If they talk to you again, just try to\nignore it and stick to playing\nthe game.",
+		function()
+			Timer.new( ONE_SECOND * 2, function()
+				GameController.setFlag( 'dialogue.currentScript', 'playRecording' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end)
+
+		end,
+	},
+	playRecording = {
+		function() GameController.setFlag( 'statBars.paused', true ) end,
+		"Hey... it's me again...",
+		"Sorry if I got you in trouble with the\nnarrator. If you ask me, he's too\nuptight anyway.",
+		"Anyways, I hope it's not weird, but I\nreally liked hearing you say my name\nso I kept it as a momento...",
 		function() GameController.setFlag( 'game.playRecording', true ) end,
-		function() GameController.setFlag( 'statBars.paused', false ) end,
+		"That's okay with you, right?",
+		function() 
+			GameController.setFlag( 'statBars.paused', false )
+			GameController.setFlag( 'buttons.active', true )
+		end,
 	}
 }

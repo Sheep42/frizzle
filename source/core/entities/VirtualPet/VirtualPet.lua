@@ -163,3 +163,11 @@ function pet:tickStats()
 	end
 
 end
+
+function pet:resetStats()
+
+	for key, stat in pairs( self.stats ) do
+		stat.value = 5
+	end
+
+end

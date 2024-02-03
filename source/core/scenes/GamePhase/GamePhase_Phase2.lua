@@ -36,7 +36,7 @@ function phase:init( scene )
 
 			if Noble.Settings.get( 'debug_mode' ) then
 			-- 	-- Noble.transition( TitleScene )
-				self.buffer:load( 'name' )
+				self.buffer:load( scene.namePath )
 
 				if self.buffer ~= nil then
 					local pl = Sound.sampleplayer.new( self.buffer )

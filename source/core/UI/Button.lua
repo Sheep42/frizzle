@@ -105,8 +105,10 @@ function Button:update()
 
 	Button.super.update( self )
 
-	if not self._isActive then
-		return	
+	if not self._isActive or not GameController.getFlag( 'buttons.active' ) then
+		self._isHovered = false
+		self.animation:setState( 'default' )
+		return
 	end
 
 	-- Handle hovering & pressing
