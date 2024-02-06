@@ -225,7 +225,7 @@ GameController.dialogueLines = {
 		"...",
 		"...",
 		"Hey... can you do me a little favor?",
-		"I hope it's not weird, but can you say\nmy name? I just like hearing you say\nit.",
+		"I hope it's not weird, but can you\nsay my name? I just like hearing you\nsay it.",
 		"Just say \"Frizzle\" after you press A.\nI'll wait...",
 		function()
 			GameController.setFlag( 'game.listenForName', true )

@@ -42,7 +42,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.borderColor = Graphics.kColorBlack
 		self.textColor = Graphics.kColorBlack
 		self.boxWidth = 0.75 * Utilities.screenSize().width -- 75% of screen
-		self.boxHeight = 75
+		self.boxHeight = 85
 		self.borderWidth = 0
 		self.borderHeight = 0
 		self.dialogueType = DialogueType.Typewriter
