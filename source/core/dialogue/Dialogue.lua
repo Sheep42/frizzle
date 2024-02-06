@@ -260,7 +260,7 @@ function Dialogue:play()
 			self:finish()
 
 		elseif self.dialogueType == DialogueType.Typewriter then
-			buildText( self )
+			self:buildText()
 		end
 
 	elseif self.emote ~= nil then
@@ -428,7 +428,7 @@ function Dialogue:finish()
 end
 
 -- Utility Functions --
-function buildText( self )
+function Dialogue:buildText()
 
 	local textToShow = self.text:sub( 0, self._dialoguePointer )
 	self:drawText( textToShow )
