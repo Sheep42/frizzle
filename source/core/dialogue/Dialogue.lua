@@ -23,6 +23,9 @@ Dialogue._BASE_PITCH = 261.63
 Dialogue._BASE_VOLUME = 0.5
 Dialogue._SYNTH_LENGTH = 0.15
 
+Dialogue.DEFAULT_FONT = Noble.Text.FONT_SYSTEM
+Dialogue.PET_FONT = Graphics.font.new( 'assets/fonts/FuturaHandwritten' )
+
 -- Creates a new Dialogue
 --
 -- @param string|NobleSprite say Text or Emote to initialize the Dialogue with
@@ -48,6 +51,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.textSpeed = Noble.Settings.get( "text_speed" )
 		self.font = Noble.Text.getCurrentFont()
 		self.btnSprite = Graphics.image.new( 'assets/images/UI/a-btn' )
+		self.pitch = Dialogue._BASE_PITCH
 
 	-- Internals
 		self._dialoguePointer = 0
@@ -415,7 +419,7 @@ function Dialogue:getState()
 end
 
 function Dialogue:finish()
-	
+
 	self.finished = true
 	self.onFinishCallback()
 
@@ -432,7 +436,7 @@ function buildText( self )
 	end
 
 	if self._textSound ~= nil and self.text:sub( self._dialoguePointer, self._dialoguePointer ) ~= ' ' then
-		self._textSound:playNote( self._BASE_PITCH + math.random( -10, 10 ), self._BASE_VOLUME, self._SYNTH_LENGTH )
+		self._textSound:playNote( self.pitch + math.random( -10, 10 ), self._BASE_VOLUME, self._SYNTH_LENGTH )
 	end
 
 	if self._dialoguePointer < #self.text then
@@ -442,7 +446,7 @@ function buildText( self )
 	else
 		self:finish()
 	end
-	
+
 end
 
 function Dialogue:drawText( text, align )
@@ -459,4 +463,21 @@ function Dialogue:drawText( text, align )
 	Noble.Text.draw( text, self._textX, self._textY, align, nil, self.font )
 	Graphics.unlockFocus()
 
+end
+
+function Dialogue:setVoice( font, pitch )
+
+	if font ~= nil then
+		self.font = font
+	end
+
+	if pitch ~= nil then
+		self.pitch = pitch
+	end
+
+end
+
+function Dialogue:resetDefaults()
+	self.font = Dialogue.DEFAULT_FONT
+	self.pitch = Dialogue._BASE_PITCH
 end

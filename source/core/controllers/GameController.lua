@@ -214,14 +214,17 @@ GameController.dialogueLines = {
 	petIntro = {
 		function() 
 			GameController.setFlag( 'statBars.paused', true )
-			GameController.setFlag( 'buttons.active', false )
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue._BASE_PITCH + 50
+			)
 		end,
 		"Hey, it's me... Frizzle\n",
 		"Yeah, I know... I can talk...\nI'm supposed to stay quiet, but you\nhave been doing such a good job.",
 		"I just wanted to say thanks.",
 		"...",
 		"...",
-		"Hey... can you do me one more favor?",
+		"Hey... can you do me a little favor?",
 		"I hope it's not weird, but can you say\nmy name? I just like hearing you say\nit.",
 		"Just say \"Frizzle\" after you press A.\nI'll wait...",
 		function()
@@ -239,6 +242,7 @@ GameController.dialogueLines = {
 			Timer.new( ONE_SECOND * 2, function()
 				GameController.setFlag( 'dialogue.currentScript', 'narratorAfterPetIntro' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:resetDefaults()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()
 			end)
@@ -246,7 +250,7 @@ GameController.dialogueLines = {
 		end,
 	},
 	narratorAfterPetIntro = {
-		"Hi there, I noticed that you and Frizzle\nwere chatting. I think it would be in your\nbest interest to avoid direct",
+		"Hi there, I noticed that you and Frizzle\nwere chatting. I think it would be in\nyour best interest to avoid direct",
 		"conversation with them.",
 		"It's just that Frizzle isn't really\nsupposed to talk to you. It ruins the\nimmersion, you know?",
 		"If they talk to you again, just try to\nignore it and stick to playing\nthe game.",
@@ -261,13 +265,20 @@ GameController.dialogueLines = {
 		end,
 	},
 	playRecording = {
-		function() GameController.setFlag( 'statBars.paused', true ) end,
+		function()
+			GameController.setFlag( 'statBars.paused', true )
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue._BASE_PITCH + 50
+			)
+		end,
 		"Hey... it's me again...",
 		"Sorry if I got you in trouble with the\nnarrator. If you ask me, he's too\nuptight anyway.",
 		"Anyways, I hope it's not weird, but I\nreally liked hearing you say my name\nso I kept it as a momento...",
 		function() GameController.setFlag( 'game.playRecording', true ) end,
 		"That's okay with you, right?",
-		function() 
+		function()
+			GameController.dialogue:resetDefaults()
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'buttons.active', true )
 		end,

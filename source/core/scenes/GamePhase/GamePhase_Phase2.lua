@@ -111,17 +111,18 @@ end
 function phase:enter()
 
 	PlayScene.setInputHandler( self.inputHandler )
+	GameController.setFlag( 'buttons.active', false )
 
 	-- Button Press Handlers
-	self.owner.petBtn:setPressedCallback( function()
-		GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
-		GameController.dialogue:show()
-	end)
+	-- self.owner.petBtn:setPressedCallback( function()
+	-- 	GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
+	-- 	GameController.dialogue:show()
+	-- end)
 
-	self.owner.feedBtn:setPressedCallback( function ()
-		GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
-		GameController.dialogue:show()
-	end)
+	-- self.owner.feedBtn:setPressedCallback( function ()
+	-- 	GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
+	-- 	GameController.dialogue:show()
+	-- end)
 
 	-- self.owner.playBtn:setPressedCallback( function ()
 	-- end)
@@ -129,10 +130,10 @@ function phase:enter()
 	-- self.owner.groomBtn:setPressedCallback( function ()
 	-- end)
 
-	self.owner.sleepBtn:setPressedCallback( function ()
-		GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
-		GameController.dialogue:show()
-	end)
+	-- self.owner.sleepBtn:setPressedCallback( function ()
+	-- 	GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
+	-- 	GameController.dialogue:show()
+	-- end)
 
 	Timer.new( ONE_SECOND * 3, function()
 		GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
