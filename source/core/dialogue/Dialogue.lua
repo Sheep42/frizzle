@@ -24,7 +24,9 @@ Dialogue._BASE_VOLUME = 0.5
 Dialogue._SYNTH_LENGTH = 0.15
 
 Dialogue.DEFAULT_FONT = Noble.Text.FONT_SYSTEM
+
 Dialogue.PET_FONT = Graphics.font.new( 'assets/fonts/FuturaHandwritten' )
+Dialogue.PET_VOICE = Dialogue._BASE_PITCH + 50
 
 -- Creates a new Dialogue
 --

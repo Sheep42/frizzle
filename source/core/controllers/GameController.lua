@@ -216,7 +216,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'statBars.paused', true )
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
-				Dialogue._BASE_PITCH + 50
+				Dialogue.PET_VOICE
 			)
 		end,
 		"Hey, it's me... Frizzle\n",
@@ -269,7 +269,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'statBars.paused', true )
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
-				Dialogue._BASE_PITCH + 50
+				Dialogue.PET_VOICE
 			)
 		end,
 		"Hey... it's me again...",
