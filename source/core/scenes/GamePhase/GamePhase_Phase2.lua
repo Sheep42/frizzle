@@ -18,8 +18,7 @@ function phase:init( scene )
 			Feeding_ShakeGame,
 		},
 		petting = {
-			Petting_CrankGame,
-			Petting_ShakeGame,
+			Petting_CrankGame_Phase2,
 		},
 		playing = {},
 		grooming = {},
@@ -114,10 +113,9 @@ function phase:enter()
 	GameController.setFlag( 'buttons.active', false )
 
 	-- Button Press Handlers
-	-- self.owner.petBtn:setPressedCallback( function()
-	-- 	GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )
-	-- 	GameController.dialogue:show()
-	-- end)
+	self.owner.petBtn:setPressedCallback( function()
+		self.owner:handleBtnPress( MicrogameType.petting, self.games )
+	end)
 
 	-- self.owner.feedBtn:setPressedCallback( function ()
 	-- 	GameController.dialogue:setText( "Z A L G O . . .\n\nHe c0m3z" )

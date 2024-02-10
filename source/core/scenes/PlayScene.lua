@@ -298,6 +298,13 @@ function scene:buildDebugMenu()
 	)
 
 	self.dbgMenu:addItem(
+		"Pet: Crank It - Phase 2",
+		function()
+			Noble.transition( Petting_CrankGame_Phase2, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
 		"Feed: Shake It",
 		function()
 			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )

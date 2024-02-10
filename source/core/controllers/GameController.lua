@@ -17,6 +17,7 @@ function GameController.getDefaultFlags()
 			currentScript = 'intro',
 			currentLine = 1,
 			playedIntro = false,
+			playedPhase2Intro = false,
 			showBark = nil,
 		},
 		game = {
@@ -33,6 +34,7 @@ function GameController.getDefaultFlags()
 			playTime = 0,
 			nameSample = nil,
 			playRecording = false,
+			resetMicrogame = false,
 		},
 		buttons = {
 			active = true,
@@ -275,12 +277,29 @@ GameController.dialogueLines = {
 		"Hey... it's me again...",
 		"Sorry if I got you in trouble with the\nnarrator. If you ask me, he's too\nuptight anyway.",
 		"Anyways, I hope it's not weird, but I\nreally liked hearing you say my name\nso I kept it as a momento...",
-		function() GameController.setFlag( 'game.playRecording', true ) end,
 		"That's okay with you, right?",
 		function()
+			GameController.setFlag( 'game.playRecording', true )
+			GameController.setFlag( 'dialogue.playedPhase2Intro', true )
 			GameController.dialogue:resetDefaults()
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'buttons.active', true )
 		end,
-	}
+	},
+	phase2PettingGameFinish = {
+		function() 
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"Hi",
+		"...",
+		"...",
+		"Can you pet me a bit more before\nyou go?",
+		"I would really like that.",
+		function()
+			GameController.setFlag( 'game.resetMicrogame', true )
+		end,
+	},
 }
