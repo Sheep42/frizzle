@@ -29,6 +29,11 @@ end
 
 function Cursor:update()
 	Cursor.super.update( self )
+
+	if not GameController.getFlag( 'cursor.active' ) then
+		return
+	end
+
 	self:move()
 end
 
@@ -38,7 +43,7 @@ function Cursor:move()
 
 		-- Contain cursor to screenBounds
 			local currX, currY = self:getPosition()
-			
+
 			if self.velocity.x < 0 and currX <= Utilities.screenBounds().left then
 				self.velocity.x = 0
 				self:moveTo( Utilities.screenBounds().left, currY )	

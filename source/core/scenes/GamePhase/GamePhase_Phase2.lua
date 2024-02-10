@@ -18,6 +18,7 @@ function phase:init( scene )
 			Feeding_ShakeGame,
 		},
 		petting = {
+			Petting_CrankGame,
 			Petting_CrankGame_Phase2,
 		},
 		playing = {},
@@ -35,7 +36,7 @@ function phase:init( scene )
 
 			if Noble.Settings.get( 'debug_mode' ) then
 			-- 	-- Noble.transition( TitleScene )
-				self.buffer:load( scene.namePath )
+				self.buffer:load( phase.namePath )
 
 				if self.buffer ~= nil then
 					local pl = Sound.sampleplayer.new( self.buffer )
@@ -110,7 +111,6 @@ end
 function phase:enter()
 
 	PlayScene.setInputHandler( self.inputHandler )
-	GameController.setFlag( 'buttons.active', false )
 
 	-- Button Press Handlers
 	self.owner.petBtn:setPressedCallback( function()
@@ -133,12 +133,18 @@ function phase:enter()
 	-- 	GameController.dialogue:show()
 	-- end)
 
-	Timer.new( ONE_SECOND * 3, function()
-		GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-	end)
+	if not GameController.getFlag( 'dialogue.playedPhase2Intro' ) then
+
+		GameController.setFlag( 'buttons.active', false )
+
+		Timer.new( ONE_SECOND * 3, function()
+			GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+		end)
+
+	end
 
 	self.owner:softRestart()
 

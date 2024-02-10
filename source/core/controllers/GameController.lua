@@ -39,6 +39,9 @@ function GameController.getDefaultFlags()
 		buttons = {
 			active = true,
 		},
+		cursor = {
+			active = false,
+		},
 		statBars = {
 			paused = true,
 			playCry = false,
@@ -193,8 +196,11 @@ GameController.dialogueLines = {
 		"Make sure you keep an eye on their\nstats in the upper right.",
 		"You can use the buttons at the\nbottom of your screen to interact\nwith Frizzle.",
 		"Good luck, and have fun!",
-		function() GameController.setFlag( 'dialogue.playedIntro', true ) end,
-		function() GameController.setFlag( 'statBars.paused', false ) end,
+		function() 
+			GameController.setFlag( 'dialogue.playedIntro', true )
+			GameController.setFlag( 'statBars.paused', false )
+			GameController.setFlag( 'cursor.active', true )
+		end,
 	},
 	lowStatNag = {
 		function() GameController.setFlag( 'statBars.paused', true ) end,
