@@ -24,7 +24,8 @@ function phase:init( scene )
 		playing = {},
 		grooming = {},
 		sleeping = {
-			Sleeping_MicGame,
+			-- Sleeping_MicGame,
+			Sleeping_MicGame_Phase2,
 		},
 	}
 

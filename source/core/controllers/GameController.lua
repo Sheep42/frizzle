@@ -306,6 +306,22 @@ GameController.dialogueLines = {
 		"I would really like that.",
 		function()
 			GameController.setFlag( 'game.resetMicrogame', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase2SleepingGameFinish = {
+		function() 
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"...",
+		"I know you are busy...",
+		"Can you just stay with me for\na little while longer?",
+		function()
+			GameController.setFlag( 'game.resetMicrogame', true )
+			GameController.dialogue:resetDefaults()
 		end,
 	},
 }
