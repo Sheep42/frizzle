@@ -15,7 +15,7 @@ function scene:init()
 
 	self.introText = "CRANK!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
-	self.dialogue = Dialogue( 
+	self.dialogue = Dialogue(
 		self.introText,
 		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
 		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
@@ -28,6 +28,7 @@ function scene:init()
 		2000,
 		self.introFont
 	)
+
 	self.dialogue.onHideCallback = function ()
 		self.startTimer = true
 	end
@@ -123,7 +124,7 @@ function scene:update()
 	if self.startTimer then
 		self.timer:start()
 		self.startTimer = false
-	else 
+	else
 		return
 	end
 

@@ -173,7 +173,7 @@ end
 
 function Dialogue:update()
 
-	if self.autohide and self._showTimer.value >= self.showDuration then
+	if self.autohide and self._showTimer.value >= self.showDuration and self._state ~= DialogueState.Hide then
 		self:hide()
 	end
 
