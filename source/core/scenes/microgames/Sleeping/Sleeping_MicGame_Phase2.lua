@@ -134,7 +134,7 @@ function scene:update()
 	if self.startTimer then
 		self.timer:start()
 		self.startTimer = false
-	else
+	elseif self.timer.paused then
 		return
 	end
 
