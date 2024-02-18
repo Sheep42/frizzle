@@ -119,6 +119,7 @@ function scene:update()
 			self.happinessVal = 0
 			self.win = false
 			self:resetTimer()
+			self.startTimer = true
 			self.playCount += 1
 			GameController.setFlag( 'game.resetMicrogame', false )
 			return
