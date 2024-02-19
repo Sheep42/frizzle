@@ -20,6 +20,7 @@ function scene:init()
 	self.buffer = nil
 	self.happinessTimer = nil
 	self.passThreshold = false
+	self.maxFrameDuration = 15
 
 	self.introText = "SHHH!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
@@ -58,6 +59,16 @@ function scene:init()
 		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 
+	-- Initialize face & hand
+	local faceAnim = Noble.Animation.new( 'assets/images/pet-face-sleep' )
+	faceAnim:addState( 'awake', 1, 1, nil, nil, nil, 0 )
+	faceAnim:addState( 'tired', 2, 3, nil, nil, nil, self.maxFrameDuration )
+	faceAnim:addState( 'sleeping', 4, 5, nil, nil, nil, self.maxFrameDuration )
+	faceAnim:setState( 'awake' )
+
+	self.face = NobleSprite( faceAnim )
+	self.face:setSize( 150, 90 )
+
 end
 
 function scene:enter()
@@ -69,6 +80,9 @@ end
 function scene:start()
 
 	scene.super.start( self )
+
+	local faceWidth, faceHeight = self.face:getSize()
+	self.face:add( Utilities.screenSize().width / 2, Utilities.screenSize().height - ( faceHeight / 2 ) )
 
 	Sound.micinput.startListening()
 	self:checkMicInput()
@@ -82,6 +96,8 @@ function scene:drawBackground()
 end
 
 function scene:update()
+
+	self:handleAnimation()
 
 	if self.timer.value >= self.gameTime or self.win then
 
@@ -132,6 +148,18 @@ function scene:update()
 	self:checkMicInput()
 	self:checkNoiseThreshold()
 	self:renderDebugInfo()
+
+end
+
+function scene:handleAnimation()
+
+	if self.happinessVal < 0.3 then
+		self.face.animation:setState( 'awake' )
+	elseif self.happinessVal < 0.7 then
+		self.face.animation:setState( 'tired' )
+	else
+		self.face.animation:setState( 'sleeping' )
+	end
 
 end
 
