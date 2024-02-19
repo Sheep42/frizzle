@@ -20,6 +20,7 @@ function scene:init()
 	self.buffer = nil
 	self.happinessTimer = nil
 	self.passThreshold = false
+	self.maxFrameDuration = 25
 
 	self.introText = "SHHH!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
@@ -56,6 +57,16 @@ function scene:init()
 		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 
+	-- Initialize face & hand
+	local faceAnim = Noble.Animation.new( 'assets/images/pet-face-sleep' )
+	faceAnim:addState( 'awake', 1, 1, nil, nil, nil, 0 )
+	faceAnim:addState( 'tired', 2, 3, nil, nil, nil, self.maxFrameDuration )
+	faceAnim:addState( 'sleeping', 4, 5, nil, nil, nil, self.maxFrameDuration )
+	faceAnim:setState( 'awake' )
+
+	self.face = NobleSprite( faceAnim )
+	self.face:setSize( 150, 90 )
+
 end
 
 function scene:enter()
@@ -67,6 +78,9 @@ end
 function scene:start()
 
 	scene.super.start( self )
+
+	local faceWidth, faceHeight = self.face:getSize()
+	self.face:add( Utilities.screenSize().width / 2, Utilities.screenSize().height - ( faceHeight / 2 ) )
 
 	Sound.micinput.startListening()
 	self:checkMicInput()
@@ -89,6 +103,10 @@ function scene:update()
 		Noble.Input.setCrankIndicatorStatus( false )
 
 		if GameController.getFlag( 'game.resetMicrogame' ) then
+			Timer.new( ONE_SECOND, function()
+				self.face.animation:setState( 'sleeping' )
+			end)
+
 			Timer.new( 5 * ONE_SECOND, function()
 				self.finished = true
 			end)
@@ -113,6 +131,7 @@ function scene:update()
 		if GameController.dialogue:getState() == DialogueState.Hide and not self.playScript then
 
 			Timer.new( ONE_SECOND, function()
+				self.face.animation:setState( 'tired' )
 				GameController.setFlag( 'dialogue.currentScript', 'phase2SleepingGameFinish' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
@@ -128,6 +147,8 @@ function scene:update()
 		return
 
 	end
+
+	self:handleAnimation()
 
 	scene.super.update( self )
 
@@ -165,6 +186,18 @@ function scene:update()
 	self:checkMicInput()
 	self:checkNoiseThreshold()
 	self:renderDebugInfo()
+
+end
+
+function scene:handleAnimation()
+
+	if self.happinessVal < 0.3 then
+		self.face.animation:setState( 'awake' )
+	elseif self.happinessVal < 0.7 then
+		self.face.animation:setState( 'tired' )
+	else
+		self.face.animation:setState( 'sleeping' )
+	end
 
 end
 
