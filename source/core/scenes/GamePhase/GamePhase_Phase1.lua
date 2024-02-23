@@ -11,7 +11,7 @@ function phase:init( scene )
 
 	self.games = {
 		feeding = {
-			Feeding_ShakeGame,
+			Feeding_CrankGame,
 		},
 		petting = {
 			Petting_CrankGame,

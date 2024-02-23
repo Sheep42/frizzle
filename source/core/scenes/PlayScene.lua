@@ -305,9 +305,9 @@ function scene:buildDebugMenu()
 	)
 
 	self.dbgMenu:addItem(
-		"Feed: Shake It",
+		"Feed: Crank It",
 		function()
-			Noble.transition( Feeding_ShakeGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+			Noble.transition( Feeding_CrankGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 
