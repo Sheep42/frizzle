@@ -124,18 +124,18 @@ end
 
 function scene:update()
 
-	-- if self.timer.value >= self.gameTime or self.win then
+	if self.timer.value >= self.gameTime or self.win then
 
-	-- 	if self.win then
-	-- 		GameController.setFlag( 'dialogue.showBark', true )
-	-- 		GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
-	-- 		GameController.pet.stats.hunger.value = math.clamp( GameController.pet.stats.hunger.value + math.random(3), 1, 5 )
-	-- 	end
+		if self.win then
+			GameController.setFlag( 'dialogue.showBark', true )
+			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
+			GameController.pet.stats.hunger.value = math.clamp( GameController.pet.stats.hunger.value + math.random(3), 1, 5 )
+		end
 
-	-- 	Noble.transition( PlayScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-	-- 	return
+		Noble.transition( PlayScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		return
 
-	-- end
+	end
 
 	scene.super.update( self )
 
@@ -154,6 +154,12 @@ function scene:update()
 
 	self:handleCrank()
 
+	if self.handState == HandStates.Stop and self.face.animation.currentName ~= 'eating' then
+		self.face.animation:setState( 'eating' )
+		self.face.animation.frameDuration = self.maxFrameDuration
+		Timer.keyRepeatTimerWithDelay( ONE_SECOND * 0.5, ONE_SECOND * 0.5, function() self.happinessVal += 0.25 end )
+	end
+
 end
 
 function scene:exit()
@@ -169,23 +175,14 @@ end
 
 function scene:handleCrank()
 
+	if self.handState == HandStates.Stop then
+		return
+	end
+
 	if self.cranked > 0 then
 
 		self.cranked = 0
 		self:moveHand()
-
-		if self.handState == HandStates.Stop then
-			self.face.animation:setState( 'eating' )
-			self.face.animation.frameDuration = self.maxFrameDuration / math.clamp( self.crankAcceleration, 1, self.maxFrameDuration )
-		end
-
-		if self.crankTick >= 360 then
-			self.crankTick = ( self.crankTick % 360 )
-
-			if self.happinessVal < 1.0 then
-				self.happinessVal += 0.1
-			end
-		end
 
 	else
 		self.face.animation:setState( 'wait' )
@@ -198,15 +195,15 @@ function scene:moveHand()
 	local x, y = self.hand:getPosition()
 	local faceX, faceY = self.face:getPosition()
 	local foodX, foodY = self.food:getPosition()
-	local headPos = faceY - 30
+	local faceOffsetX, faceOffsetY = 20, 40
+	local offsetX, offsetY = 10, 25
 	local handSpeed = math.clamp( self.crankAcceleration, 0.001, 10 )
 
 	if self.handState == HandStates.MoveToFood then
 
-		self.hand:moveBy( Utilities.moveTowards( self.hand, self.food, handSpeed, 10, 25 ) )
+		self.hand:moveBy( Utilities.moveTowards( self.hand, self.food, handSpeed, offsetX, offsetY ) )
 
-		local differnce = math.abs( Utilities.distance( x, y, foodX, foodY ) - Utilities.distance( foodX, foodY, foodX - 10, foodY - 25 ) )
-		print( differnce )
+		local differnce = math.abs( Utilities.distance( x, y, foodX, foodY ) - Utilities.distance( foodX, foodY, foodX + offsetX, foodY + offsetY ) )
 
 		if differnce < 0.1 then
 			self.hand.animation:setState( 'closed' )
@@ -215,10 +212,10 @@ function scene:moveHand()
 
 	elseif self.handState == HandStates.MoveToFace then
 
-		self.hand:moveBy( Utilities.moveTowards( self.hand, self.face, handSpeed ) )
-		self.food:moveBy( Utilities.moveTowards( self.food, self.face, handSpeed ) )
+		self.hand:moveBy( Utilities.moveTowards( self.hand, self.face, handSpeed, faceOffsetX, faceOffsetY ) )
+		self.food:moveTo( x - offsetX, y - offsetY )
 
-		if Utilities.distance( x, y, faceX, faceY ) < 1 then
+		if Utilities.distance( x, y, faceX + faceOffsetX, faceY + faceOffsetY ) < 0.1 then
 			self.handState = HandStates.Stop
 		end
 
