@@ -312,6 +312,14 @@ function scene:buildDebugMenu()
 	)
 
 	self.dbgMenu:addItem(
+		"Feed: Crank It - Phase 2",
+		function()
+			Noble.transition( Feeding_CrankGame_Phase2, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+
+	self.dbgMenu:addItem(
 		"Sleep: Say It",
 		function()
 			Noble.transition( Sleeping_MicGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
