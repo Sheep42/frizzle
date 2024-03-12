@@ -121,6 +121,7 @@ function scene:init()
 	scene.phases = {
 		phase1 = GamePhase_Phase1( self ),
 		phase2 = GamePhase_Phase2( self ),
+		phase3 = GamePhase_Phase3( self ),
 	}
 	scene.phaseManager = StateMachine( scene.phases.phase1, scene.phases )
 
@@ -301,6 +302,13 @@ function scene:buildDebugMenu()
 		"Pet: Crank It - Phase 2",
 		function()
 			Noble.transition( Petting_CrankGame_Phase2, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Pet: Crank It - Phase 3",
+		function()
+			Noble.transition( Petting_CrankGame_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 

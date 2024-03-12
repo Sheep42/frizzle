@@ -183,6 +183,11 @@ end
 
 function phase:phaseHandler()
 
+	if GameController.getFlag( 'game.phase' ) == 3 then
+		self.stateMachine:changeState( self.owner.phases.phase3 )
+		return
+	end
+
 end
 
 function phase:recordName()

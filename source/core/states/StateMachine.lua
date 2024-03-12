@@ -26,16 +26,16 @@ function StateMachine:init( defaultState, states )
 
 	-- Add defualt state to states list
 		self:addState( defaultState )
-	
+
 	-- Add other states, if provided
 		if states ~= nil then
 			if type( states ) == "table" then
 
-				for _, state in ipairs( states ) do
+				for _, state in pairs( states ) do
 					self:addState( state )
 				end
 
-			end		
+			end
 		end
 
 end

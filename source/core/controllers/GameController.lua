@@ -30,11 +30,18 @@ function GameController.getDefaultFlags()
 				playing = 0,
 			},
 			startLowStatGame = false,
-			listenForName = false,
 			playTime = 0,
+			listenForName = false,
 			nameSample = nil,
 			playRecording = false,
 			resetMicrogame = false,
+			phase3 = {
+				finished = {
+					petting = false,
+					feeding = false,
+					sleeping = false,
+				},
+			},
 		},
 		buttons = {
 			active = true,
@@ -48,22 +55,27 @@ function GameController.getDefaultFlags()
 			friendship = {
 				nagged = false,
 				emptyTime = 0,
+				disabled = false,
 			},
 			hunger = {
 				nagged = false,
 				emptyTime = 0,
+				disabled = false,
 			},
 			tired = {
 				nagged = false,
 				emptyTime = 0,
+				disabled = false,
 			},
 			groom = {
 				nagged = false,
 				emptyTime = 0,
+				disabled = false,
 			},
 			boredom = {
 				nagged = false,
 				emptyTime = 0,
+				disabled = false,
 			},
 		}
 	}
@@ -324,4 +336,36 @@ GameController.dialogueLines = {
 			GameController.dialogue:resetDefaults()
 		end,
 	},
+	phase3PettingGameFinish = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"Hi",
+		"...",
+		"...",
+		"Can you pet me a bit more before\nyou go?",
+		"I would really like that.",
+		function()
+			GameController.setFlag( 'game.resetMicrogame', true )
+			GameController.dialogue:resetDefaults()
+
+			Timer.new( ONE_SECOND * 3, function()
+				GameController.setFlag( 'dialogue.currentScript', 'phase3PettingGameNarrator' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end)
+		end,
+	},
+	phase3PettingGameNarrator = {
+		"No! Stop this.\nThis...this whole thing is perverse!",
+		"I am ending this minigame now!",
+		function()
+			GameController.setFlag( 'game.phase3.finished.petting', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	}
 }

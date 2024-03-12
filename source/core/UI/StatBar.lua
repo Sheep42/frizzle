@@ -16,6 +16,7 @@ function StatBar:init( stat )
 	self.playCry = false
 	self.position = { x = 0, y = 0 }
 	self.sprites = {}
+	self.disabled = false
 
 	-- States
 	self.states = {
