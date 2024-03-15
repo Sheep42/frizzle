@@ -101,9 +101,9 @@ GameController.PHASE_2_GAME_TRIGGERS = {
 }
 
 GameController.PHASE_3_GAME_TRIGGERS = {
-	petting = 3,
-	feeding = 3,
-	sleeping = 3,
+	petting = 4,
+	feeding = 4,
+	sleeping = 4,
 	grooming = 0,
 	playing = 0,
 }
