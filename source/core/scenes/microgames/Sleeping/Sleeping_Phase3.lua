@@ -98,10 +98,9 @@ function scene:update()
 	if self.timer.value >= self.gameTime or self.win then
 
 		if GameController.getFlag( 'game.phase3.finished.sleeping' ) then
-
+			GameController.dialogue:hide()
 			Noble.transition( PlayScene, 0.75, Noble.TransitionType.SLIDE_OFF_DOWN )
 			return
-
 		end
 
 		if GameController.dialogue:getState() == DialogueState.Hide and not self.finished then

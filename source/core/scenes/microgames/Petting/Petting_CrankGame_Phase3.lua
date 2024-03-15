@@ -112,6 +112,7 @@ function scene:update()
 	GameController.dialogue:update()
 
 	if GameController.getFlag( 'game.phase3.finished.' .. self.category ) then
+		GameController.dialogue:hide()
 		Noble.transition( PlayScene, 0.75, Noble.TransitionType.SLIDE_OFF_UP )
 		return
 	end
