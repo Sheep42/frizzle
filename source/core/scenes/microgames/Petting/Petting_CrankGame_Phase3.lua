@@ -112,13 +112,8 @@ function scene:update()
 	GameController.dialogue:update()
 
 	if GameController.getFlag( 'game.phase3.finished.' .. self.category ) then
-
-		GameController.pet.stats.friendship.value = 0
-		GameController.setFlag( 'statBars.friendship.disabled', true )
 		Noble.transition( PlayScene, 0.75, Noble.TransitionType.SLIDE_OFF_UP )
-
 		return
-
 	end
 
 	if self.timer.value >= self.gameTime or self.win then

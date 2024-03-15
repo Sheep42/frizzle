@@ -241,7 +241,7 @@ function scene:update()
 
 	-- Draw Debug Menu
 	if self.dbgMenu:isActive() then
-		self.dbgMenu:draw( Utilities.screenBounds().left, Utilities.screenSize().height / 2 )
+		self.dbgMenu:draw( Utilities.screenBounds().left, Utilities.screenBounds().top )
 	end
 
 	for i, statBar in pairs( self.statBars ) do
@@ -326,6 +326,12 @@ function scene:buildDebugMenu()
 		end
 	)
 
+	self.dbgMenu:addItem(
+		"Feed: Crank It - Phase 3",
+		function()
+			Noble.transition( Feeding_CrankGame_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
 
 	self.dbgMenu:addItem(
 		"Sleep: Say It",
@@ -338,6 +344,13 @@ function scene:buildDebugMenu()
 		"Sleep: Say It - Phase 2",
 		function()
 			Noble.transition( Sleeping_MicGame_Phase2, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Sleep: Say It - Phase 3",
+		function()
+			Noble.transition( Sleeping_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 

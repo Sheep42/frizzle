@@ -11,12 +11,15 @@ function phase:init( scene )
 
 	self.games = {
 		feeding = {
+			Feeding_CrankGame_Phase3,
 		},
 		petting = {
+			Petting_CrankGame_Phase3,
 		},
 		playing = {},
 		grooming = {},
 		sleeping = {
+			Sleeping_Phase3,
 		},
 	}
 
@@ -115,6 +118,39 @@ function phase:exit() end
 function phase:tick()
 
 	self:phaseHandler()
+
+	if GameController.getFlag( 'game.phase3.disableBtn.petting' ) then
+		self.owner.petBtn:setPressedCallback( function()
+			GameController.setFlag( 'dialogue.currentScript', 'phase3BtnAfterFinish' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+			GameController.setFlag( 'game.phase3.disableBtn.petting', false )
+			self.owner:softRestart()
+		end)
+	end
+
+	if GameController.getFlag( 'game.phase3.disableBtn.sleeping' ) then
+		self.owner.sleepBtn:setPressedCallback( function()
+			GameController.setFlag( 'dialogue.currentScript', 'phase3BtnAfterFinish' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+			GameController.setFlag( 'game.phase3.disableBtn.sleeping', false )
+			self.owner:softRestart()
+		end)
+	end
+
+	if GameController.getFlag( 'game.phase3.disableBtn.feeding' ) then
+		self.owner.feedBtn:setPressedCallback( function()
+			GameController.setFlag( 'dialogue.currentScript', 'phase3BtnAfterFinish' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+			GameController.setFlag( 'game.phase3.disableBtn.feeding', false )
+			self.owner:softRestart()
+		end)
+	end
 
 end
 

@@ -41,6 +41,11 @@ function GameController.getDefaultFlags()
 					feeding = false,
 					sleeping = false,
 				},
+				disableBtn = {
+					petting = false,
+					feeding = false,
+					sleeping = false,
+				}
 			},
 		},
 		buttons = {
@@ -91,6 +96,14 @@ GameController.PHASE_2_GAME_TRIGGERS = {
 	petting = 1,
 	feeding = 1,
 	sleeping = 1,
+	grooming = 0,
+	playing = 0,
+}
+
+GameController.PHASE_3_GAME_TRIGGERS = {
+	petting = 3,
+	feeding = 3,
+	sleeping = 3,
 	grooming = 0,
 	playing = 0,
 }
@@ -365,7 +378,105 @@ GameController.dialogueLines = {
 		"I am ending this minigame now!",
 		function()
 			GameController.setFlag( 'game.phase3.finished.petting', true )
+			GameController.setFlag( 'game.phase3.disableBtn.petting', true )
+			GameController.pet.stats.friendship.value = 0
+			GameController.setFlag( 'statBars.friendship.disabled', true )
 			GameController.dialogue:resetDefaults()
 		end,
-	}
+	},
+	phase3SleepingGame = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"I'm not tired right now, I don't want\nto go to sleep.",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"You have to go to sleep, that is how\nthis works.",
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"Well I'm not gonna...\nSo what are you going to do\nabout it?",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"I told you that you have to behave,\nbut you just don't listen.",
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+
+			Timer.new( ONE_SECOND * 2, function()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			end )
+		end,
+		"No, I don't want to. I just want\nto hang out with my new best friend.\nThey are the best, and I love them.",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"That's it. This minigame is over!",
+		function()
+			GameController.setFlag( 'game.phase3.finished.sleeping', true )
+			GameController.setFlag( 'game.phase3.disableBtn.sleeping', true )
+			GameController.pet.stats.tired.value = 0
+			GameController.setFlag( 'statBars.tired.disabled', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase3FeedingGame = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"I'm not hungry.",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"This can't be much fun for the\nplayer...",
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"Well I am not hungry! Just because\nyour stupid bars say so doesn't\nmake it true.",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"You need to behave, do you want\nthem to find out about you?",
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+
+			Timer.new( ONE_SECOND * 2, function()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			end )
+		end,
+		"I don't care!\nThey are my new best friend, and\nI love them!",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"That's enough!\nThis ends here.",
+		function()
+			GameController.setFlag( 'game.phase3.finished.feeding', true )
+			GameController.setFlag( 'game.phase3.disableBtn.feeding', true )
+			GameController.pet.stats.hunger.value = 0
+			GameController.setFlag( 'statBars.hunger.disabled', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase3BtnAfterFinish = {
+		"No, I said no more...\nTry something else!",
+	},
 }

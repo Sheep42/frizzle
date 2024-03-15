@@ -188,6 +188,20 @@ function phase:phaseHandler()
 		return
 	end
 
+	local change = true
+	for k, v in pairs( GameController.PHASE_3_GAME_TRIGGERS ) do
+
+		local flagVal = GameController.getFlag( 'game.gamesPlayed.' .. k )
+		if flagVal < v then
+			change = false
+		end
+
+	end
+
+	if change then
+		GameController.setFlag( 'game.phase', 3 )
+	end
+
 end
 
 function phase:recordName()
