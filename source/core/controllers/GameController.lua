@@ -36,6 +36,8 @@ function GameController.getDefaultFlags()
 			playRecording = false,
 			resetMicrogame = false,
 			phase3 = {
+				allFinished = false,
+				playedFinish = false,
 				finished = {
 					petting = false,
 					feeding = false,
@@ -214,6 +216,7 @@ function GameController.reset()
 
 end
 
+-- TODO: Dialogue Review
 GameController.dialogueLines = {
 	intro = {
 		"Congratulations on meeting your new\nbest friend Frizzle!",
@@ -478,5 +481,22 @@ GameController.dialogueLines = {
 	},
 	phase3BtnAfterFinish = {
 		"No, I said no more...\nTry something else!",
+	},
+	phase3Finished = {
+		function() GameController.dialogue:resetDefaults() end,
+		"I hope you're happy Frizzle, you've\nruined another player's experience.",
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"I don't think I ruined anything!\nWhy don't you ask them what they\nthink?",
+		function() GameController.dialogue:resetDefaults() end,
+		"No, I don't think so.\nI think the best thing to do at this\npoint is to just start over.",
+		function()
+			GameController.setFlag( 'game.phase', 4 )
+			Noble.transition( SplashScene, 0.75, Noble.TransitionType.DIP_TO_WHITE )
+		end,
 	},
 }

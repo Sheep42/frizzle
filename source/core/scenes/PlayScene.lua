@@ -122,8 +122,21 @@ function scene:init()
 		phase1 = GamePhase_Phase1( self ),
 		phase2 = GamePhase_Phase2( self ),
 		phase3 = GamePhase_Phase3( self ),
+		phase4 = GamePhase_Phase4( self ),
 	}
-	scene.phaseManager = StateMachine( scene.phases.phase1, scene.phases )
+
+	local startScene = nil
+	if GameController.getFlag( 'game.phase' ) == 1 then
+		startScene = scene.phases.phase1
+	elseif GameController.getFlag( 'game.phase' ) == 2 then
+		startScene = scene.phases.phase2
+	elseif GameController.getFlag( 'game.phase' ) == 3 then
+		startScene = scene.phases.phase3
+	elseif GameController.getFlag( 'game.phase' ) == 4 then
+		startScene = scene.phases.phase4
+	end
+
+	scene.phaseManager = StateMachine( startScene, scene.phases )
 
 end
 

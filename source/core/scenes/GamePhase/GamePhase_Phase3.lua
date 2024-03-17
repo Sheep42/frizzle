@@ -136,6 +136,28 @@ function phase:enter()
 
 	self.owner:softRestart()
 
+	-- Check if all games are finished
+	if GameController.getFlag( 'game.phase3.finished' ) ~= nil and not GameController.getFlag( 'game.phase3.allFinished' ) then
+
+		local finished = GameController.getFlag( 'game.phase3.finished' )
+		if type( finished ) ~= 'table' then
+			return
+		end
+
+		local allFinished = true
+		for k, v in pairs( finished ) do
+			if v == false then
+				allFinished = false
+				break;
+			end
+		end
+
+		if allFinished then
+			GameController.setFlag( 'game.phase3.allFinished', true )
+		end
+
+	end
+
 end
 
 -- Fires when the Phase is exited
@@ -144,10 +166,30 @@ function phase:exit() end
 -- Fires when the State Machine updates
 function phase:tick()
 
+	if GameController.getFlag( 'game.phase3.allFinished' ) and not GameController.getFlag( 'game.phase3.playedFinish' ) then
+
+		GameController.setFlag( 'game.phase3.playedFinish', true )
+
+		Timer.new( ONE_SECOND, function()
+			if GameController.dialogue:getState() == DialogueState.Hide then
+				GameController.setFlag( 'dialogue.currentScript', 'phase3Finished' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end
+		end)
+
+	end
+
 	self:phaseHandler()
 
 end
 
 function phase:phaseHandler()
+
+	if GameController.getFlag( 'game.phase' ) == 4 then
+		self.stateMachine:changeState( self.owner.phases.phase4 )
+		return
+	end
 
 end
