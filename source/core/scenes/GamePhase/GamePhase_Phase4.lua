@@ -84,6 +84,8 @@ function phase:init( scene )
 		end,
 	}
 
+	self.newPet = NobleSprite( 'assets/images/player' )
+
 end
 
 -- Fires when the Phase is entered
@@ -92,25 +94,26 @@ function phase:enter()
 	PlayScene.setInputHandler( self.inputHandler )
 
 	self.owner.petBtn:setPressedCallback( function()
-		GameController.setFlag( 'dialogue.currentScript', 'phase3BtnAfterFinish' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
 	end)
 
 	self.owner.sleepBtn:setPressedCallback( function()
-		GameController.setFlag( 'dialogue.currentScript', 'phase3BtnAfterFinish' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
 	end)
 
 	self.owner.feedBtn:setPressedCallback( function()
-		GameController.setFlag( 'dialogue.currentScript', 'phase3BtnAfterFinish' )
+	end)
+
+	if not GameController.getFlag( 'game.phase3.resetTriggered' ) then
+		return
+	end
+
+	if not GameController.getFlag( 'game.phase4.playedIntro' ) then
+
+		GameController.setFlag( 'dialogue.currentScript', 'phase4Intro' )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
-	end)
+
+	end
 
 	self.owner:softRestart()
 
@@ -123,7 +126,6 @@ function phase:exit() end
 function phase:tick()
 
 	self:phaseHandler()
-	print( 'Phase 4' )
 
 end
 

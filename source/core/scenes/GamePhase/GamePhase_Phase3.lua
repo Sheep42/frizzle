@@ -170,7 +170,7 @@ function phase:tick()
 
 		GameController.setFlag( 'game.phase3.playedFinish', true )
 
-		Timer.new( ONE_SECOND, function()
+		Timer.new( ONE_SECOND * 2, function()
 			if GameController.dialogue:getState() == DialogueState.Hide then
 				GameController.setFlag( 'dialogue.currentScript', 'phase3Finished' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )

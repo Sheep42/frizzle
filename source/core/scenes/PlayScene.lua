@@ -112,6 +112,8 @@ function scene:init()
 		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
 
+	self.sparkle = NobleSprite( 'assets/images/player' )
+
 	-- Start the playTimer if it hasn't started
 	if GameController.playTimer == nil then
 		GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
@@ -155,6 +157,11 @@ function scene:start()
 
 	-- Add Pet to Scene
 	pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+
+	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
+		GameController.pet:setVisible( false )
+		self.sparkle:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 40 )
+	end
 
 	if GameController.getFlag( 'dialogue.showBark' ) then
 
@@ -215,8 +222,8 @@ end
 
 function scene:checkABtnPress()
 
-	if dialogue:getState() == DialogueState.Show then
-		dialogue:buttonPressedCallback()
+	if GameController.dialogue:getState() == DialogueState.Show then
+		GameController.dialogue:buttonPressedCallback()
 	else
 
 		if self.dbgMenu:isActive() then
@@ -259,6 +266,13 @@ function scene:update()
 
 	for i, statBar in pairs( self.statBars ) do
 		statBar:update()
+	end
+
+	if GameController.getFlag( 'game.phase4.deleteSparkle' ) then
+		self.sparkle:setImage( self.sparkle:getImage():vcrPauseFilterImage() )
+		Timer.new( ONE_SECOND, function()
+			self.sparkle:remove()
+		end)
 	end
 
 	self.phaseManager:update()

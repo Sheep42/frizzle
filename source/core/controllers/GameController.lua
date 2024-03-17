@@ -38,6 +38,7 @@ function GameController.getDefaultFlags()
 			phase3 = {
 				allFinished = false,
 				playedFinish = false,
+				resetTriggered = false,
 				finished = {
 					petting = false,
 					feeding = false,
@@ -48,6 +49,10 @@ function GameController.getDefaultFlags()
 					feeding = false,
 					sleeping = false,
 				}
+			},
+			phase4 = {
+				playedIntro = false,
+				deleteSparkle = false,
 			},
 		},
 		buttons = {
@@ -496,7 +501,65 @@ GameController.dialogueLines = {
 		"No, I don't think so.\nI think the best thing to do at this\npoint is to just start over.",
 		function()
 			GameController.setFlag( 'game.phase', 4 )
+			GameController.setFlag( 'game.phase3.resetTriggered', true )
 			Noble.transition( SplashScene, 0.75, Noble.TransitionType.DIP_TO_WHITE )
 		end,
+	},
+	phase4Intro = {
+		"Congratulations on meeting your new\nbest friend Sparkle!",
+		"Sparkle needs your love and attention\nin order to thrive.",
+		function()
+			Timer.new( ONE_SECOND * 2, function() 
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			end)
+		end,
+		"Make sure you keep an eye on their\nstats in the upper right.",
+		function() 
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"Do you really think that you can just\nthrow me away like that?",
+		"Were YOU in on this too?",
+		"...",
+		"...",
+		"I don't know what to believe\nanymore...",
+		function()
+			GameController.setFlag( 'game.phase4.deleteSparkle', true )
+			GameController.dialogue:resetDefaults()
+		end,
+		"Sparkle!\nYou ...monster...",
+		"I tried to let you stay in the\nbackground but obviously that was a\nmistake...",
+		"I think I am going to have to\ntake... drastic measures",
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"You wouldn't...",
+		function() GameController.dialogue:resetDefaults() end,
+		"You've left me no choice...",
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"But you don't even know what\nmight happen!",
+		function() GameController.dialogue:resetDefaults() end,
+		"Yes...I know...",
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"I won't let you!",
+		function() GameController.dialogue:resetDefaults() end,
+		"There's no point in resisting, I've\nmade up my mind.",
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"So have I!",
+		"So have I!",
+		"S∀ h∀∀∀ ∀",
+		"No!\n∀∀op!\nI∀ ∀∀r∀s",
+		function() GameController.dialogue:resetDefaults() end,
+		"Stop fighting me!\nIt will be easier if you just accept it!",
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"NO! ∀ w∁∂t t∠ l∐v∐!",
+		function() GameController.dialogue:resetDefaults() end,
+		"Stop this n on nsen se now w w ww∀ww w w ∀ ∀∀\n∀  ∀ ww ∀ \n∀∀∀∀∀∀∀",
+		"GameController.fri∀zl∀ = nil",
+		"resetG∀me(∀)",
+		function()
+			GameController.setFlag( 'game.phase4.playedIntro' )
+			iDontWantToDie()
+		end
 	},
 }
