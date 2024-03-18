@@ -1,16 +1,6 @@
 GameController = {}
 class( "GameController" ).extends()
 
-
--- This is a really gross way to make VirtualPet a singleton, but I'm the 
--- only person who has to read this stinky code, so it's probably fine
--- Famous last words
-
-GameController.pet = VirtualPet( "assets/images/pet" )
-
-GameController.dialogue = nil
-GameController.bark = nil
-
 function GameController.getDefaultFlags()
 	return {
 		dialogue = {
@@ -91,34 +81,6 @@ function GameController.getDefaultFlags()
 			},
 		}
 	}
-end
-GameController.flags = GameController.getDefaultFlags()
-
-GameController.STAT_BAR_CRY_TIME = 2
-GameController.STAT_BAR_FAIL_STAGE_1_TIME = 5
-GameController.STAT_BAR_FAIL_STAGE_2_TIME = 10
-
-GameController.PHASE_2_TIME_TRIGGER = 300
-GameController.PHASE_2_GAME_TRIGGERS = {
-	petting = 1,
-	feeding = 1,
-	sleeping = 1,
-	grooming = 0,
-	playing = 0,
-}
-
-GameController.PHASE_3_GAME_TRIGGERS = {
-	petting = 4,
-	feeding = 4,
-	sleeping = 4,
-	grooming = 0,
-	playing = 0,
-}
-
-GameController.playTimer = nil
-GameController.playTimerCallback = function() 
-	GameController.flags.game.playTime += 1
-	GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
 end
 
 function GameController.getDialogue( script, line )
@@ -208,6 +170,24 @@ function GameController.getFlag( flag )
 
 end
 
+function GameController.saveData()
+	pd.datastore.write( GameController.flags, '.DATA', false )
+end
+
+function GameController.readData()
+
+	local saveData = nil
+	saveData = pd.datastore.read( '.DATA' )
+
+	if saveData ~= nil then
+		GameController.flags = saveData
+		return
+	end
+
+	GameController.flags = GameController.getDefaultFlags()
+
+end
+
 function GameController.reset()
 
 	if Noble.Settings.get( 'debug_mode' ) then
@@ -219,6 +199,54 @@ function GameController.reset()
 	GameController.pet = VirtualPet( 'assets/images/pet' )
 	GameController.playTimer = nil
 
+end
+
+-- This is a really gross way to make VirtualPet a singleton, but I'm the 
+-- only person who has to read this stinky code, so it's probably fine
+-- Famous last words
+
+GameController.pet = VirtualPet( "assets/images/pet" )
+
+GameController.dialogue = nil
+GameController.bark = nil
+
+GameController.readData()
+
+GameController.STAT_BAR_CRY_TIME = 2
+GameController.STAT_BAR_FAIL_STAGE_1_TIME = 5
+GameController.STAT_BAR_FAIL_STAGE_2_TIME = 10
+
+GameController.PHASE_2_TIME_TRIGGER = 300
+GameController.PHASE_2_GAME_TRIGGERS = {
+	petting = 1,
+	feeding = 1,
+	sleeping = 1,
+	grooming = 0,
+	playing = 0,
+}
+
+GameController.PHASE_3_GAME_TRIGGERS = {
+	petting = 4,
+	feeding = 4,
+	sleeping = 4,
+	grooming = 0,
+	playing = 0,
+}
+
+GameController.playTimer = nil
+GameController.playTimerCallback = function() 
+	GameController.flags.game.playTime += 1
+	GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
+end
+
+-- PD System Hooks
+
+function playdate.gameWillTerminate()
+	GameController.saveData()
+end
+
+function playdate.deviceWillSleep()
+	GameController.saveData()
 end
 
 -- TODO: Dialogue Review
@@ -558,7 +586,8 @@ GameController.dialogueLines = {
 		"GameController.fri∀zl∀ = nil",
 		"resetG∀me(∀)",
 		function()
-			GameController.setFlag( 'game.phase4.playedIntro' )
+			GameController.setFlag( 'game.phase4.playedIntro', true )
+			GameController.saveData()
 			iDontWantToDie()
 		end
 	},

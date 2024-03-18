@@ -37,7 +37,13 @@ function scene:init()
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 
 		dialogue = Dialogue( GameController.advanceDialogueLine() )
+	else
+		dialogue = Dialogue()
+	end
 
+	if GameController.dialogue ~= nil then
+		dialogue = GameController.dialogue
+	else
 		dialogue:enableSound()
 		dialogue.buttonPressedCallback = function ()
 
@@ -60,9 +66,6 @@ function scene:init()
 		end
 
 		GameController.dialogue = dialogue
-
-	else
-		dialogue = GameController.dialogue
 	end
 
 	if GameController.bark == nil then
