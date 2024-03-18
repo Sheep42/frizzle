@@ -133,6 +133,17 @@ function phase:tick()
 	self:phaseChangeHandler()
 	self.owner:handleStatNag( self.games )
 
+	if GameController.getFlag( 'game.phase1.movePetToCenter' ) then
+
+		GameController.pet:moveBy( 0, 1 )
+		local x, y = GameController.pet:getPosition()
+
+		if y >= Utilities.screenSize().height / 2 then
+			GameController.setFlag( 'game.phase1.movePetToCenter', false )
+		end
+
+	end
+
 end
 
 function phase:phaseChangeHandler()

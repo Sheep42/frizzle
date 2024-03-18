@@ -1,6 +1,8 @@
 GameController = {}
 class( "GameController" ).extends()
 
+GameController.DATA_STORE_FILENAME = '.DATA'
+
 function GameController.getDefaultFlags()
 	return {
 		dialogue = {
@@ -25,6 +27,9 @@ function GameController.getDefaultFlags()
 			nameSample = nil,
 			playRecording = false,
 			resetMicrogame = false,
+			phase1 = {
+				movePetToCenter = false,
+			},
 			phase3 = {
 				allFinished = false,
 				playedFinish = false,
@@ -43,6 +48,8 @@ function GameController.getDefaultFlags()
 			phase4 = {
 				playedIntro = false,
 				deleteSparkle = false,
+				movePetToCenter = false,
+				deletePet = false,
 			},
 		},
 		buttons = {
@@ -171,13 +178,13 @@ function GameController.getFlag( flag )
 end
 
 function GameController.saveData()
-	pd.datastore.write( GameController.flags, '.DATA', false )
+	pd.datastore.write( GameController.flags, GameController.DATA_STORE_FILENAME, false )
 end
 
 function GameController.readData()
 
 	local saveData = nil
-	saveData = pd.datastore.read( '.DATA' )
+	saveData = pd.datastore.read( GameController.DATA_STORE_FILENAME )
 
 	if saveData ~= nil then
 		GameController.flags = saveData
@@ -185,6 +192,20 @@ function GameController.readData()
 	end
 
 	GameController.flags = GameController.getDefaultFlags()
+
+end
+
+function GameController.deleteData()
+
+	local deleted = pd.datastore.delete( GameController.DATA_STORE_FILENAME )
+
+	if deleted then
+		print( 'deleted save data' )
+	else
+		warn( 'save data not deleted' )
+	end
+
+	GameController.readData()
 
 end
 
@@ -250,6 +271,7 @@ function playdate.deviceWillSleep()
 end
 
 -- TODO: Dialogue Review
+-- Dialogue Scripts
 GameController.dialogueLines = {
 	intro = {
 		"Congratulations on meeting your new\nbest friend Frizzle!",
@@ -261,6 +283,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'dialogue.playedIntro', true )
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'cursor.active', true )
+			GameController.setFlag( 'game.phase1.movePetToCenter', true )
 		end,
 	},
 	lowStatNag = {
@@ -534,6 +557,12 @@ GameController.dialogueLines = {
 		end,
 	},
 	phase4Intro = {
+		function()
+			GameController.setFlag( 'game.phase4.deleteSparkle', false )
+			GameController.setFlag( 'game.phase4.deletePet', false )
+			GameController.pet:resetStats()
+			GameController.pet:setVisible( false )
+		end,
 		"Congratulations on meeting your new\nbest friend Sparkle!",
 		"Sparkle needs your love and attention\nin order to thrive.",
 		function()
@@ -542,11 +571,13 @@ GameController.dialogueLines = {
 			end)
 		end,
 		"Make sure you keep an eye on their\nstats in the upper right.",
-		function() 
+		function()
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
 				Dialogue.PET_VOICE
 			)
+			GameController.pet:moveTo( Utilities.screenSize().width * 0.75, Utilities.screenBounds().top + 40 )
+			GameController.pet:setVisible( true )
 		end,
 		"Do you really think that you can just\nthrow me away like that?",
 		"Were YOU in on this too?",
@@ -555,6 +586,7 @@ GameController.dialogueLines = {
 		"I don't know what to believe\nanymore...",
 		function()
 			GameController.setFlag( 'game.phase4.deleteSparkle', true )
+			GameController.setFlag( 'game.phase4.movePetToCenter', true )
 			GameController.dialogue:resetDefaults()
 		end,
 		"Sparkle!\nYou ...monster...",
@@ -575,6 +607,7 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"So have I!",
 		"So have I!",
+		function() GameController.setFlag( 'game.phase4.deletePet', true ) end,
 		"S∀ h∀∀∀ ∀",
 		"No!\n∀∀op!\nI∀ ∀∀r∀s",
 		function() GameController.dialogue:resetDefaults() end,
@@ -583,12 +616,19 @@ GameController.dialogueLines = {
 		"NO! ∀ w∁∂t t∠ l∐v∐!",
 		function() GameController.dialogue:resetDefaults() end,
 		"Stop this n on nsen se now w w ww∀ww w w ∀ ∀∀\n∀  ∀ ww ∀ \n∀∀∀∀∀∀∀",
-		"GameController.fri∀zl∀ = nil",
-		"resetG∀me(∀)",
+		"GameController.fri∀zl∀ = nil∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
+		"∀∀∀∀∀∀∀resetG∀me(∀)\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
 			GameController.setFlag( 'game.phase4.playedIntro', true )
 			GameController.saveData()
 			iDontWantToDie()
 		end
+	},
+	gameFinished = {
+		function() GameController.dialogue:resetDefaults() end,
+		"That's all...\nI got rid of Frizzle.",
+		"Perhaps you should go do something\nelse for a while.",
+		"Maybe go outside and go for a walk\nor something.",
+		function() Noble.transition( TitleScene, 0.75, Noble.TransitionType.DIP_TO_BLACK ) end,
 	},
 }

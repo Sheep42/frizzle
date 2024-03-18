@@ -159,7 +159,11 @@ function scene:start()
 	scene.super.start(self)
 
 	-- Add Pet to Scene
-	pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+	if not GameController.getFlag( 'dialogue.playedIntro' ) then
+		pet:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 40 )
+	else
+		pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+	end
 
 	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
 		GameController.pet:setVisible( false )
@@ -179,12 +183,8 @@ function scene:start()
 	-- Add Buttons to the Scene
 	self:setupButtons()
 
-	-- TOOD: These should not be hardcoded like this
-	self.statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
-	self.statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
-	-- self.statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
-	-- self.statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
-	self.statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
+	-- Add Stat Bars
+	self:setupStatBars()
 
 	-- Add Cursor to the Scene
 	self.cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
@@ -211,6 +211,10 @@ end
 
 function scene:setupButtons()
 
+	if GameController.getFlag( 'game.phase4.playedIntro' ) then
+		return
+	end
+
 	local totalButtons = #uiButtons
 	local buttonPanelWidth = ( Button.getDimensions().width + Button.getPadding() ) * totalButtons - Button.getPadding()
 	local startX = math.floor( ( Utilities.screenSize().width - buttonPanelWidth ) / 2 + ( Button.getDimensions().width / 2 ) )
@@ -221,6 +225,20 @@ function scene:setupButtons()
 		currentX = currentX + Button.getDimensions().width + Button.getPadding()
 	end
 
+end
+
+function scene:setupStatBars()
+
+	if GameController.getFlag( 'game.phase4.playedIntro' ) then
+		return
+	end
+
+	-- TOOD: These should not be hardcoded like this
+	self.statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
+	self.statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
+	-- self.statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
+	-- self.statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
+	self.statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
 end
 
 function scene:checkABtnPress()
@@ -269,13 +287,6 @@ function scene:update()
 
 	for i, statBar in pairs( self.statBars ) do
 		statBar:update()
-	end
-
-	if GameController.getFlag( 'game.phase4.deleteSparkle' ) then
-		self.sparkle:setImage( self.sparkle:getImage():vcrPauseFilterImage() )
-		Timer.new( ONE_SECOND, function()
-			self.sparkle:remove()
-		end)
 	end
 
 	self.phaseManager:update()

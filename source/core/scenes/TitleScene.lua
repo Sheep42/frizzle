@@ -49,6 +49,15 @@ function scene:init()
 		"Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) )
 	)
 
+	menu:addItem( 
+		"delete_save",
+		function()
+			GameController.deleteData()
+		end,
+		nil,
+		"Delete Save Data"
+	)
+
 	local crankTick = 0
 
 	scene.inputHandler = {

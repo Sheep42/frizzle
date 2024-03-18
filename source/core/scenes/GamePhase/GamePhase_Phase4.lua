@@ -113,6 +113,13 @@ function phase:enter()
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
 
+	else
+
+		GameController.setFlag( 'dialogue.currentScript', 'gameFinished' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+
 	end
 
 	self.owner:softRestart()
@@ -126,6 +133,28 @@ function phase:exit() end
 function phase:tick()
 
 	self:phaseHandler()
+
+	if GameController.getFlag( 'game.phase4.deleteSparkle' ) then
+		self.owner.sparkle:setImage( self.owner.sparkle:getImage():vcrPauseFilterImage() )
+		Timer.new( ONE_SECOND, function()
+			self.owner.sparkle:remove()
+		end)
+	end
+
+	if GameController.getFlag( 'game.phase4.deletePet' ) then
+		-- TODO: Play glitched animation
+	end
+
+	if GameController.getFlag( 'game.phase4.movePetToCenter' ) then
+
+		GameController.pet:moveBy( -1, 0 )
+		local x, y = GameController.pet:getPosition()
+
+		if x <= Utilities.screenSize().width / 2 then
+			GameController.setFlag( 'game.phase4.movePetToCenter', false )
+		end
+
+	end
 
 end
 
