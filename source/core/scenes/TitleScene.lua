@@ -13,7 +13,7 @@ function scene:init()
 	scene.super.init(self)
 
 	background = Graphics.image.new( "assets/images/background2" )
-	-- bgMusic = Sound.fileplayer.new( "assets/sound/title.mp3" ) -- TODO: mp3 is too cpu intensive, Use ADPCM wavs instead & COMPRESS!!
+	bgMusic = Sound.fileplayer.new( "assets/sound/title" )
 
 	menu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
 	menu:addItem( 
@@ -97,7 +97,7 @@ function scene:start()
 	menu:activate()
 	menu:select( 1 )
 	Noble.Input.setCrankIndicatorStatus(true)
-	-- bgMusic:play( 0 )
+	bgMusic:play( 0 )
 end
 
 function scene:drawBackground()
@@ -126,7 +126,7 @@ function scene:exit()
 
 	Noble.Input.setCrankIndicatorStatus(false)
 	sequence = Sequence.new():from(100):to(240, 0.25, Ease.inSine)
-	-- bgMusic:stop()
+	bgMusic:stop()
 	sequence:start()
 
 end
