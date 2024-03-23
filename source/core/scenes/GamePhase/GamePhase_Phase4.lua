@@ -134,10 +134,26 @@ function phase:tick()
 
 	self:phaseHandler()
 
+	if GameController.getFlag( 'game.phase4.loadBrokenSound' ) then
+		self.owner.bgMusic:stop()
+		self.owner.bgMusic = Sound.fileplayer.new( 'assets/sound/main-broken' )
+		self.owner.bgMusic:setVolume( 0.5 )
+		self.owner.bgMusic:play()
+		GameController.setFlag( 'game.phase4.loadBrokenSound', false )
+	end
+
+	if GameController.getFlag( 'game.phase4.glitchSound' ) then
+		self.owner.bgMusic:stop()
+		self.owner.bgMusic:play()
+	end
+
 	if GameController.getFlag( 'game.phase4.deleteSparkle' ) then
 		self.owner.sparkle:setImage( self.owner.sparkle:getImage():vcrPauseFilterImage() )
 		Timer.new( ONE_SECOND, function()
 			self.owner.sparkle:remove()
+			GameController.setFlag( 'game.phase4.deleteSparkle', false )
+			GameController.setFlag( 'game.phase4.glitchSound', false )
+			GameController.setFlag( 'game.phase4.loadBrokenSound', true )
 		end)
 	end
 

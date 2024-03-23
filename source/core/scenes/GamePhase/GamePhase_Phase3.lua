@@ -135,6 +135,7 @@ function phase:enter()
 	end
 
 	self.owner:softRestart()
+	self.owner.bgMusic:load( 'assets/sound/main-crack' )
 
 	-- Check if all games are finished
 	if GameController.getFlag( 'game.phase3.finished' ) ~= nil and not GameController.getFlag( 'game.phase3.allFinished' ) then

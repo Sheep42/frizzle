@@ -48,6 +48,8 @@ function GameController.getDefaultFlags()
 			phase4 = {
 				playedIntro = false,
 				deleteSparkle = false,
+				loadBrokenSound = false,
+				glitchSound = false,
 				movePetToCenter = false,
 				deletePet = false,
 			},
@@ -559,6 +561,8 @@ GameController.dialogueLines = {
 	phase4Intro = {
 		function()
 			GameController.setFlag( 'game.phase4.deleteSparkle', false )
+			GameController.setFlag( 'game.phase4.glitchSound', false )
+			GameController.setFlag( 'game.phase4.loadBrokenSound', false )
 			GameController.setFlag( 'game.phase4.deletePet', false )
 			GameController.pet:resetStats()
 			GameController.pet:setVisible( false )
@@ -585,6 +589,7 @@ GameController.dialogueLines = {
 		"...",
 		"I don't know what to believe\nanymore...",
 		function()
+			GameController.setFlag( 'game.phase4.glitchSound', true )
 			GameController.setFlag( 'game.phase4.deleteSparkle', true )
 			GameController.setFlag( 'game.phase4.movePetToCenter', true )
 			GameController.dialogue:resetDefaults()
