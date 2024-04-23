@@ -276,12 +276,13 @@ end
 -- Dialogue Scripts
 GameController.dialogueLines = {
 	intro = {
-		"Congratulations on meeting your new\nbest friend Frizzle!",
-		"Frizzle needs your love and attention\nin order to thrive.",
-		"Make sure you keep an eye on their\nstats in the upper right.",
-		"You can use the buttons at the\nbottom of your screen to interact\nwith Frizzle.",
-		"Good luck, and have fun!",
-		function() 
+		"Welcome to \"Frizzle\", a cozy virtual\npet game.",
+		"Frizzle also happens to be the name\nof the cute little creature that you\nsee here.",
+		"They will need your love and attention\nin order to maintain their happiness.",
+		"Make sure you keep an eye on their\nstats in the upper right part of the\nscreen.",
+		"You can use the buttons at the\nbottom of your screen to interact\nwith Frizzle through minigames.",
+		"Enjoy your time with Frizzle!",
+		function()
 			GameController.setFlag( 'dialogue.playedIntro', true )
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'cursor.active', true )
@@ -291,7 +292,7 @@ GameController.dialogueLines = {
 	lowStatNag = {
 		function() GameController.setFlag( 'statBars.paused', true ) end,
 		"Hey there, I noticed that Frizzle\ndoesn't seem too happy right now.",
-		"Are you having trouble playing the\ngame, or do you just like that\nterrible noise?",
+		"Are you having trouble playing the\ngame, or do you just like hearing\nthat terrible noise?",
 		"It looks like Frizzle just needs some\nlove.",
 		"Let me help you with that.\nGive this game a try.",
 		function()
@@ -301,8 +302,8 @@ GameController.dialogueLines = {
 	},
 	ignoredStat = {
 		function() GameController.setFlag( 'statBars.paused', true ) end,
-		"Okay, I tried to give you the benefit of\nthe doubt but it seems that you just\nsuck at playing video games.",
-		"Git gud.",
+		"Okay I tried to give you the benefit of\nthe doubt, but maybe you just\nsuck at playing video games.",
+		"Let's try again from the start.",
 		function() GameController.reset() end,
 	},
 	petIntro = {
@@ -316,7 +317,7 @@ GameController.dialogueLines = {
 		"Hey, it's me... Frizzle\n",
 		"Yeah, I know... I can talk...\nI'm supposed to stay quiet, but you\nhave been doing such a good job.",
 		"I just wanted to say thanks.",
-		"...",
+		"You look like someone I can trust, can I trust you?",
 		"...",
 		"Hey... can you do me a little favor?",
 		"I hope it's not weird, but can you\nsay my name? I just like hearing you\nsay it.",
@@ -417,9 +418,9 @@ GameController.dialogueLines = {
 				Dialogue.PET_VOICE
 			)
 		end,
-		"Hi",
-		"...",
-		"...",
+		"Hi.. I should tell you something",
+		"I was having bad thoughts again..",
+		"No it's ok.. I feel better now.",
 		"Can you pet me a bit more before\nyou go?",
 		"I would really like that.",
 		function()
