@@ -26,7 +26,7 @@ function pet:init()
 	self.stats = {
 		hunger = {
 			key = 'hunger',
-			icon = 'assets/images/UI/heart',
+			icon = 'assets/images/UI/feed',
 			gameType = MicrogameType.feeding,
 			crySound = 'assets/sound/cry.wav',
 			value = 5,
@@ -58,7 +58,7 @@ function pet:init()
 		},
 		tired = {
 			key = 'tired',
-			icon = 'assets/images/UI/heart',
+			icon = 'assets/images/UI/sleep',
 			gameType = MicrogameType.sleeping,
 			crySound = 'assets/sound/cry.wav',
 			value = 5,
