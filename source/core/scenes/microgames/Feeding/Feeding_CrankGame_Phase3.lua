@@ -50,11 +50,7 @@ function scene:init()
 	self.stat = GameController.pet.stats.hunger
 
 	scene.inputHandler = {
-		AButtonDown = function()
-			if GameController.dialogue:getState() == DialogueState.Show then
-				GameController.dialogue:buttonPressedCallback()
-			end
-		end,
+		AButtonDown = scene.super.inputHandler.AButtonDown,
 		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 
@@ -111,8 +107,8 @@ end
 
 function scene:update()
 
-	GameController.dialogue:drawCanvas()
-	GameController.dialogue:update()
+	-- GameController.dialogue:drawCanvas()
+	-- GameController.dialogue:update()
 
 	if GameController.getFlag( 'game.phase3.finished.feeding' ) then
 		GameController.dialogue:hide()

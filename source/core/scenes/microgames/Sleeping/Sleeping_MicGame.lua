@@ -47,15 +47,7 @@ function scene:init()
 	self.stat = GameController.pet.stats.tired
 
 	scene.inputHandler = {
-		AButtonDown = function()
-
-		-- POC: Record Player Audio
-			-- self.buffer = playdate.sound.sample.new( 5, playdate.sound.kFormat16bitMono )
-			-- Sound.micinput.recordToSample( self.buffer, function ()
-			-- 	self.buffer:play()
-			-- end)
-
-		end,
+		AButtonDown = scene.super.inputHandler.AButtonDown,
 		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 

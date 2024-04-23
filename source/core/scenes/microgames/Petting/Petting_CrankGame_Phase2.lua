@@ -63,13 +63,7 @@ function scene:init()
 			self.crankTick += change
 
 		end,
-		AButtonDown = function()
-
-			if GameController.dialogue:getState() == DialogueState.Show then
-				GameController.dialogue:buttonPressedCallback()
-			end
-
-		end,
+		AButtonDown = scene.super.inputHandler.AButtonDown,
 		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 
@@ -107,9 +101,6 @@ function scene:drawBackground()
 end
 
 function scene:update()
-
-	GameController.dialogue:drawCanvas()
-	GameController.dialogue:update()
 
 	if self.timer.value >= self.gameTime or self.win then
 

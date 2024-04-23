@@ -64,6 +64,7 @@ function scene:init()
 			self.crankTick += change
 
 		end,
+		AButtonDown = scene.super.inputHandler.AButtonDown,
 		BButtonDown = scene.super.inputHandler.BButtonDown,
 	}
 

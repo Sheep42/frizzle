@@ -104,7 +104,6 @@ function scene:init()
 	uiButtons[3] = self.sleepBtn
 
 	-- bug: statBars are recreated every time PlayScene is created which blows away the nag state
-	-- TODO: Create new icons and update
 	-- Add StatBars to table
 	self.statBars = {
 		friendship = StatBar( pet.stats.friendship ),

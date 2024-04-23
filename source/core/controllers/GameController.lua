@@ -29,6 +29,7 @@ function GameController.getDefaultFlags()
 			resetMicrogame = false,
 			phase1 = {
 				movePetToCenter = false,
+				playedMicroGame = false,
 			},
 			phase3 = {
 				allFinished = false,
@@ -287,6 +288,13 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'cursor.active', true )
 			GameController.setFlag( 'game.phase1.movePetToCenter', true )
+		end,
+	},
+	firstTimeGame = {
+		"When you play a minigame, there will\nalways be a timer in the bottom\nleft.",
+		"You'll need to complete the action for\nthe specific minigame before the time\nruns out.",
+		function()
+			GameController.setFlag( 'game.phase1.playedMicroGame', true )
 		end,
 	},
 	lowStatNag = {

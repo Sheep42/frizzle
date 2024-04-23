@@ -36,6 +36,11 @@ function scene:init()
 	self:resetTimer()
 
 	scene.inputHandler = {
+		AButtonDown = function()
+			if GameController.dialogue:getState() == DialogueState.Show then
+				GameController.dialogue:buttonPressedCallback()
+			end
+		end,
 		BButtonDown = function()
 			if Noble.Settings.get( 'debug_mode' ) then
 				Noble.transition( PlayScene )
@@ -50,12 +55,24 @@ function scene:enter()
 	scene.super.enter( self )
 	self:resetTimer()
 
+
+	if not GameController.getFlag( 'game.phase1.playedMicroGame' ) then
+
+		GameController.dialogue.onHideCallback = function()
+			if self.dialogue ~= nil then
+				self.dialogue:show()
+			end
+
+			GameController.onHideCallback = function() end
+		end
+	else
+		if self.dialogue ~= nil then
+			self.dialogue:show()
+		end
+	end
+
 	local totalGames = GameController.getFlag( 'game.gamesPlayed.' .. self.category ) + 1
 	GameController.setFlag( 'game.gamesPlayed.' .. self.category, totalGames )
-
-	if self.dialogue ~= nil then
-		self.dialogue:show()
-	end
 
 	-- print( self.className )
 
@@ -70,6 +87,21 @@ function scene:drawBackground()
 end
 
 function scene:update()
+
+	GameController.dialogue:drawCanvas()
+	GameController.dialogue:update()
+
+	if not GameController.getFlag( 'game.phase1.playedMicroGame' ) then
+		if GameController.dialogue:getState() == DialogueState.Hide then
+			GameController.setFlag( 'dialogue.currentScript', 'firstTimeGame' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:resetDefaults()
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+		end
+
+		return
+	end
 
 	scene.super.update( self )
 
