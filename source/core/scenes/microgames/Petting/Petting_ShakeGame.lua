@@ -79,6 +79,8 @@ end
 
 function scene:update()
 
+	scene.super.update( self )
+
 	if self.timer.value >= self.gameTime or self.win then
 
 		if self.win then
@@ -91,8 +93,6 @@ function scene:update()
 		return
 
 	end
-
-	scene.super.update( self )
 
 	if self.startTimer then
 		self.timer:start()

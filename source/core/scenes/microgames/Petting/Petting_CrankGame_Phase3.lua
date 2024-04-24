@@ -102,6 +102,8 @@ end
 
 function scene:update()
 
+	scene.super.update( self )
+
 	if GameController.getFlag( 'game.phase3.finished.' .. self.category ) then
 		GameController.dialogue:hide()
 		Noble.transition( PlayScene, 0.75, Noble.TransitionType.SLIDE_OFF_UP )
@@ -139,8 +141,6 @@ function scene:update()
 		return
 
 	end
-
-	scene.super.update( self )
 
 	if pd.isCrankDocked() then
 		Noble.Input.setCrankIndicatorStatus( true )

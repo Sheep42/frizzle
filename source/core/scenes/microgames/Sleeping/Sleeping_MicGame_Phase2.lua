@@ -91,6 +91,8 @@ end
 
 function scene:update()
 
+	scene.super.update( self )
+
 	if self.timer.value >= self.gameTime or self.win then
 
 		Noble.Input.setCrankIndicatorStatus( false )
@@ -143,16 +145,12 @@ function scene:update()
 
 	self:handleAnimation()
 
-	scene.super.update( self )
-
 	if self.startTimer then
 		self.timer:start()
 		self.startTimer = false
 	elseif self.timer.paused then
 		return
 	end
-
-	-- TODO: Animation for Pet reactions
 
 	if self.happinessTimer == nil then
 

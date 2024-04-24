@@ -102,6 +102,8 @@ end
 
 function scene:update()
 
+	scene.super.update( self )
+
 	if self.timer.value >= self.gameTime or self.win then
 
 		Noble.Input.setCrankIndicatorStatus( false )
@@ -148,8 +150,6 @@ function scene:update()
 		return
 
 	end
-
-	scene.super.update( self )
 
 	if pd.isCrankDocked() then
 		Noble.Input.setCrankIndicatorStatus( true )

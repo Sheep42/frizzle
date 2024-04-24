@@ -55,7 +55,6 @@ function scene:enter()
 	scene.super.enter( self )
 	self:resetTimer()
 
-
 	if not GameController.getFlag( 'game.phase1.playedMicroGame' ) then
 
 		GameController.dialogue.onHideCallback = function()

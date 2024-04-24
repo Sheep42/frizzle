@@ -88,6 +88,8 @@ end
 
 function scene:update()
 
+	scene.super.update( self )
+
 	if self.timer.value >= self.gameTime or self.win then
 
 		if GameController.getFlag( 'game.phase3.finished.sleeping' ) then
@@ -107,8 +109,6 @@ function scene:update()
 		return
 
 	end
-
-	scene.super.update( self )
 
 	if self.startTimer then
 		self.timer:start()
