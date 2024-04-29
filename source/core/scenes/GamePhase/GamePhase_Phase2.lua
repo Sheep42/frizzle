@@ -148,7 +148,7 @@ function phase:enter()
 		GameController.setFlag( 'buttons.active', false )
 
 		Timer.new( ONE_SECOND * 3, function()
-			GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
+			GameController.setFlag( 'dialogue.currentScript', 'narratorIntro' )
 			GameController.setFlag( 'dialogue.currentLine', 1 )
 			GameController.dialogue:setText( GameController.advanceDialogueLine() )
 			GameController.dialogue:show()

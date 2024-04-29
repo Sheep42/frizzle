@@ -318,8 +318,23 @@ GameController.dialogueLines = {
 		"Let's try again from the start.",
 		function() GameController.reset() end,
 	},
+	narratorIntro = {
+		function()
+			GameController.setFlag( 'statBars.paused', true )
+		end,
+		"Hi there. I just wanted to take a\nminute to say thanks for playing\n\"Frizzle\".",
+		"The truth is, I haven't been completely\nhonest with you about this virtual\npet game.",
+		"I hope this is not awkward, but you\nare doing me huge solid by being a\nBeta tester.",
+		"I would really appreciate it if you\ncould let me know if you find any\nbugs.",
+		"I've been doing this for so long, and\nI really need this game to work out.",
+		function()
+			GameController.setFlag( 'dialogue.playedPhase2Intro', true )
+			GameController.setFlag( 'statBars.paused', false )
+			GameController.setFlag( 'buttons.active', true )
+		end,
+	},
 	petIntro = {
-		function() 
+		function()
 			GameController.setFlag( 'statBars.paused', true )
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
