@@ -199,8 +199,18 @@ function scene:start()
 			GameController.setFlag( 'statBars.paused', false )
 		end
 
+		if GameController.getFlag( 'pet.state' ) == GameController.pet.states.paused.id then
+			GameController.setFlag( 'pet.state', GameController.pet.states.active.id )
+		end
+
 	end
 
+	if not GameController.getFlag( 'pet.shouldTickStats' ) then
+		GameController.pet._statTimer = nil
+		Timer.new( ONE_SECOND * 1.5, function()
+			GameController.setFlag( 'pet.shouldTickStats', true )
+		end)
+	end
 end
 
 function scene:softRestart()

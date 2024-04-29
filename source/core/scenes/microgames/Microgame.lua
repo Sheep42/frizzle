@@ -187,6 +187,7 @@ end
 
 function scene:exit()
 	scene.super.exit(self)
+	GameController.setFlag( 'pet.shouldTickStats', false )
 end
 
 function scene:finish()

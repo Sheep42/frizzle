@@ -89,6 +89,10 @@ function GameController.getDefaultFlags()
 				emptyTime = 0,
 				disabled = false,
 			},
+		},
+		pet = {
+			state = 'active',
+			shouldTickStats = false,
 		}
 	}
 end

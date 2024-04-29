@@ -128,9 +128,14 @@ end
 
 function pet:tickStats()
 
+	if not GameController.getFlag( 'pet.shouldTickStats' ) then
+		return
+	end
+
 	if self._statTimer == nil then
 		local duration = math.random( 3, 6 ) * 1000
 		self._statTimer = Timer.new( duration, 0, duration )
+		return
 	end
 
 	if self._statTimer.value >= self._statTimer.duration then
