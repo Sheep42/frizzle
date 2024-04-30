@@ -21,6 +21,7 @@ function GameController.getDefaultFlags()
 				grooming = 0,
 				playing = 0,
 			},
+			previousScript = '',
 			startLowStatGame = false,
 			playTime = 0,
 			listenForName = false,
@@ -29,6 +30,9 @@ function GameController.getDefaultFlags()
 			resetMicrogame = false,
 			phase1 = {
 				movePetToCenter = false,
+				playedMicroGame = false,
+			},
+			phase2 = {
 				playedMicroGame = false,
 			},
 			phase3 = {
@@ -335,23 +339,29 @@ GameController.dialogueLines = {
 	},
 	petIntro = {
 		function()
-			GameController.setFlag( 'statBars.paused', true )
-			GameController.dialogue:setVoice(
-				Dialogue.PET_FONT,
-				Dialogue.PET_VOICE
-			)
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.getDialogue() )
 		end,
 		"Hey, it's me... Frizzle\n",
-		"Yeah, I know... I can talk...\nI'm supposed to stay quiet, but you\nhave been doing such a good job.",
-		"I just wanted to say thanks.",
-		"You look like someone I can trust, can I trust you?",
-		"...",
-		"Hey... can you do me a little favor?",
-		"I hope it's not weird, but can you\nsay my name? I just like hearing you\nsay it.",
-		"Just say \"Frizzle\" after you press A.\nI'll wait...",
+		"I know... I can talk...\nI'm not really supposed to but you\nhave been doing such a good job.",
+		"And... I just wanted to say thanks...",
+		"Can I trust you?",
+		"I think I can...",
+		"The Narrator, if he finds out that\nI have been talking to you...",
+		"Well, let's just say he won't be\nhappy...",
 		function()
-			GameController.setFlag( 'game.listenForName', true )
+			GameController.setFlag( 'game.phase2.playedMicroGame', true )
+			GameController.setFlag( 'dialogue.currentScript', GameController.getFlag( 'previousScript' ) )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.getDialogue() )
+			GameController.dialogue:show()
 		end,
+		-- "Hey... can you do me a little favor?",
+		-- "I hope it's not weird, but can you\nsay my name? I just like hearing you\nsay it.",
+		-- "Just say \"Frizzle\" after you press A.\nI'll wait...",
+		-- function()
+		-- 	GameController.setFlag( 'game.listenForName', true )
+		-- end,
 	},
 	nameRecorded = {
 		"Thanks, I really appreciate it!",
@@ -407,13 +417,19 @@ GameController.dialogueLines = {
 		end,
 	},
 	phase2PettingGameFinish = {
-		function() 
+		function()
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
 				Dialogue.PET_VOICE
 			)
+
+			if GameController.getFlag( 'game.phase2.playedMicroGame' ) then
+				return
+			end
+
+			GameController.setFlag( 'previousScript', 'phase2PettingGameFinish' )
+			GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
 		end,
-		"Hi",
 		"...",
 		"...",
 		"Can you pet me a bit more before\nyou go?",
@@ -424,6 +440,19 @@ GameController.dialogueLines = {
 		end,
 	},
 	phase2SleepingGameFinish = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+
+			if GameController.getFlag( 'game.phase2.playedMicroGame' ) then
+				return
+			end
+
+			GameController.setFlag( 'previousScript', 'phase2SleepingGameFinish' )
+			GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
+		end,
 		function() 
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
