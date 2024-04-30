@@ -34,6 +34,7 @@ function GameController.getDefaultFlags()
 			},
 			phase2 = {
 				playedMicroGame = false,
+				narratorAfterPet = false,
 			},
 			phase3 = {
 				allFinished = false,
@@ -258,9 +259,9 @@ GameController.PHASE_2_GAME_TRIGGERS = {
 }
 
 GameController.PHASE_3_GAME_TRIGGERS = {
-	petting = 4,
-	feeding = 4,
-	sleeping = 4,
+	petting = 6,
+	feeding = 6,
+	sleeping = 6,
 	grooming = 0,
 	playing = 0,
 }
@@ -382,17 +383,32 @@ GameController.dialogueLines = {
 		end,
 	},
 	narratorAfterPetIntro = {
-		"Hi there, I noticed that you and Frizzle\nwere chatting. I think it would be in\nyour best interest to avoid direct",
-		"conversation with them.",
-		"It's just that Frizzle isn't really\nsupposed to talk to you. It ruins the\nimmersion, you know?",
-		"If they talk to you again, just try to\nignore it and stick to playing\nthe game.",
+		"Hi.\nI need to talk to you about Frizzle.",
+		"Have they been talking to you?\nI really don't think that is such a\ngood idea.",
+		"Frizzle isn't designed to talk to you\ndirectly. It might lead to an awkward\nsituation, or unexpected results.",
 		function()
-			Timer.new( ONE_SECOND * 2, function()
-				GameController.setFlag( 'dialogue.currentScript', 'playRecording' )
-				GameController.setFlag( 'dialogue.currentLine', 1 )
-				GameController.dialogue:setText( GameController.advanceDialogueLine() )
-				GameController.dialogue:show()
-			end)
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+			Timer.new( ONE_SECOND * 2, function() GameController.dialogue:setText( GameController.advanceDialogueLine() ) end )
+		end,
+		"But, I want to talk to my new\nfriend. They are doing a really\ngreat job at taking care of me.",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"No Frizzle, stay out of this.",
+		"Sorry about that. That was not\nmeant for you.",
+		"I've tweaked some settings,\nand hopefully things are a bit\nsmoother now.",
+		function()
+			GameController.setFlag( 'statBars.paused', false )
+			GameController.setFlag( 'buttons.active', true )
+			-- Timer.new( ONE_SECOND * 2, function()
+			-- 	GameController.setFlag( 'dialogue.currentScript', 'playRecording' )
+			-- 	GameController.setFlag( 'dialogue.currentLine', 1 )
+			-- 	GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			-- 	GameController.dialogue:show()
+			-- end)
 
 		end,
 	},

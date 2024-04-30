@@ -254,7 +254,7 @@ function scene:checkABtnPress()
 	if GameController.dialogue:getState() == DialogueState.Show then
 		GameController.dialogue:buttonPressedCallback()
 	else
-
+		
 		if self.dbgMenu:isActive() then
 			self.dbgMenu:click()
 			return

@@ -17,9 +17,11 @@ function phase:init( scene )
 		feeding = {
 			Feeding_CrankGame,
 			Feeding_CrankGame_Phase2,
+			Feeding_CrankGame_Phase2,
 		},
 		petting = {
 			Petting_CrankGame,
+			Petting_CrankGame_Phase2,
 			Petting_CrankGame_Phase2,
 		},
 		playing = {},
@@ -27,12 +29,38 @@ function phase:init( scene )
 		sleeping = {
 			Sleeping_MicGame,
 			Sleeping_MicGame_Phase2,
+			Sleeping_MicGame_Phase2,
 		},
 	}
 
 	self.inputHandler = {
 		AButtonDown = function()
+
+			if GameController.getFlag( 'game.phase2.playedMicroGame' ) and not GameController.getFlag( 'game.phase2.narratorAfterPet' ) then
+
+				local limit = false
+				for k, v in pairs( GameController.getFlag( 'game.gamesPlayed' ) ) do
+					if v >= 4 then
+						limit = true
+						break
+					end
+				end
+
+				if limit then
+					GameController.setFlag( 'game.phase2.narratorAfterPet', true )
+					GameController.setFlag( 'statBars.paused', true )
+					GameController.setFlag( 'buttons.active', false )
+					GameController.setFlag( 'dialogue.currentScript', 'narratorAfterPetIntro' )
+					GameController.setFlag( 'dialogue.currentLine', 1 )
+					GameController.dialogue:setText( GameController.advanceDialogueLine() )
+					GameController.dialogue:show()
+					return
+				end
+
+			end
+
 			self.owner:checkABtnPress()
+
 		end,
 		BButtonDown = function()
 
