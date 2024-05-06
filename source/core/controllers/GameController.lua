@@ -24,8 +24,8 @@ function GameController.getDefaultFlags()
 			previousScript = '',
 			startLowStatGame = false,
 			playTime = 0,
-			listenForName = false,
-			nameSample = nil,
+			listenForPlayer = false,
+			playerSample = nil,
 			playRecording = false,
 			resetMicrogame = false,
 			phase1 = {
@@ -34,6 +34,7 @@ function GameController.getDefaultFlags()
 			},
 			phase2 = {
 				playedMicroGame = false,
+				playerRecorded = false,
 				narratorAfterPet = false,
 			},
 			phase3 = {
@@ -357,32 +358,33 @@ GameController.dialogueLines = {
 			GameController.dialogue:setText( GameController.getDialogue() )
 			GameController.dialogue:show()
 		end,
-		-- "Hey... can you do me a little favor?",
-		-- "I hope it's not weird, but can you\nsay my name? I just like hearing you\nsay it.",
-		-- "Just say \"Frizzle\" after you press A.\nI'll wait...",
-		-- function()
-		-- 	GameController.setFlag( 'game.listenForName', true )
-		-- end,
 	},
-	nameRecorded = {
-		"Thanks, I really appreciate it!",
-		"I'll let you get back to the game now.",
+	petRecord = {
 		function()
-			GameController.setFlag( 'dialogue.showBark', true )
-			GameController.bark:setEmote( NobleSprite( 'assets/images/UI/heart' ), nil, nil, 'assets/sound/win-game.wav' )
-			GameController.pet:resetStats()
-
-			Timer.new( ONE_SECOND * 2, function()
-				GameController.setFlag( 'dialogue.currentScript', 'narratorAfterPetIntro' )
-				GameController.setFlag( 'dialogue.currentLine', 1 )
-				GameController.dialogue:resetDefaults()
-				GameController.dialogue:setText( GameController.advanceDialogueLine() )
-				GameController.dialogue:show()
-			end)
-
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"Hey...",
+		"I hope it's not too weird, but can you\ntell me you love me? I just like hearing\nyou say it.",
+		"Just say \"I love you Frizzle\" after\nyou press A.\nI'll wait...",
+		function()
+			GameController.setFlag( 'game.listenForPlayer', true )
 		end,
 	},
+	playerRecorded = {
+		"Thanks, I really appreciate it!",
+		"I'll let you get back to your day now.",
+		function()
+			GameController.setFlag( 'statBars.paused', false )
+			GameController.setFlag( 'buttons.active', true )
+		end
+	},
 	narratorAfterPetIntro = {
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
 		"Hi.\nI need to talk to you about Frizzle.",
 		"Have they been talking to you?\nI really don't think that is such a\ngood idea.",
 		"Frizzle isn't designed to talk to you\ndirectly. It might lead to an awkward\nsituation, or unexpected results.",
@@ -403,13 +405,6 @@ GameController.dialogueLines = {
 		function()
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'buttons.active', true )
-			-- Timer.new( ONE_SECOND * 2, function()
-			-- 	GameController.setFlag( 'dialogue.currentScript', 'playRecording' )
-			-- 	GameController.setFlag( 'dialogue.currentLine', 1 )
-			-- 	GameController.dialogue:setText( GameController.advanceDialogueLine() )
-			-- 	GameController.dialogue:show()
-			-- end)
-
 		end,
 	},
 	playRecording = {
@@ -490,9 +485,8 @@ GameController.dialogueLines = {
 				Dialogue.PET_VOICE
 			)
 		end,
-		"Hi.. I should tell you something",
-		"I was having bad thoughts again..",
-		"No it's ok.. I feel better now.",
+		"Hi...\nI should tell you something",
+		"No it's ok...\nI feel better now.",
 		"Can you pet me a bit more before\nyou go?",
 		"I would really like that.",
 		function()
@@ -623,6 +617,13 @@ GameController.dialogueLines = {
 			)
 		end,
 		"I don't think I ruined anything!\nWhy don't you ask them what they\nthink?",
+		"They told me they love me!",
+		function()
+			GameController.setFlag( 'game.playRecording', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase3FinishedPt2 = {
 		function() GameController.dialogue:resetDefaults() end,
 		"No, I don't think so.\nI think the best thing to do at this\npoint is to just start over.",
 		function()

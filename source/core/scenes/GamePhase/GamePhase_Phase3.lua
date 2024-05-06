@@ -87,6 +87,8 @@ function phase:init( scene )
 		end,
 	}
 
+	self.buffer = playdate.sound.sample.new( 2, playdate.sound.kFormat16bitMono )
+
 end
 
 -- Fires when the Phase is entered
@@ -182,6 +184,11 @@ function phase:tick()
 
 	end
 
+	if GameController.getFlag( 'game.playRecording' ) then
+		self:playRecording()
+		GameController.setFlag( 'game.playRecording', false )
+	end
+
 	self:phaseHandler()
 
 end
@@ -192,5 +199,19 @@ function phase:phaseHandler()
 		self.stateMachine:changeState( self.owner.phases.phase4 )
 		return
 	end
+
+end
+
+function phase:playRecording()
+
+	self.buffer:load( GameController.getFlag( 'game.playerSample' ) )
+	local player = Sound.sampleplayer.new( self.buffer )
+	player:play()
+	player:setFinishCallback( function()
+		GameController.setFlag( 'dialogue.currentScript', 'phase3FinishedPt2' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+	end)
 
 end

@@ -3,7 +3,7 @@ class( 'GamePhase_Phase2' ).extends( 'State' )
 
 local phase = GamePhase_Phase2
 
-phase.namePath = 'nameSample'
+phase.playerSamplePath = 'playerSample'
 
 -- Constructor
 function phase:init( scene )
@@ -36,6 +36,29 @@ function phase:init( scene )
 	self.inputHandler = {
 		AButtonDown = function()
 
+			if GameController.getFlag( 'game.phase2.playedMicroGame' ) and not GameController.getFlag( 'game.phase2.playerRecorded' ) then
+
+				local limit = false
+				for k, v in pairs( GameController.getFlag( 'game.gamesPlayed' ) ) do
+					if v >= 3 then
+						limit = true
+						break
+					end
+				end
+
+				if limit then
+					GameController.setFlag( 'game.phase2.playerRecorded', true )
+					GameController.setFlag( 'statBars.paused', true )
+					GameController.setFlag( 'buttons.active', false )
+					GameController.setFlag( 'dialogue.currentScript', 'petRecord' )
+					GameController.setFlag( 'dialogue.currentLine', 1 )
+					GameController.dialogue:setText( GameController.advanceDialogueLine() )
+					GameController.dialogue:show()
+					return
+				end
+
+			end
+
 			if GameController.getFlag( 'game.phase2.playedMicroGame' ) and not GameController.getFlag( 'game.phase2.narratorAfterPet' ) then
 
 				local limit = false
@@ -66,7 +89,7 @@ function phase:init( scene )
 
 			if Noble.Settings.get( 'debug_mode' ) then
 			-- 	-- Noble.transition( TitleScene )
-				self.buffer:load( phase.namePath )
+				self.buffer:load( phase.playerSamplePath )
 
 				if self.buffer ~= nil then
 					local pl = Sound.sampleplayer.new( self.buffer )
@@ -194,14 +217,9 @@ function phase:exit() end
 -- Fires when the State Machine updates
 function phase:tick()
 
-	if GameController.getFlag( 'game.listenForName' ) then
-		self:recordName()
+	if GameController.getFlag( 'game.listenForPlayer' ) then
+		self:recordPlayer()
 		return
-	end
-
-	if GameController.getFlag( 'game.playRecording' ) then
-		self:playRecording()
-		GameController.setFlag( 'game.playRecording', false )
 	end
 
 	self:phaseHandler()
@@ -232,7 +250,7 @@ function phase:phaseHandler()
 
 end
 
-function phase:recordName()
+function phase:recordPlayer()
 
 	if not self.listening then
 		Sound.micinput.startListening()
@@ -245,11 +263,11 @@ function phase:recordName()
 				Sound.micinput.stopListening()
 				self.listening = false
 
-				GameController.setFlag( 'game.listenForName', false )
-				GameController.setFlag( 'game.nameSample', phase.namePath )
-				sample:save( phase.namePath )
+				GameController.setFlag( 'game.listenForPlayer', false )
+				GameController.setFlag( 'game.playerSample', phase.playerSamplePath )
+				sample:save( phase.playerSamplePath )
 
-				GameController.setFlag( 'dialogue.currentScript', 'nameRecorded' )
+				GameController.setFlag( 'dialogue.currentScript', 'playerRecorded' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()
@@ -257,13 +275,5 @@ function phase:recordName()
 
 		end)
 	end
-
-end
-
-function phase:playRecording()
-
-	self.buffer:load( self.namePath )
-	local player = Sound.sampleplayer.new( self.buffer )
-	player:play()
 
 end
