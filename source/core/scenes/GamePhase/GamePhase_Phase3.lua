@@ -161,6 +161,9 @@ function phase:enter()
 
 	end
 
+	-- Reset playedFinish to avoid softlock
+	GameController.setFlag( 'game.phase3.playedFinish', false )
+
 end
 
 -- Fires when the Phase is exited
@@ -170,8 +173,6 @@ function phase:exit() end
 function phase:tick()
 
 	if GameController.getFlag( 'game.phase3.allFinished' ) and not GameController.getFlag( 'game.phase3.playedFinish' ) then
-
-		GameController.setFlag( 'game.phase3.playedFinish', true )
 
 		Timer.new( ONE_SECOND * 2, function()
 			if GameController.dialogue:getState() == DialogueState.Hide then
@@ -204,14 +205,27 @@ end
 
 function phase:playRecording()
 
+	if type( GameController.getFlag( 'game.playerSample' ) ) ~= 'string' then
+		self:progressDialogue()
+		return
+	end
+
 	self.buffer:load( GameController.getFlag( 'game.playerSample' ) )
+	if self.buffer == nil then
+		return
+	end
+
 	local player = Sound.sampleplayer.new( self.buffer )
 	player:play()
 	player:setFinishCallback( function()
-		GameController.setFlag( 'dialogue.currentScript', 'phase3FinishedPt2' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
+		self:progressDialogue()
 	end)
 
+end
+
+function phase:progressDialogue()
+	GameController.setFlag( 'dialogue.currentScript', 'phase3FinishedPt2' )
+	GameController.setFlag( 'dialogue.currentLine', 1 )
+	GameController.dialogue:setText( GameController.advanceDialogueLine() )
+	GameController.dialogue:show()
 end

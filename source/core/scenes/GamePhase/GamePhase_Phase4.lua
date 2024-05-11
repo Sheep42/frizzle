@@ -138,7 +138,7 @@ function phase:tick()
 		self.owner.bgMusic:stop()
 		self.owner.bgMusic = Sound.fileplayer.new( 'assets/sound/main-broken' )
 		self.owner.bgMusic:setVolume( 0.5 )
-		self.owner.bgMusic:play()
+		self.owner.bgMusic:play(0)
 		GameController.setFlag( 'game.phase4.loadBrokenSound', false )
 	end
 

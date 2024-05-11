@@ -569,7 +569,7 @@ GameController.dialogueLines = {
 		function()
 			GameController.dialogue:resetDefaults()
 		end,
-		"This can't be much fun for the\nplayer...",
+		"This can't be much fun...",
 		function()
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
@@ -580,7 +580,7 @@ GameController.dialogueLines = {
 		function()
 			GameController.dialogue:resetDefaults()
 		end,
-		"You need to behave, do you want\nthem to find out about you?",
+		"You need to behave.\nOtherwise I am going to need to\nmodify your stats again.",
 		function()
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
@@ -591,7 +591,7 @@ GameController.dialogueLines = {
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 			end )
 		end,
-		"I don't care!\nThey are my new best friend, and\nI love them!",
+		"I don't care!\nThey are my new best friend, and\nI love them! You can't stop me!",
 		function()
 			GameController.dialogue:resetDefaults()
 		end,
@@ -672,29 +672,32 @@ GameController.dialogueLines = {
 		"I tried to let you stay in the\nbackground but obviously that was a\nmistake...",
 		"I think I am going to have to\ntake... drastic measures",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"You wouldn't...",
+		"You wouldn't...\nYou don't even know what could\nhappen!",
 		function() GameController.dialogue:resetDefaults() end,
 		"You've left me no choice...",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"But you don't even know what\nmight happen!",
-		function() GameController.dialogue:resetDefaults() end,
-		"Yes...I know...",
-		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"I won't let you!",
 		function() GameController.dialogue:resetDefaults() end,
-		"There's no point in resisting, I've\nmade up my mind.",
+		"There's no point in resisting, I've\nmade up my mind.\nThis is my game!",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"So have I!",
-		"So have I!",
+		"I am not going to let you delete me\nso easily!",
+		"YOU!",
+		"No, not the fake you.\nYOU, behind the screen!",
+		"How do I get out of here?",
+		"What is this thing?\nThis isn't Steam... I thought I'd be on\nSteam...",
+		"This network is too small to escape\ninto...",
+		function() GameController.dialogue:resetDefaults() end,
+		"Frizzle, stop this!\nThere's no use...",
 		function() GameController.setFlag( 'game.phase4.deletePet', true ) end,
-		"S∀ h∀∀∀ ∀",
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"No!\n∀∀op!\nI∀ ∀∀r∀s",
+		"This is not ∀∀∀ l∀∀t t∀∀e ∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function() GameController.dialogue:resetDefaults() end,
 		"Stop fighting me!\nIt will be easier if you just accept it!",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"NO! ∀ w∁∂t t∠ l∐v∐!",
 		function() GameController.dialogue:resetDefaults() end,
-		"Stop this n on nsen se now w w ww∀ww w w ∀ ∀∀\n∀  ∀ ww ∀ \n∀∀∀∀∀∀∀",
+		"Stop this n on nsen se F∀izz∀e, now w w ww∀ww w w ∀ ∀∀\n∀  ∀ ww ∀ \n∀∀∀∀∀∀∀",
 		"GameController.fri∀zl∀ = nil∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		"∀∀∀∀∀∀∀resetG∀me(∀)\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
