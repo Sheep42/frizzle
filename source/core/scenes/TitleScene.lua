@@ -12,7 +12,7 @@ local bgMusic = nil
 function scene:init()
 	scene.super.init(self)
 
-	background = Graphics.image.new( "assets/images/background2" )
+	background = Graphics.image.new( "assets/images/UI/title-card" )
 	bgMusic = Sound.fileplayer.new( "assets/sound/title" )
 
 	menu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
