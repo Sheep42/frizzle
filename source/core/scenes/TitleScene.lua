@@ -96,7 +96,7 @@ function scene:start()
 
 	menu:activate()
 	menu:select( 1 )
-	Noble.Input.setCrankIndicatorStatus(true)
+	Noble.Input.setCrankIndicatorStatus( false )
 	bgMusic:play( 0 )
 end
 

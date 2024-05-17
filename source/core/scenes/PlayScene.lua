@@ -115,6 +115,13 @@ function scene:init()
 
 	self.sparkle = NobleSprite( 'assets/images/player' )
 
+	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
+	faceAnim:addState( 'default', 1, 2, nil, nil, nil, 20 )
+	faceAnim:setState( 'default' )
+
+	self.face = NobleSprite( faceAnim )
+	self.face:setSize( 150, 90 )
+
 	-- Start the playTimer if it hasn't started
 	if GameController.playTimer == nil then
 		GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
@@ -158,9 +165,9 @@ function scene:start()
 
 	-- Add Pet to Scene
 	if not GameController.getFlag( 'dialogue.playedIntro' ) then
-		pet:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 40 )
+		self.face:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 40 )
 	else
-		pet:add( Utilities.screenSize().width / 2, Utilities.screenSize().height / 2 )
+		pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 10)
 	end
 
 	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
@@ -271,7 +278,7 @@ end
 function scene:drawBackground()
 
 	scene.super.drawBackground(self)
-	-- background:draw( 0, 0 )
+	background:draw( 0, 0 )
 
 	-- Draw Bark Canvas
 	bark:drawCanvas()

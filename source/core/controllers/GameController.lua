@@ -29,7 +29,6 @@ function GameController.getDefaultFlags()
 			playRecording = false,
 			resetMicrogame = false,
 			phase1 = {
-				movePetToCenter = false,
 				playedMicroGame = false,
 			},
 			phase2 = {
