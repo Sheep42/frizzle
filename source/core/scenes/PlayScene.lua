@@ -115,12 +115,24 @@ function scene:init()
 
 	self.sparkle = NobleSprite( 'assets/images/player' )
 
+	-- Create face animation
 	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
 	faceAnim:addState( 'default', 1, 2, nil, nil, nil, 20 )
 	faceAnim:setState( 'default' )
 
 	self.face = NobleSprite( faceAnim )
 	self.face:setSize( 150, 90 )
+
+	-- Create room sprites
+	self.window = NobleSprite( 'assets/images/room/window' )
+	self.table = NobleSprite( 'assets/images/room/table' )
+	self.vase = NobleSprite( 'assets/images/room/vase' )
+
+	local tvAnim = Noble.Animation.new( 'assets/images/room/tv' )
+	tvAnim:addState( 'default', 1, 1, nil, nil, nil, 0 )
+	tvAnim:setState( 'default' )
+	self.tv = NobleSprite( tvAnim )
+	self.tv:setSize( 77, 57 )
 
 	-- Start the playTimer if it hasn't started
 	if GameController.playTimer == nil then
@@ -162,6 +174,12 @@ end
 function scene:start()
 
 	scene.super.start(self)
+
+	-- Add Room objects
+	self.window:add( Utilities.screenBounds().left + 120, Utilities.screenBounds().top + 70 )
+	self.table:add( Utilities.screenBounds().left + 120, Utilities.screenBounds().bottom - 80 )
+	self.vase:add( Utilities.screenBounds().left + 120, Utilities.screenBounds().bottom - 100 )
+	self.tv:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().bottom - 100 )
 
 	-- Add Pet to Scene
 	if not GameController.getFlag( 'dialogue.playedIntro' ) then
