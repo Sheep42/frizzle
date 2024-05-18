@@ -145,7 +145,7 @@ function scene:init()
 	tvAnim:addState( 'static', 2, 4, nil, nil, nil, 6 )
 	tvAnim:addState( 'glitch', 4, 5, nil, nil, nil, 3 )
 	tvAnim:addState( 'frizzle', 5, nil, nil, nil, 0 )
-	tvAnim:setState( 'default' )
+	tvAnim:setState( GameController.getFlag( 'game.tvState' ) )
 	self.tv = NobleSprite( tvAnim )
 	self.tv:setSize( 77, 57 )
 	self.tv:setCollideRect( 0, 0, self.tv:getSize() )
@@ -204,6 +204,9 @@ function scene:start()
 		self.face:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 40 )
 	else
 		pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 10)
+		pet:setCollideRect( 0, 0, pet:getSize() )
+		pet:setGroups( Utilities.collisionGroups.interactables )
+		pet:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
 	end
 
 	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
@@ -344,8 +347,10 @@ function scene:update()
 
 		if self.tv.animation.currentName == 'static' then
 			self.tv.animation:setState( 'default' )
+			GameController.setFlag( 'game.tvState', 'default' )
 		else
 			self.tv.animation:setState( 'static' )
+			GameController.setFlag( 'game.tvState', 'static' )
 		end
 
 		GameController.setFlag( 'game.tvToggle', false )
@@ -353,6 +358,16 @@ function scene:update()
 	end
 
 	self.phaseManager:update()
+
+	if GameController.getFlag( 'dialogue.showBark' ) then
+
+		GameController.setFlag( 'dialogue.showBark', false )
+
+		if bark:getState() == DialogueState.Hide then
+			bark:show()
+		end
+
+	end
 
 end
 

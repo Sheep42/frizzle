@@ -26,7 +26,10 @@ function phase:init( scene )
 
 	self.inputHandler = {
 		AButtonDown = function()
-			self:handleInteractableClick()
+			if self:handleInteractableClick() then
+				return
+			end
+
 			self.owner:checkABtnPress()
 		end,
 		BButtonDown = function()
@@ -144,17 +147,16 @@ end
 function phase:handleInteractableClick()
 
 	if GameController.dialogue:getState() == DialogueState.Show then
-		return
+		return false
 	end
 
 	local collision = self.owner.window:overlappingSprites()
-	print( #collision )
 	if #collision > 0 then
 		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
-		return
+		return true
 	end
 
 	collision = self.owner.vase:overlappingSprites()
@@ -163,7 +165,7 @@ function phase:handleInteractableClick()
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
-		return
+		return true
 	end
 
 	collision = self.owner.table:overlappingSprites()
@@ -172,7 +174,7 @@ function phase:handleInteractableClick()
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
-		return
+		return true
 	end
 
 	collision = self.owner.tv:overlappingSprites()
@@ -181,8 +183,18 @@ function phase:handleInteractableClick()
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
-		return
+		return true
 	end
+
+	-- bug: Stops working after minigame
+	collision = GameController.pet:overlappingSprites()
+	if #collision > 0 then
+		GameController.bark:setEmote( NobleSprite( GameController.pet.stats.friendship.icon ), nil, nil, 'assets/sound/win-game.wav' )
+		GameController.setFlag( 'dialogue.showBark', true )
+		return true
+	end
+
+	return false
 
 end
 

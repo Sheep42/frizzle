@@ -10,11 +10,12 @@ function GameController.getDefaultFlags()
 			currentLine = 1,
 			playedIntro = false,
 			playedPhase2Intro = false,
-			showBark = nil,
+			showBark = false,
 		},
 		game = {
 			phase = 1,
 			tvToggle = false,
+			tvState = 'default',
 			gamesPlayed = {
 				petting = 0,
 				feeding = 0,
