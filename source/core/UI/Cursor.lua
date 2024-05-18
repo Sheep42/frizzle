@@ -21,6 +21,7 @@ function Cursor:init()
 		self:setGroups( { Utilities.collisionGroups.cursor } )
 		self:setCollidesWithGroups( {
 			Utilities.collisionGroups.uiButtons,
+			Utilities.collisionGroups.interactables,
 		} )
 
 		GameController.cursor = self 

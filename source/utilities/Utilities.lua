@@ -5,6 +5,7 @@
 Utilities.collisionGroups = {
 	cursor = 1,
 	uiButtons = 2,
+	interactables = 3,
 }
 
 local SCREEN_BOUNDS_PADDING_PERCENT = {x = 0.025, y = 0.05}

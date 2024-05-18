@@ -26,6 +26,7 @@ function phase:init( scene )
 
 	self.inputHandler = {
 		AButtonDown = function()
+			self:handleInteractableClick()
 			self.owner:checkABtnPress()
 		end,
 		BButtonDown = function()
@@ -136,6 +137,51 @@ function phase:tick()
 	if GameController.getFlag( 'dialogue.playedIntro' ) and self.owner.face:isVisible() then
 		self.owner.face:remove()
 		GameController.pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 10 )
+	end
+
+end
+
+function phase:handleInteractableClick()
+
+	if GameController.dialogue:getState() == DialogueState.Show then
+		return
+	end
+
+	local collision = self.owner.window:overlappingSprites()
+	print( #collision )
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return
+	end
+
+	collision = self.owner.vase:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVase' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return
+	end
+
+	collision = self.owner.table:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTable' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return
+	end
+
+	collision = self.owner.tv:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return
 	end
 
 end

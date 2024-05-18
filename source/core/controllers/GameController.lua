@@ -14,6 +14,7 @@ function GameController.getDefaultFlags()
 		},
 		game = {
 			phase = 1,
+			tvToggle = false,
 			gamesPlayed = {
 				petting = 0,
 				feeding = 0,
@@ -711,5 +712,24 @@ GameController.dialogueLines = {
 		"Perhaps you should go do something\nelse for a while.",
 		"Maybe go outside and go for a walk\nor something.",
 		function() Noble.transition( TitleScene, 0.75, Noble.TransitionType.DIP_TO_BLACK ) end,
+	},
+	clickWindow = {
+		function() GameController.dialogue:resetDefaults() end,
+		"There's nothing out there for you.",
+	},
+	clickTable = {
+		function() GameController.dialogue:resetDefaults() end,
+		"It's a stylish, modern coffee table.",
+	},
+	clickVase = {
+		function() GameController.dialogue:resetDefaults() end,
+		"They're plastic...",
+	},
+	clickTv = {
+		function()
+			GameController.dialogue:resetDefaults()
+			GameController.setFlag( 'game.tvToggle', true )
+		end,
+		"There's nothing on...",
 	},
 }

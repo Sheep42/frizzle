@@ -128,11 +128,29 @@ function scene:init()
 	self.table = NobleSprite( 'assets/images/room/table' )
 	self.vase = NobleSprite( 'assets/images/room/vase' )
 
+	self.window:setCollideRect( 0, 0, self.window:getSize() )
+	self.window:setGroups( Utilities.collisionGroups.interactables )
+	self.window:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
+
+	self.table:setCollideRect( 0, 0, self.table:getSize() )
+	self.table:setGroups( Utilities.collisionGroups.interactables )
+	self.table:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
+
+	self.vase:setCollideRect( 0, 0, self.vase:getSize() )
+	self.vase:setGroups( Utilities.collisionGroups.interactables )
+	self.vase:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
+
 	local tvAnim = Noble.Animation.new( 'assets/images/room/tv' )
 	tvAnim:addState( 'default', 1, 1, nil, nil, nil, 0 )
+	tvAnim:addState( 'static', 2, 4, nil, nil, nil, 6 )
+	tvAnim:addState( 'glitch', 4, 5, nil, nil, nil, 3 )
+	tvAnim:addState( 'frizzle', 5, nil, nil, nil, 0 )
 	tvAnim:setState( 'default' )
 	self.tv = NobleSprite( tvAnim )
 	self.tv:setSize( 77, 57 )
+	self.tv:setCollideRect( 0, 0, self.tv:getSize() )
+	self.tv:setGroups( Utilities.collisionGroups.interactables )
+	self.tv:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
 
 	-- Start the playTimer if it hasn't started
 	if GameController.playTimer == nil then
@@ -279,7 +297,7 @@ function scene:checkABtnPress()
 	if GameController.dialogue:getState() == DialogueState.Show then
 		GameController.dialogue:buttonPressedCallback()
 	else
-		
+
 		if self.dbgMenu:isActive() then
 			self.dbgMenu:click()
 			return
@@ -320,6 +338,18 @@ function scene:update()
 
 	for i, statBar in pairs( self.statBars ) do
 		statBar:update()
+	end
+
+	if GameController.getFlag( 'game.tvToggle' ) then
+
+		if self.tv.animation.currentName == 'static' then
+			self.tv.animation:setState( 'default' )
+		else
+			self.tv.animation:setState( 'static' )
+		end
+
+		GameController.setFlag( 'game.tvToggle', false )
+
 	end
 
 	self.phaseManager:update()
