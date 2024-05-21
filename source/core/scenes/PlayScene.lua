@@ -289,7 +289,7 @@ function scene:setupStatBars()
 	self.statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
 	-- self.statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
 	-- self.statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
-	self.statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 40 )
+	self.statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
 end
 
 function scene:checkABtnPress()
