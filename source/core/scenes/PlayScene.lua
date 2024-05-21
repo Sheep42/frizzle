@@ -202,12 +202,9 @@ function scene:start()
 	-- Add Pet to Scene
 	if not GameController.getFlag( 'dialogue.playedIntro' ) then
 		self.face:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 40 )
-	else
-		pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 10)
-		pet:setCollideRect( 0, 0, pet:getSize() )
-		pet:setGroups( Utilities.collisionGroups.interactables )
-		pet:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
 	end
+
+	pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 10 )
 
 	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
 		GameController.pet:setVisible( false )

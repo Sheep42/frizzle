@@ -139,7 +139,6 @@ function phase:tick()
 
 	if GameController.getFlag( 'dialogue.playedIntro' ) and self.owner.face:isVisible() then
 		self.owner.face:remove()
-		GameController.pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 10 )
 	end
 
 end
@@ -183,14 +182,6 @@ function phase:handleInteractableClick()
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
-		return true
-	end
-
-	-- bug: Stops working after minigame
-	collision = GameController.pet:overlappingSprites()
-	if #collision > 0 then
-		GameController.bark:setEmote( NobleSprite( GameController.pet.stats.friendship.icon ), nil, nil, 'assets/sound/win-game.wav' )
-		GameController.setFlag( 'dialogue.showBark', true )
 		return true
 	end
 
