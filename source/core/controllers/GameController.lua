@@ -60,6 +60,7 @@ function GameController.getDefaultFlags()
 				glitchSound = false,
 				movePetToCenter = false,
 				deletePet = false,
+				glitchTv = true,
 			},
 		},
 		buttons = {
@@ -712,7 +713,9 @@ GameController.dialogueLines = {
 		"That's all...\nI got rid of Frizzle.",
 		"Perhaps you should go do something\nelse for a while.",
 		"Maybe go outside and go for a walk\nor something.",
-		function() Noble.transition( TitleScene, 0.75, Noble.TransitionType.DIP_TO_BLACK ) end,
+		function()
+			GameController.setFlag( 'game.phase4.glitchTv', true )
+		end,
 	},
 	clickWindow = {
 		function() GameController.dialogue:resetDefaults() end,

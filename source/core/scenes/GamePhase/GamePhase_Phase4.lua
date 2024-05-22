@@ -122,6 +122,8 @@ function phase:enter()
 
 	end
 
+	self.owner.tv.animation:setState( 'static' )
+
 	self.owner:softRestart()
 
 end
@@ -133,6 +135,10 @@ function phase:exit() end
 function phase:tick()
 
 	self:phaseHandler()
+
+	if GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.pet:isVisible() then
+		GameController.pet:remove()
+	end
 
 	if GameController.getFlag( 'game.phase4.loadBrokenSound' ) then
 		self.owner.bgMusic:stop()
@@ -154,11 +160,36 @@ function phase:tick()
 			GameController.setFlag( 'game.phase4.deleteSparkle', false )
 			GameController.setFlag( 'game.phase4.glitchSound', false )
 			GameController.setFlag( 'game.phase4.loadBrokenSound', true )
+			GameController.setFlag( 'game.phase4.glitchTv', true )
 		end)
 	end
 
 	if GameController.getFlag( 'game.phase4.deletePet' ) then
 		-- TODO: Play glitched animation
+	end
+
+	if GameController.getFlag( 'game.phase4.glitchTv' ) then
+
+		GameController.setFlag( 'game.phase4.glitchTv', false )
+
+		Timer.new( ONE_SECOND, function()
+			self.owner.tv.animation:setState( 'static' )
+
+			Timer.new( ONE_SECOND, function()
+
+				if playdate.getReduceFlashing() then
+					self.owner.tv.animation:setState( 'frizzle' )
+				else
+					self.owner.tv.animation:setState( 'glitch' )
+				end
+
+				Timer.new( ONE_SECOND, function()
+					self.owner.tv.animation:setState( 'default' )
+				end)
+
+			end)
+		end)
+
 	end
 
 	if GameController.getFlag( 'game.phase4.movePetToCenter' ) then
