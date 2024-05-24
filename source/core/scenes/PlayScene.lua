@@ -583,6 +583,34 @@ function scene:handleStatNag( games )
 
 end
 
+function scene:glitchTv( callback )
+
+	Timer.new( ONE_SECOND, function()
+		self.tv.animation:setState( 'static' )
+
+		Timer.new( ONE_SECOND, function()
+
+			if playdate.getReduceFlashing() then
+				self.tv.animation:setState( 'frizzle' )
+			else
+				self.tv.animation:setState( 'glitch' )
+			end
+
+			Timer.new( ONE_SECOND, function()
+
+				self.tv.animation:setState( 'default' )
+
+				if callback ~= nil and type( callback ) == 'function' then
+					callback()
+				end
+
+			end)
+
+		end)
+	end)
+
+end
+
 function scene.setInputHandler( inputHandler )
 	scene.inputHandler = inputHandler
 end

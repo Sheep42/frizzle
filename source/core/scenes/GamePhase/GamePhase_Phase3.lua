@@ -25,7 +25,13 @@ function phase:init( scene )
 
 	self.inputHandler = {
 		AButtonDown = function()
+
+			if self:handleInteractableClick() then
+				return
+			end
+
 			self.owner:checkABtnPress()
+
 		end,
 		downButtonUp = function ()
 
@@ -190,6 +196,13 @@ function phase:tick()
 		GameController.setFlag( 'game.playRecording', false )
 	end
 
+	if GameController.getFlag( 'game.phase3.glitchTv' ) then
+
+		GameController.setFlag( 'game.phase3.glitchTv', false )
+		self.owner:glitchTv()
+
+	end
+
 	self:phaseHandler()
 
 end
@@ -228,4 +241,50 @@ function phase:progressDialogue()
 	GameController.setFlag( 'dialogue.currentLine', 1 )
 	GameController.dialogue:setText( GameController.advanceDialogueLine() )
 	GameController.dialogue:show()
+end
+
+function phase:handleInteractableClick()
+
+	if GameController.dialogue:getState() == DialogueState.Show then
+		return false
+	end
+
+	local collision = self.owner.window:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickWindow3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.owner.vase:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.owner.table:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.owner.tv:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTv3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
+
 end

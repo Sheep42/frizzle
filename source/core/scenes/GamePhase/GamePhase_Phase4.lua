@@ -22,7 +22,13 @@ function phase:init( scene )
 
 	self.inputHandler = {
 		AButtonDown = function()
+
+			if self:handleInteractableClick() then
+				return
+			end
+
 			self.owner:checkABtnPress()
+
 		end,
 		downButtonUp = function ()
 
@@ -171,24 +177,7 @@ function phase:tick()
 	if GameController.getFlag( 'game.phase4.glitchTv' ) then
 
 		GameController.setFlag( 'game.phase4.glitchTv', false )
-
-		Timer.new( ONE_SECOND, function()
-			self.owner.tv.animation:setState( 'static' )
-
-			Timer.new( ONE_SECOND, function()
-
-				if playdate.getReduceFlashing() then
-					self.owner.tv.animation:setState( 'frizzle' )
-				else
-					self.owner.tv.animation:setState( 'glitch' )
-				end
-
-				Timer.new( ONE_SECOND, function()
-					self.owner.tv.animation:setState( 'default' )
-				end)
-
-			end)
-		end)
+		self.owner:glitchTv()
 
 	end
 
@@ -206,5 +195,51 @@ function phase:tick()
 end
 
 function phase:phaseHandler()
+
+end
+
+function phase:handleInteractableClick()
+
+	if GameController.dialogue:getState() == DialogueState.Show then
+		return false
+	end
+
+	local collision = self.owner.window:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickWindow4' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.owner.vase:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable4' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.owner.table:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable4' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.owner.tv:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTv4' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
 
 end

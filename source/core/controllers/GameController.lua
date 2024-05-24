@@ -42,6 +42,7 @@ function GameController.getDefaultFlags()
 				allFinished = false,
 				playedFinish = false,
 				resetTriggered = false,
+				glitchTv = false,
 				finished = {
 					petting = false,
 					feeding = false,
@@ -51,7 +52,7 @@ function GameController.getDefaultFlags()
 					petting = false,
 					feeding = false,
 					sleeping = false,
-				}
+				},
 			},
 			phase4 = {
 				playedIntro = false,
@@ -719,7 +720,7 @@ GameController.dialogueLines = {
 	},
 	clickWindow = {
 		function() GameController.dialogue:resetDefaults() end,
-		"There's nothing out there for you.",
+		"There's nothing interesting out there.",
 	},
 	clickTable = {
 		function() GameController.dialogue:resetDefaults() end,
@@ -735,5 +736,45 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.tvToggle', true )
 		end,
 		"There's nothing on...",
+	},
+	clickWindow3 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Nothing out there is part of the game."
+	},
+	clickVaseTable3 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Better not mess with that, Frizzle\nmight find a way to exploit it.",
+	},
+	clickTv3 = {
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"There's nothing on...",
+		function() GameController.setFlag( 'game.phase3.glitchTv', true ) end,
+	},
+	clickWindow4 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Nothing out there is part of the game.",
+		function()
+			GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE )
+
+			Timer.new( ONE_SECOND, function()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			end)
+		end,
+		"..... Let me back in ......",
+		function() GameController.dialogue:resetDefaults() end,
+		"Nothing out there is part of the game.",
+	},
+	clickVaseTable4 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Better not mess with that,\nOBJECT-MISSING might find a way\nto exploit it.",
+	},
+	clickTv4 = {
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"Let's not touch that anymore...",
+		function() GameController.setFlag( 'game.phase4.glitchTv', true ) end,
 	},
 }
