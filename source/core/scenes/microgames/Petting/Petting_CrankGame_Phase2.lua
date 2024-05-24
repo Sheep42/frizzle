@@ -33,7 +33,6 @@ function scene:init()
 	end
 
 	self.background = nil
-	self.bgMusic = nil
 	self.hand = nil
 	self.face = nil
 	self.crankTick = 0

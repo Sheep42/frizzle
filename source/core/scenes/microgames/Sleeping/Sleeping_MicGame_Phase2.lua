@@ -13,8 +13,8 @@ function scene:init()
 	self._THRESHOLD_TIME = 0.25
 	self._LEVEL_AMPLIFIER = 1000
 
+	self.playMusic = false
 	self.background = nil
-	self.bgMusic = nil
 	self.micSource = "device"
 	self.micLevel = 0
 	self.buffer = nil

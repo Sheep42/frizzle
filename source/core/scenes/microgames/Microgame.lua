@@ -24,8 +24,13 @@ function scene:init()
 	self.timerLabel = "Time"
 	self.timerFont = Noble.Text.FONT_LARGE
 
+	self.playMusic = true
+	self.musicIndex = math.random( 3 )
+
+	self.bgMusic = Sound.fileplayer.new( "assets/sound/minigame-" .. tostring( self.musicIndex ) )
+	self.bgMusic:setVolume( 0.25 )
+
 	self.background = nil
-	self.bgMusic = nil
 	self.happinessVal = 0
 	self.win = false
 	self.dialogue = nil
@@ -78,7 +83,13 @@ function scene:enter()
 end
 
 function scene:start()
+
 	scene.super.start( self )
+
+	if self.playMusic and self.bgMusic ~= nil then
+		self.bgMusic:play( 0 )
+	end
+
 end
 
 function scene:drawBackground()
@@ -188,6 +199,7 @@ end
 function scene:exit()
 	scene.super.exit(self)
 	GameController.setFlag( 'pet.shouldTickStats', false )
+	self.bgMusic:stop()
 end
 
 function scene:finish()

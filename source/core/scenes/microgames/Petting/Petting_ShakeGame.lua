@@ -9,7 +9,6 @@ function scene:init()
 	scene.super.init( self )
 
 	self.background = nil
-	self.bgMusic = nil
 
 	self.introText = "SHAKE!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
