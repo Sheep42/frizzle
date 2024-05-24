@@ -171,7 +171,7 @@ function phase:tick()
 	end
 
 	if GameController.getFlag( 'game.phase4.deletePet' ) then
-		-- TODO: Play glitched animation
+		GameController.pet:setImage( GameController.pet.animation.imageTable:getImage( GameController.pet.animation.currentFrame ):vcrPauseFilterImage() )
 	end
 
 	if GameController.getFlag( 'game.phase4.glitchTv' ) then
