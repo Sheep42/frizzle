@@ -160,7 +160,7 @@ function phase:tick()
 	end
 
 	if GameController.getFlag( 'game.phase4.deleteSparkle' ) then
-		self.owner.sparkle:setImage( self.owner.sparkle:getImage():vcrPauseFilterImage() )
+		self.owner.sparkle:setImage( self.owner.sparkle.animation.imageTable:getImage( self.owner.sparkle.animation.currentFrame ):vcrPauseFilterImage() )
 		Timer.new( ONE_SECOND, function()
 			self.owner.sparkle:remove()
 			GameController.setFlag( 'game.phase4.deleteSparkle', false )

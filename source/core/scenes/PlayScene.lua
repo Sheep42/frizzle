@@ -113,7 +113,12 @@ function scene:init()
 		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
 
-	self.sparkle = NobleSprite( 'assets/images/player' )
+	local sparkleAnim = Noble.Animation.new( 'assets/images/sparkle' )
+	sparkleAnim:addState( 'default', 1, 5, nil, nil, nil, 15 )
+	sparkleAnim:setState( 'default' )
+
+	self.sparkle = NobleSprite( sparkleAnim )
+	self.sparkle:setSize( 64, 64 )
 
 	-- Create face animation
 	local faceAnim = Noble.Animation.new( 'assets/images/pet-face' )
