@@ -20,6 +20,25 @@ function phase:init( scene )
 		},
 	}
 
+	self.dots = 1
+	self.deleteText = "DELETING..."
+	local textW, textH = Graphics.getTextSize( self.deleteText, self.introFont )
+	self.dialogue = Dialogue(
+		self.deleteText,
+		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
+		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
+		false,
+		textW + 50,
+		textH + 15,
+		4,
+		4,
+		DialogueType.Instant,
+		2000,
+		self.introFont
+	)
+
+	self.dialogue:disableIndicator()
+
 	self.fullCranks = 0
 	self.endTimer = nil
 	self.crankTimer = nil
@@ -101,7 +120,7 @@ function phase:init( scene )
 		end,
 		cranked = function( change, acceleratedChange )
 
-			if not GameController.getFlag( 'game.phase4.crankToEnd' ) then
+			if not GameController.getFlag( 'game.phase4.crankToEnd' ) and not GameController.getFlag( 'game.resetCrank' ) then
 				return
 			end
 
@@ -150,6 +169,8 @@ function phase:enter()
 
 	else
 
+		GameController.setFlag( 'game.opensAfterWin', GameController.getFlag( 'game.opensAfterWin' ) + 1 )
+
 		local script = 'gameFinishedNarrator'
 		if GameController.getFlag( 'game.frizzleWon' ) then
 			script = 'gameFinishedFrizzle'
@@ -176,7 +197,10 @@ function phase:tick()
 
 	self:phaseHandler()
 
-	if GameController.getFlag( 'game.narratorWon' ) and GameController.pet:isVisible() then
+	self.dialogue:drawCanvas()
+	self.dialogue:update()
+
+	if GameController.getFlag( 'game.hideFrizzle' ) and GameController.pet:isVisible() then
 		GameController.pet:remove()
 	end
 
@@ -206,7 +230,7 @@ function phase:tick()
 
 	if GameController.getFlag( 'game.phase4.crankToEnd' ) then
 		Noble.Input.setCrankIndicatorStatus( true )
-		self:handleCrank()
+		self:handleCrankToEnd()
 
 		if endTimer == nil then
 			endTimer = Timer.new( ONE_SECOND * 30, function()
@@ -223,6 +247,10 @@ function phase:tick()
 
 			end )
 		end
+	end
+
+	if GameController.getFlag( 'game.resetCrank' ) then
+		self:handleCrankToReset()
 	end
 
 	if GameController.getFlag( 'game.phase4.deletePet' ) then
@@ -325,7 +353,7 @@ function phase:handleInteractableClick()
 
 end
 
-function phase:handleCrank()
+function phase:handleCrankToEnd()
 
 	if GameController.dialogue:getState() == DialogueState.Show then
 		if self.crankTimer ~= nil then
@@ -388,6 +416,46 @@ function phase:handleCrank()
 				GameController.dialogue:show()
 			end)
 		end
+	end
+
+end
+
+function phase:handleCrankToReset()
+
+	if self.fullCranks >= 15 then
+		GameController.deleteData()
+		GameController.reset()
+	end
+
+	if self.cranked > 0 then
+
+		if self.noCrankTimer ~= nil then
+			self.noCrankTimer:reset()
+			self.noCrankTimer:pause()
+			self.noCrankTimer = nil
+		end
+
+		self.cranked = 0
+
+		if self.crankTick >= 360 then
+			self.crankTick = ( self.crankTick % 360 )
+			self.fullCranks += 1
+			self.dots = 1 + ( self.fullCranks % 3 )
+			self.dialogue:setText( "DELETING" .. string.rep( '.', self.dots ) )
+		end
+
+		self.dialogue:show()
+
+	else
+
+		if self.noCrankTimer == nil then
+			self.noCrankTimer = Timer.new( ONE_SECOND * 0.5, function()
+				self.fullCranks = 0
+				self.dots = 1
+				self.dialogue:hide()
+			end)
+		end
+
 	end
 
 end

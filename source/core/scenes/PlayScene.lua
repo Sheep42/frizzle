@@ -34,8 +34,8 @@ function scene:init()
 
 		GameController.setFlag( 'dialogue.currentScript', 'intro' )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
-
 		dialogue = Dialogue( GameController.advanceDialogueLine() )
+
 	else
 		dialogue = Dialogue()
 	end

@@ -54,6 +54,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self.font = Noble.Text.getCurrentFont()
 		self.btnSprite = Graphics.image.new( 'assets/images/UI/a-btn' )
 		self.pitch = Dialogue._BASE_PITCH
+		self._indicatorDisabled = false
 
 	-- Internals
 		self._dialoguePointer = 0
@@ -177,7 +178,7 @@ function Dialogue:update()
 		self:hide()
 	end
 
-	if not self.autohide and self._indicatorTimer == nil then
+	if not self.autohide and self._indicatorTimer == nil and not self._indicatorDisabled then
 		self._indicatorTimer = Timer.keyRepeatTimerWithDelay(ONE_SECOND / 1.5, ONE_SECOND / 1.5, function()
 			self._showIndicator = not self._showIndicator
 		end)
@@ -191,6 +192,18 @@ function Dialogue:update()
 	elseif self._state == DialogueState.Hide then
 		self:clearCanvas()
 	end
+
+end
+
+function Dialogue:disableIndicator()
+
+	if self._indicatorTimer ~= nil then
+		self._indicatorTimer:reset()
+		self._indicatorTimer:pause()
+		self._indicatorTimer = nil
+	end
+
+	self._indicatorDisabled = true
 
 end
 

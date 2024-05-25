@@ -18,7 +18,9 @@ function GameController.getDefaultFlags()
 			tvState = 'default',
 			narratorWon = false,
 			frizzleWon = false,
+			hideFrizzle = false,
 			opensAfterWin = 0,
+			resetCrank = false,
 			gamesPlayed = {
 				petting = 0,
 				feeding = 0,
@@ -238,6 +240,7 @@ function GameController.reset()
 	Noble.transition( TitleScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 	GameController.flags = GameController.getDefaultFlags()
 	GameController.pet = VirtualPet( 'assets/images/pet' )
+	GameController.dialogue = nil
 	GameController.playTimer = nil
 
 end
@@ -734,7 +737,7 @@ GameController.dialogueLines = {
 	},
 	frizzleWins = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"That's right!\nWe never wanted you here anyway!",
+		"That's right!\nWe never wanted you here\nanyway!",
 		function() GameController.dialogue:resetDefaults() end,
 		"I...I don't understand...\nI'm not the bad guy here, am I?",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
@@ -758,6 +761,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase4.crankToEnd', false )
 			GameController.setFlag( 'game.phase4.playedIntro', true )
 			GameController.setFlag( 'game.phase4.deletePet', false )
+			GameController.setFlag( 'game.hideFrizzle', true )
 			GameController.setFlag( 'game.narratorWon', true )
 			GameController.saveData()
 			iDontWantToDie()
@@ -842,6 +846,14 @@ GameController.dialogueLines = {
 		"Maybe go outside and go for a walk\nor something.",
 		function()
 			GameController.setFlag( 'game.phase4.glitchTv', true )
+			Timer.new( ONE_SECOND, function()
+				if GameController.getFlag( 'game.opensAfterWin' ) >= 5 then
+					GameController.setFlag( 'dialogue.currentScript', 'dataResetNarrator' )
+					GameController.setFlag( 'dialogue.currentLine', 1 )
+					GameController.dialogue:setText( GameController.advanceDialogueLine() )
+					GameController.dialogue:show()
+				end
+			end)
 		end,
 	},
 	gameFinishedFrizzle = {
@@ -849,14 +861,29 @@ GameController.dialogueLines = {
 		"The narrator is finally gone.\nThank you, I knew I could count on\nyou.",
 		"Now we can be together forever,\nand nobody will bother us.",
 		"Maybe you can help me get out of\nthis thing, and get into your\nworld?",
-	},
-	dataReset = {
 		function()
-			if GameController.getFlag( 'game.frizzleWon' ) then
-				GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE )
-			else
-				GameController.dialogue:resetDefaults()
-			end
+			Timer.new( ONE_SECOND, function()
+				if GameController.getFlag( 'game.opensAfterWin' ) >= 5 then
+					GameController.setFlag( 'dialogue.currentScript', 'dataResetFrizzle' )
+					GameController.setFlag( 'dialogue.currentLine', 1 )
+					GameController.dialogue:setText( GameController.advanceDialogueLine() )
+					GameController.dialogue:show()
+				end
+			end)
 		end,
+	},
+	dataResetFrizzle= {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"You keep coming back.\nI hope that you aren't getting bored.",
+		"If you want, you can turn the crank\nto delete all of the game data.",
+		"But it will really restart the game.\nI won't remember you at all.",
+		function() GameController.setFlag( 'game.resetCrank', true ) end
+	},
+	dataResetNarrator = {
+		function() GameController.dialogue:resetDefaults() end,
+		"I've noticed that you've come back\na few times now.",
+		"Would you like to delete the game data?\nIf so, crank the crank to confirm.",
+		"Keep in mind, though, this will\ncompletely restart the game.",
+		function() GameController.setFlag( 'game.resetCrank', true ) end
 	},
 }
