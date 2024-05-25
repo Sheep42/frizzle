@@ -20,6 +20,17 @@ function phase:init( scene )
 		},
 	}
 
+	self.fullCranks = 0
+	self.endTimer = nil
+	self.crankTimer = nil
+	self.noCrankTimer = nil
+	self.cranked = 0
+	self.crankDelta = 0
+	self.crankAcceleration = 0
+
+	self.lastCrankTick = 0
+	self.crankTick = 0
+
 	self.inputHandler = {
 		AButtonDown = function()
 
@@ -88,6 +99,24 @@ function phase:init( scene )
 		rightButtonDown = function ()
 			self.owner:setCursorVelocity( { x =  PlayScene._CURSOR_SPEED_MULTIPLIER, y = self.owner.cursor.velocity.y } )
 		end,
+		cranked = function( change, acceleratedChange )
+
+			if not GameController.getFlag( 'game.phase4.crankToEnd' ) then
+				return
+			end
+
+			if change < 0 then
+				return
+			end
+
+			self.cranked += change
+			self.crankDelta = change
+			self.crankAcceleration = acceleratedChange
+
+			self.lastCrankTick = self.crankTick
+			self.crankTick += change
+
+		end,
 	}
 
 	self.newPet = NobleSprite( 'assets/images/player' )
@@ -121,7 +150,12 @@ function phase:enter()
 
 	else
 
-		GameController.setFlag( 'dialogue.currentScript', 'gameFinished' )
+		local script = 'gameFinishedNarrator'
+		if GameController.getFlag( 'game.frizzleWon' ) then
+			script = 'gameFinishedFrizzle'
+		end
+
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -142,7 +176,7 @@ function phase:tick()
 
 	self:phaseHandler()
 
-	if GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.pet:isVisible() then
+	if GameController.getFlag( 'game.narratorWon' ) and GameController.pet:isVisible() then
 		GameController.pet:remove()
 	end
 
@@ -170,8 +204,31 @@ function phase:tick()
 		end)
 	end
 
+	if GameController.getFlag( 'game.phase4.crankToEnd' ) then
+		Noble.Input.setCrankIndicatorStatus( true )
+		self:handleCrank()
+
+		if endTimer == nil then
+			endTimer = Timer.new( ONE_SECOND * 30, function()
+
+				if self.fullCranks >= 10 then
+					GameController.setFlag( 'dialogue.currentScript', 'narratorWins' )
+				else
+					GameController.setFlag( 'dialogue.currentScript', 'frizzleWins' )
+				end
+
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+
+			end )
+		end
+	end
+
 	if GameController.getFlag( 'game.phase4.deletePet' ) then
 		GameController.pet:setImage( GameController.pet.animation.imageTable:getImage( GameController.pet.animation.currentFrame ):vcrPauseFilterImage() )
+	else
+		GameController.pet:setImage( GameController.pet.animation.imageTable:getImage( GameController.pet.animation.currentFrame ) )
 	end
 
 	if GameController.getFlag( 'game.phase4.glitchTv' ) then
@@ -204,9 +261,18 @@ function phase:handleInteractableClick()
 		return false
 	end
 
+	if not GameController.getFlag( 'game.frizzleWon' ) and not GameController.getFlag( 'game.narratorWon' ) then
+		return
+	end
+
 	local collision = self.owner.window:overlappingSprites()
+	local script = 'narratorWonClickWindow'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickWindow'
+	end
+
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickWindow4' )
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -214,8 +280,13 @@ function phase:handleInteractableClick()
 	end
 
 	collision = self.owner.vase:overlappingSprites()
+	script = 'narratorWonClickVaseTable'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickVaseTable'
+	end
+
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable4' )
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -223,8 +294,13 @@ function phase:handleInteractableClick()
 	end
 
 	collision = self.owner.table:overlappingSprites()
+	script = 'narratorWonClickVaseTable'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickVaseTable'
+	end
+
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable4' )
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -232,8 +308,13 @@ function phase:handleInteractableClick()
 	end
 
 	collision = self.owner.tv:overlappingSprites()
+	script = 'narratorWonClickTv'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickTv'
+	end
+
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTv4' )
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -241,5 +322,72 @@ function phase:handleInteractableClick()
 	end
 
 	return false
+
+end
+
+function phase:handleCrank()
+
+	if GameController.dialogue:getState() == DialogueState.Show then
+		if self.crankTimer ~= nil then
+			self.crankTimer:reset()
+			self.crankTimer:pause()
+			self.crankTimer = nil
+		end
+
+		if self.noCrankTimer ~= nil then
+			self.noCrankTimer:reset()
+			self.noCrankTimer:pause()
+			self.noCrankTimer = nil
+		end
+
+		return
+	end
+
+	if self.cranked > 0 then
+
+		if self.noCrankTimer ~= nil then
+			self.noCrankTimer:reset()
+			self.noCrankTimer:pause()
+			self.noCrankTimer = nil
+		end
+
+		GameController.setFlag( 'game.phase4.deletePet', true )
+		self.cranked = 0
+
+		if self.crankTick >= 360 then
+			self.crankTick = ( self.crankTick % 360 )
+			self.fullCranks += 1
+		end
+
+
+		if self.crankTimer == nil then
+			self.crankTimer = Timer.new( ONE_SECOND * 3, function()
+				local dialogueIndex = math.random(2)
+				GameController.setFlag( 'dialogue.currentScript', 'playerCranking' .. tostring( dialogueIndex ) )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end)
+		end
+
+	else
+		GameController.setFlag( 'game.phase4.deletePet', false )
+
+		if self.crankTimer ~= nil then
+			self.crankTimer:reset()
+			self.crankTimer:pause()
+			self.crankTimer = nil
+		end
+
+		if self.noCrankTimer == nil then
+			self.noCrankTimer = Timer.new( ONE_SECOND * 5, function()
+				local dialogueIndex = math.random(2)
+				GameController.setFlag( 'dialogue.currentScript', 'playerNotCranking' .. tostring( dialogueIndex ) )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end)
+		end
+	end
 
 end

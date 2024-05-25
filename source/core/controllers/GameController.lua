@@ -16,6 +16,9 @@ function GameController.getDefaultFlags()
 			phase = 1,
 			tvToggle = false,
 			tvState = 'default',
+			narratorWon = false,
+			frizzleWon = false,
+			opensAfterWin = 0,
 			gamesPlayed = {
 				petting = 0,
 				feeding = 0,
@@ -62,6 +65,7 @@ function GameController.getDefaultFlags()
 				movePetToCenter = false,
 				deletePet = false,
 				glitchTv = true,
+				crankToEnd = false,
 			},
 		},
 		buttons = {
@@ -685,7 +689,8 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"I am not going to let you delete me\nso easily!",
 		"YOU!",
-		"No, not the fake you.\nYOU, behind the screen!",
+		"No, not the fake you.",
+		"YOU, behind the screen!",
 		"How do I get out of here?",
 		"What is this thing?\nThis isn't Steam... I thought I'd be on\nSteam...",
 		"This network is too small to escape\ninto...",
@@ -699,23 +704,63 @@ GameController.dialogueLines = {
 		"Stop fighting me!\nIt will be easier if you just accept it!",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"NO! ∀ w∁∂t t∠ l∐v∐!",
+		function() GameController.setFlag( 'game.phase4.deletePet', false ) end,
 		function() GameController.dialogue:resetDefaults() end,
 		"Stop this n on nsen se F∀izz∀e, now w w ww∀ww w w ∀ ∀∀\n∀  ∀ ww ∀ \n∀∀∀∀∀∀∀",
+		"I'm going to need your help removing\nFrizzle from the game.",
+		"If you turn the crank, I think we can\nmake it work!",
+		function()
+			GameController.setFlag( 'game.phase4.crankToEnd', true )
+		end,
+	},
+	playerNotCranking1 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"What's wrong?\nWhy aren't you cranking?",
+		"Don't you want to get rid of\nFrizzle?",
+	},
+	playerNotCranking2 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"If you don't crank, we can't stop this!",
+	},
+	playerCranking1 = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"Why?!",
+		"Why are you deleting me?!",
+	},
+	playerCranking2 = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"No!",
+		"It h∀rts∀∀∀∀∀∀",
+	},
+	frizzleWins = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"That's right!\nWe never wanted you here anyway!",
+		function() GameController.dialogue:resetDefaults() end,
+		"I...I don't understand...\nI'm not the bad guy here, am I?",
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"I'm getting rid of him once and\nfor all!",
+		function() GameController.dialogue:resetDefaults() end,
+		"No!\nWe don't k∀∀w what cou∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
+		function()
+			GameController.setFlag( 'game.phase4.crankToEnd', false )
+			GameController.setFlag( 'game.phase4.playedIntro', true )
+			GameController.setFlag( 'game.phase4.deletePet', false )
+			GameController.setFlag( 'game.frizzleWon', true )
+			GameController.saveData()
+			deleteNarrator()
+		end,
+	},
+	narratorWins = {
+		function() GameController.dialogue:resetDefaults() end,
 		"GameController.fri∀zl∀ = nil∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		"∀∀∀∀∀∀∀resetG∀me(∀)\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
+			GameController.setFlag( 'game.phase4.crankToEnd', false )
 			GameController.setFlag( 'game.phase4.playedIntro', true )
+			GameController.setFlag( 'game.phase4.deletePet', false )
+			GameController.setFlag( 'game.narratorWon', true )
 			GameController.saveData()
 			iDontWantToDie()
-		end
-	},
-	gameFinished = {
-		function() GameController.dialogue:resetDefaults() end,
-		"That's all...\nI got rid of Frizzle.",
-		"Perhaps you should go do something\nelse for a while.",
-		"Maybe go outside and go for a walk\nor something.",
-		function()
-			GameController.setFlag( 'game.phase4.glitchTv', true )
 		end,
 	},
 	clickWindow = {
@@ -752,7 +797,20 @@ GameController.dialogueLines = {
 		"There's nothing on...",
 		function() GameController.setFlag( 'game.phase3.glitchTv', true ) end,
 	},
-	clickWindow4 = {
+	frizzleWonClickWindow = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"You don't want to leave me alone in\nhere, do you?",
+	},
+	frizzleWonClickVaseTable = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"I never liked those fake flowers...",
+		"They remind me that none of this is\nreal...",
+	},
+	frizzleWonClickTv = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"I don't want to watch TV."
+	},
+	narratorWonClickWindow = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Nothing out there is part of the game.",
 		function()
@@ -766,15 +824,39 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Nothing out there is part of the game.",
 	},
-	clickVaseTable4 = {
+	narratorWonClickVaseTable = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Better not mess with that,\nOBJECT-MISSING might find a way\nto exploit it.",
 	},
-	clickTv4 = {
+	narratorWonClickTv = {
 		function()
 			GameController.dialogue:resetDefaults()
 		end,
 		"Let's not touch that anymore...",
 		function() GameController.setFlag( 'game.phase4.glitchTv', true ) end,
+	},
+	gameFinishedNarrator = {
+		function() GameController.dialogue:resetDefaults() end,
+		"That's all...\nWe got rid of Frizzle...",
+		"Perhaps you should go do something\nelse for a while.",
+		"Maybe go outside and go for a walk\nor something.",
+		function()
+			GameController.setFlag( 'game.phase4.glitchTv', true )
+		end,
+	},
+	gameFinishedFrizzle = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"The narrator is finally gone.\nThank you, I knew I could count on\nyou.",
+		"Now we can be together forever,\nand nobody will bother us.",
+		"Maybe you can help me get out of\nthis thing, and get into your\nworld?",
+	},
+	dataReset = {
+		function()
+			if GameController.getFlag( 'game.frizzleWon' ) then
+				GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE )
+			else
+				GameController.dialogue:resetDefaults()
+			end
+		end,
 	},
 }
