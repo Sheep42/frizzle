@@ -882,7 +882,7 @@ GameController.dialogueLines = {
 	dataResetNarrator = {
 		function() GameController.dialogue:resetDefaults() end,
 		"I've noticed that you've come back\na few times now.",
-		"Would you like to delete the game data?\nIf so, crank the crank to confirm.",
+		"Would you like to delete the game\ndata?\nIf so, crank the crank to confirm.",
 		"Keep in mind, though, this will\ncompletely restart the game.",
 		function() GameController.setFlag( 'game.resetCrank', true ) end
 	},
