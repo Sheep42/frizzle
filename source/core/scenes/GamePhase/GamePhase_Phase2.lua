@@ -59,7 +59,7 @@ function phase:init( scene )
 
 			end
 
-			if GameController.getFlag( 'game.phase2.playedMicroGame' ) and not GameController.getFlag( 'game.phase2.narratorAfterPet' ) then
+			if GameController.getFlag( 'game.phase2.playedMicroGame' ) and not GameController.getFlag( 'game.phase2.narratorAfterPet' ) and GameController.getFlag( 'game.phase2.playerRecorded' ) then
 
 				local limit = false
 				for k, v in pairs( GameController.getFlag( 'game.gamesPlayed' ) ) do
