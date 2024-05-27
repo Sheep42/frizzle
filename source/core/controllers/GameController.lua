@@ -743,20 +743,30 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"I'm getting rid of him once and\nfor all!",
 		function() GameController.dialogue:resetDefaults() end,
-		"No!\nWe don't k∀∀w what cou∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
+		"No!\nWe don't k∀∀w what cou∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
+		function()
+			GameController.dialogue:setVoice( nil, Dialogue._BASE_PITCH - 200 )
+			GameController.dialogue.textSpeed = TextSpeed.Fast
+		end,
+		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
 			GameController.setFlag( 'game.phase4.crankToEnd', false )
 			GameController.setFlag( 'game.phase4.playedIntro', true )
 			GameController.setFlag( 'game.phase4.deletePet', false )
 			GameController.setFlag( 'game.frizzleWon', true )
 			GameController.saveData()
-			deleteNarrator()
+			iDontWantToDie()
 		end,
 	},
 	narratorWins = {
 		function() GameController.dialogue:resetDefaults() end,
 		"GameController.fri∀zl∀ = nil∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
-		"∀∀∀∀∀∀∀resetG∀me(∀)\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
+		"resetG∀me(∀)\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
+		function()
+			GameController.dialogue:setVoice( nil, Dialogue._BASE_PITCH - 200 )
+			GameController.dialogue.textSpeed = TextSpeed.Fast
+		end,
+		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
 			GameController.setFlag( 'game.phase4.crankToEnd', false )
 			GameController.setFlag( 'game.phase4.playedIntro', true )

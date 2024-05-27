@@ -495,4 +495,5 @@ end
 function Dialogue:resetDefaults()
 	self.font = Dialogue.DEFAULT_FONT
 	self.pitch = Dialogue._BASE_PITCH
+	self.textSpeed = Noble.Settings.get( "text_speed" )
 end
