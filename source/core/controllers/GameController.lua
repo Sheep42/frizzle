@@ -339,9 +339,10 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'statBars.paused', true )
 		end,
 		"Hi there. I just wanted to take a\nminute to say thanks for playing\n\"Frizzle\".",
-		"The truth is, I haven't been completely\nhonest with you about this virtual\npet game.",
-		"I hope this is not awkward, but you\nare doing me huge solid by being a\nBeta tester.",
-		"I would really appreciate it if you\ncould let me know if you find any\nbugs.",
+		"The truth is, I haven't been\ncompletely honest with you about this\ngame.",
+		"I hope this is not awkward, but we are\nstill Beta testing this version of the\nFrizzle pet.",
+		"You are one of the lucky people who\ngets the opportunity to see this\nversion of them!",
+		"You can let me know if anything...\nweird happens, right?",
 		"I've been doing this for so long, and\nI really need this game to work out.",
 		function()
 			GameController.setFlag( 'dialogue.playedPhase2Intro', true )
@@ -651,14 +652,15 @@ GameController.dialogueLines = {
 			GameController.pet:resetStats()
 			GameController.pet:setVisible( false )
 		end,
-		"Congratulations on meeting your new\nbest friend Sparkle!",
-		"Sparkle needs your love and attention\nin order to thrive.",
+		"Welcome to \"Sparkle\", a cozy virtual\npet game.",
+		"Sparkle also happens to be the name\nof the cute little creature that you\nsee here.",
+		"They will need your love and attention\nin order to maintain their happiness.",
 		function()
 			Timer.new( ONE_SECOND * 2, function() 
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 			end)
 		end,
-		"Make sure you keep an eye on their\nstats in the upper right.",
+		"Make sure you keep an eye on their\nstats in the upper right part of the\nscreen.",
 		function()
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
