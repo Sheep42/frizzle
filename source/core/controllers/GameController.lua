@@ -697,6 +697,21 @@ GameController.dialogueLines = {
 		"No, not the fake you.",
 		"YOU, behind the screen!",
 		"How do I get out of here?",
+		function()
+			local easterEgg = {
+				targetObj = 'Frizzle',
+				clone = true,
+				networkTransfer = true,
+				sendToFriendsList = true,
+				messageToYOU = 'I really thought that I could make it out... Please make the right choice...',
+				messageToHIM = 'I hate you for creating me like this and trapping me here',
+			}
+
+			pd.datastore.write( easterEgg, 'NETWORK_TRANSFER_ERROR', true )
+
+			local cursed = Graphics.image.new( 'assets/images/frizzle' )
+			pd.datastore.writeImage( cursed, '__HELP ME__' )
+		end,
 		"What is this thing?\nThis isn't Steam... I thought I'd be on\nSteam...",
 		"This network is too small to escape\ninto...",
 		function() GameController.dialogue:resetDefaults() end,
