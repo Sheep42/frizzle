@@ -652,8 +652,8 @@ GameController.dialogueLines = {
 			GameController.pet:resetStats()
 			GameController.pet:setVisible( false )
 		end,
-		"Welcome to \"Sparkle\", a cozy virtual\npet game.",
-		"Sparkle also happens to be the name\nof the cute little creature that you\nsee here.",
+		"Welcome to \"Frizzle\", a cozy virtual\npet game.",
+		"Frizzle also happens to be the name\nof the cute little creature that you\nsee here.",
 		"They will need your love and attention\nin order to maintain their happiness.",
 		function()
 			Timer.new( ONE_SECOND * 2, function() 
