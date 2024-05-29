@@ -710,7 +710,7 @@ GameController.dialogueLines = {
 			pd.datastore.write( easterEgg, 'NETWORK_TRANSFER_ERROR', true )
 
 			local cursed = Graphics.image.new( 'assets/images/frizzle' )
-			pd.datastore.writeImage( cursed, '__HELP ME__' )
+			pd.datastore.writeImage( cursed, '/__HELP ME__.gif' )
 		end,
 		"What is this thing?\nThis isn't Steam... I thought I'd be on\nSteam...",
 		"This network is too small to escape\ninto...",
