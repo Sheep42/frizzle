@@ -1,8 +1,7 @@
-name=Tamagochi Game
+name=Frizzle
 author=Unicorner Games
-description=This is a Noble Engine game.
-bundleID=com.unicorner.tamagochi
-version=0.0.3a
+description=A cozy virtual pet game
+bundleID=com.unicorner.frizzle
+version=0.1.0a
 buildNumber=1
 imagePath=assets/launcher/
-launchSoundPath=assets/launcher/sound.wav
