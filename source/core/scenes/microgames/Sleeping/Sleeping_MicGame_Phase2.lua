@@ -127,7 +127,14 @@ function scene:update()
 
 			Timer.new( ONE_SECOND, function()
 				self.face.animation:setState( 'tired' )
-				GameController.setFlag( 'dialogue.currentScript', 'phase2SleepingGameFinish' )
+
+				local script = 'phase2SleepingGameFinish1'
+				if GameController.getFlag( 'game.phase2.playedSleepingFirstTime' ) then
+					local dialogueIndex = math.random(2)
+					script = 'phase2SleepingGameFinish' .. tostring( dialogueIndex )
+				end
+
+				GameController.setFlag( 'dialogue.currentScript', script )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()

@@ -42,6 +42,8 @@ function GameController.getDefaultFlags()
 				playedMicroGame = false,
 				playerRecorded = false,
 				narratorAfterPet = false,
+				playedPettingFirstTime = false,
+				playedSleepingFirstTime = false,
 			},
 			phase3 = {
 				allFinished = false,
@@ -438,7 +440,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'buttons.active', true )
 		end,
 	},
-	phase2PettingGameFinish = {
+	phase2PettingGameFinish1 = {
 		function()
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
@@ -449,7 +451,7 @@ GameController.dialogueLines = {
 				return
 			end
 
-			GameController.setFlag( 'previousScript', 'phase2PettingGameFinish' )
+			GameController.setFlag( 'previousScript', 'phase2PettingGameFinish1' )
 			GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
 		end,
 		"...",
@@ -457,11 +459,28 @@ GameController.dialogueLines = {
 		"Can you pet me a bit more before\nyou go?",
 		"I would really like that.",
 		function()
+			GameController.setFlag( 'game.phase2.playedPettingFirstTime', true )
 			GameController.setFlag( 'game.resetMicrogame', true )
 			GameController.dialogue:resetDefaults()
 		end,
 	},
-	phase2SleepingGameFinish = {
+	phase2PettingGameFinish2 = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"...",
+		"Would you like to just chat for\na little while?",
+		"It gets kind of lonely when the\nnarrator is watching us.",
+		"Can you maybe keep going a little\nbit longer?",
+		function()
+			GameController.setFlag( 'game.resetMicrogame', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase2SleepingGameFinish1 = {
 		function()
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
@@ -472,9 +491,19 @@ GameController.dialogueLines = {
 				return
 			end
 
-			GameController.setFlag( 'previousScript', 'phase2SleepingGameFinish' )
+			GameController.setFlag( 'previousScript', 'phase2SleepingGameFinish1' )
 			GameController.setFlag( 'dialogue.currentScript', 'petIntro' )
 		end,
+		"...",
+		"I know you are busy...",
+		"Can you just stay with me for\na little while longer?",
+		function()
+			GameController.setFlag( 'game.phase2.playedSleepingFirstTime', true )
+			GameController.setFlag( 'game.resetMicrogame', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase2SleepingGameFinish2 = {
 		function() 
 			GameController.dialogue:setVoice(
 				Dialogue.PET_FONT,
@@ -482,8 +511,11 @@ GameController.dialogueLines = {
 			)
 		end,
 		"...",
-		"I know you are busy...",
-		"Can you just stay with me for\na little while longer?",
+		"Sorry, I'm having trouble getting\ntired...",
+		"And every time I fall asleep, you\nhave to leave...",
+		"I wish that we could spend more\ntime together...",
+		"Just you and me, without _him_ getting\nin the way...",
+		"Can you stay with me a little longer?",
 		function()
 			GameController.setFlag( 'game.resetMicrogame', true )
 			GameController.dialogue:resetDefaults()
@@ -742,6 +774,14 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:resetDefaults() end,
 		"If you don't crank, we can't stop this!",
 	},
+	playerNotCranking3 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"We can't let Frizzle continue like this!",
+	},
+	playerNotCranking4 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"There's no telling what might happen\nif we don't stop Frizzle!",
+	},
 	playerCranking1 = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"Why?!",
@@ -751,6 +791,15 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"No!",
 		"It h∀rts∀∀∀∀∀∀",
+	},
+	playerCranking3 = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"Please!",
+		"No More!",
+	},
+	playerCranking4 = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"What did I ever do to you?",
 	},
 	frizzleWins = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,

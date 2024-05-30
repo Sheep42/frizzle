@@ -390,7 +390,7 @@ function phase:handleCrankToEnd()
 
 		if self.crankTimer == nil then
 			self.crankTimer = Timer.new( ONE_SECOND * 3, function()
-				local dialogueIndex = math.random(2)
+				local dialogueIndex = math.random(4)
 				GameController.setFlag( 'dialogue.currentScript', 'playerCranking' .. tostring( dialogueIndex ) )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
@@ -409,7 +409,7 @@ function phase:handleCrankToEnd()
 
 		if self.noCrankTimer == nil then
 			self.noCrankTimer = Timer.new( ONE_SECOND * 5, function()
-				local dialogueIndex = math.random(2)
+				local dialogueIndex = math.random(4)
 				GameController.setFlag( 'dialogue.currentScript', 'playerNotCranking' .. tostring( dialogueIndex ) )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )

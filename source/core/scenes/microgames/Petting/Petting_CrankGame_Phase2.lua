@@ -134,7 +134,14 @@ function scene:update()
 		if GameController.dialogue:getState() == DialogueState.Hide and not self.finished then
 
 			Timer.new( ONE_SECOND, function()
-				GameController.setFlag( 'dialogue.currentScript', 'phase2PettingGameFinish' )
+
+				local script = 'phase2PettingGameFinish1'
+				if GameController.getFlag( 'game.phase2.playedPettingFirstTime' ) then
+					local dialogueIndex = math.random(2)
+					script = 'phase2PettingGameFinish' .. tostring( dialogueIndex )
+				end
+
+				GameController.setFlag( 'dialogue.currentScript', script )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()
