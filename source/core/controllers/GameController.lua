@@ -712,7 +712,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase4.movePetToCenter', true )
 			GameController.dialogue:resetDefaults()
 		end,
-		"Sparkle!\nYou ...monster...",
+		"You ...monster!\nYou can't just destroy my\ncreations!",
 		"I tried to let you stay in the\nbackground but obviously that was a\nmistake...",
 		"I think I am going to have to\ntake... drastic measures",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
