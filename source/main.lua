@@ -1,7 +1,7 @@
 import "bootstrap"
 
 Noble.Settings.setup({
-	debug_mode = true,
+	debug_mode = false,
 	text_speed = TextSpeed.Normal
 })
 
