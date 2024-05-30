@@ -27,7 +27,7 @@ function scene:init()
 		function() 
 			local oldValue = Noble.Settings.get( "text_speed" )
 			local oldKey = Utilities.findKeyByValue( TextSpeed, oldValue )
-			
+
 			local newValue = math.ringInt( oldValue + 1, 1, 3 ) 
 			local newKey = Utilities.findKeyByValue( TextSpeed, newValue )
 			Noble.Settings.set( "text_speed", newValue )

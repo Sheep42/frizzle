@@ -813,6 +813,9 @@ GameController.dialogueLines = {
 		function()
 			GameController.dialogue:setVoice( nil, Dialogue._BASE_PITCH - 200 )
 			GameController.dialogue.textSpeed = TextSpeed.Fast
+			Timer.new( ONE_SECOND * 4, function()
+				GameController.advanceDialogueLine()
+			end )
 		end,
 		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
@@ -831,6 +834,9 @@ GameController.dialogueLines = {
 		function()
 			GameController.dialogue:setVoice( nil, Dialogue._BASE_PITCH - 200 )
 			GameController.dialogue.textSpeed = TextSpeed.Fast
+			Timer.new( ONE_SECOND * 4, function()
+				GameController.advanceDialogueLine()
+			end )
 		end,
 		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
