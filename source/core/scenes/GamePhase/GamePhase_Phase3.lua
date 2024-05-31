@@ -182,6 +182,7 @@ function phase:tick()
 
 		Timer.new( ONE_SECOND * 2, function()
 			if GameController.dialogue:getState() == DialogueState.Hide then
+				GameController.setFlag( 'game.phase3.playedFinish', true )
 				GameController.setFlag( 'dialogue.currentScript', 'phase3Finished' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
@@ -218,7 +219,7 @@ end
 
 function phase:playRecording()
 
-	if type( GameController.getFlag( 'game.playerSample' ) ) ~= 'string' then
+	if type( GameController.getFlag( 'game.playerSample' ) ) == nil then
 		self:progressDialogue()
 		return
 	end
