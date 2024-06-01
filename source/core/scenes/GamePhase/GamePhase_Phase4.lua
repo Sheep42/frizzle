@@ -266,6 +266,11 @@ function phase:tick()
 
 	end
 
+	if GameController.getFlag( 'game.rollCredits' ) then
+		GameController.setFlag( 'game.rollCredits', false )
+		Noble.transition( CreditScene, 1.5, Noble.TransitionType.DIP_TO_BLACK )
+	end
+
 	if GameController.getFlag( 'game.phase4.movePetToCenter' ) then
 
 		GameController.pet:moveBy( -1, 0 )

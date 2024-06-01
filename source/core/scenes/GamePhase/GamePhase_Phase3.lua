@@ -219,7 +219,7 @@ end
 
 function phase:playRecording()
 
-	if type( GameController.getFlag( 'game.playerSample' ) ) == nil then
+	if type( GameController.getFlag( 'game.playerSample' ) ) == 'nil' then
 		self:progressDialogue()
 		return
 	end

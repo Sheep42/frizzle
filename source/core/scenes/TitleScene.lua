@@ -19,7 +19,7 @@ function scene:init()
 	menu:addItem( 
 		"Play", 
 		function() 
-			Noble.transition(PlayScene, 1, Noble.TransitionType.DIP_TO_BLACK) 
+			Noble.transition(PlayScene, 1, Noble.TransitionType.DIP_TO_BLACK)
 		end
 	)
 	menu:addItem( 
@@ -37,9 +37,9 @@ function scene:init()
 		nil,
 		"Text Speed: " .. Utilities.findKeyByValue( TextSpeed, Noble.Settings.get( "text_speed" ) )
 	)
-	menu:addItem( 
-		"enable_debug_mode", 
-		function() 
+	menu:addItem(
+		"enable_debug_mode",
+		function()
 			local oldValue = Noble.Settings.get( "debug_mode" )
 			local newValue = not oldValue
 			Noble.Settings.set( "debug_mode", newValue )
@@ -48,14 +48,19 @@ function scene:init()
 		nil,
 		"Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) )
 	)
-
-	menu:addItem( 
+	menu:addItem(
 		"delete_save",
 		function()
 			GameController.deleteData()
 		end,
 		nil,
 		"Delete Save Data"
+	)
+	menu:addItem( 
+		"Credits", 
+		function() 
+			Noble.transition(CreditScene, 1, Noble.TransitionType.DIP_TO_BLACK)
+		end
 	)
 
 	local crankTick = 0
@@ -116,7 +121,7 @@ function scene:update()
 	menu:draw(30, sequence:get()-15 or 100-15)
 
 	Graphics.setColor(Graphics.kColorBlack)
-	
+
 	Noble.showFPS = Noble.Settings.get( "debug_mode" )
 
 end

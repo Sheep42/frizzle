@@ -21,6 +21,7 @@ function GameController.getDefaultFlags()
 			hideFrizzle = false,
 			opensAfterWin = 0,
 			resetCrank = false,
+			rollCredits = false,
 			gamesPlayed = {
 				petting = 0,
 				feeding = 0,
@@ -473,7 +474,7 @@ GameController.dialogueLines = {
 		end,
 		"...",
 		"Would you like to just chat for\na little while?",
-		"It gets kind of lonely when the\nnarrator is watching us.",
+		"It gets kind of lonely when the\nnarrator is watching us and I\ncan't talk to you.",
 		"Can you maybe keep going a little\nbit longer?",
 		function()
 			GameController.setFlag( 'game.resetMicrogame', true )
@@ -712,7 +713,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase4.movePetToCenter', true )
 			GameController.dialogue:resetDefaults()
 		end,
-		"You ...monster!\nYou can't just destroy my\ncreations!",
+		"You ...monster!\nYou can't just destroy my\ncreations like that!",
 		"I tried to let you stay in the\nbackground but obviously that was a\nmistake...",
 		"I think I am going to have to\ntake... drastic measures",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
@@ -805,7 +806,7 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"That's right!\nWe never wanted you here\nanyway!",
 		function() GameController.dialogue:resetDefaults() end,
-		"I...I don't understand...\nI'm not the bad guy here, am I?",
+		"I...I don't understand...\nI am not the bad guy here!",
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"I'm getting rid of him once and\nfor all!",
 		function() GameController.dialogue:resetDefaults() end,
@@ -934,6 +935,8 @@ GameController.dialogueLines = {
 					GameController.setFlag( 'dialogue.currentLine', 1 )
 					GameController.dialogue:setText( GameController.advanceDialogueLine() )
 					GameController.dialogue:show()
+				else
+					GameController.setFlag( 'game.rollCredits', true )
 				end
 			end)
 		end,
@@ -950,6 +953,8 @@ GameController.dialogueLines = {
 					GameController.setFlag( 'dialogue.currentLine', 1 )
 					GameController.dialogue:setText( GameController.advanceDialogueLine() )
 					GameController.dialogue:show()
+				else
+					GameController.setFlag( 'game.rollCredits', true )
 				end
 			end)
 		end,
