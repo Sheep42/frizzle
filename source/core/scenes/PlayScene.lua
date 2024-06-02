@@ -233,7 +233,7 @@ function scene:start()
 	self:setupStatBars()
 
 	-- Add Cursor to the Scene
-	self.cursor:add( Utilities.screenSize().width * 0.25, Utilities.screenSize().height * 0.25 )
+	self.cursor:add( Utilities.screenSize().width / 2, Utilities.screenBounds().bottom )
 
 	self.bgMusic:play( 0 ) -- repeatCount 0 = loop forever
 
