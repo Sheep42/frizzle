@@ -8,7 +8,7 @@ local background
 local menu
 local sequence
 local bgMusic = nil
-local version = "Version 0.1.8a"
+local version = "Version 0.1.9a"
 local font = Noble.Text.FONT_SMALL
 local versionWidth, versionHeight = Graphics.getTextSize( version, font )
 
