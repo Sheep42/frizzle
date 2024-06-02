@@ -209,7 +209,7 @@ function scene:start()
 		self.face:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 40 )
 	end
 
-	pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 10 )
+	pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 20 )
 
 	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
 		GameController.pet:setVisible( false )

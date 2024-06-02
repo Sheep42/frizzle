@@ -9,7 +9,8 @@ local menu
 local sequence
 local bgMusic = nil
 local version = "Version 0.1.8a"
-local versionWidth, versionHeight = Graphics.getTextSize( version, Noble.Text.FONT_SMALL )
+local font = Noble.Text.FONT_SMALL
+local versionWidth, versionHeight = Graphics.getTextSize( version, font )
 
 function scene:init()
 	scene.super.init(self)
@@ -17,7 +18,7 @@ function scene:init()
 	background = Graphics.image.new( "assets/images/UI/title-card" )
 	bgMusic = Sound.fileplayer.new( "assets/sound/title" )
 
-	menu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, Noble.Text.FONT_SMALL )
+	menu = Noble.Menu.new( false, Noble.Text.ALIGN_LEFT, false, Graphics.kColorBlack, 4,6,0, font )
 	menu:addItem( 
 		"Play", 
 		function() 
@@ -137,7 +138,7 @@ function scene:update()
 		sequence:get() + 100,
 		Noble.Text.ALIGN_LEFT,
 		nil,
-		Noble.Text.FONT_SMALL
+		font
 	)
 
 	Graphics.setColor(Graphics.kColorBlack)
