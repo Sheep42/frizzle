@@ -8,6 +8,8 @@ local background
 local menu
 local sequence
 local bgMusic = nil
+local version = "Version 0.1.7a"
+local versionWidth, versionHeight = Graphics.getTextSize( version, Noble.Text.FONT_SMALL )
 
 function scene:init()
 	scene.super.init(self)
@@ -119,6 +121,24 @@ function scene:update()
 	Graphics.setDitherPattern(0.2, Graphics.image.kDitherTypeScreen)
 	Graphics.fillRoundRect(15, (sequence:get()*0.75)+3, 185, 145, 15)
 	menu:draw(30, sequence:get()-15 or 100-15)
+
+	-- Graphics.setDitherPattern(0.2, Graphics.image.kDitherTypeScreen)
+	-- Graphics.fillRoundRect( 
+	-- 	Utilities.screenBounds().left,
+	-- 	Utilities.screenBounds().bottom,
+	-- 	versionWidth + 20,
+	-- 	versionHeight + 20,
+	-- 	5
+	-- )
+
+	Noble.Text.draw(
+		version,
+		Utilities.screenBounds().left + 25,
+		Utilities.screenBounds().bottom - 25,
+		Noble.Text.ALIGN_LEFT,
+		nil,
+		Noble.Text.FONT_SMALL
+	)
 
 	Graphics.setColor(Graphics.kColorBlack)
 
