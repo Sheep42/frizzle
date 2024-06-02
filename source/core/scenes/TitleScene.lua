@@ -8,7 +8,7 @@ local background
 local menu
 local sequence
 local bgMusic = nil
-local version = "Version 0.1.7a"
+local version = "Version 0.1.8a"
 local versionWidth, versionHeight = Graphics.getTextSize( version, Noble.Text.FONT_SMALL )
 
 function scene:init()
@@ -134,7 +134,7 @@ function scene:update()
 	Noble.Text.draw(
 		version,
 		Utilities.screenBounds().left + 25,
-		Utilities.screenBounds().bottom - 25,
+		sequence:get() + 100,
 		Noble.Text.ALIGN_LEFT,
 		nil,
 		Noble.Text.FONT_SMALL
