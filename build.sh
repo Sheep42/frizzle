@@ -1,5 +1,5 @@
 #!/bin/bash
 
-pdc source/ builds/tamagochi-game
+pdc source/ builds/frizzle
 cd builds
-zip -r ./tamagochi-game.pdx.zip ./tamagochi-game.pdx/
+zip -r ./frizzle.pdx.zip ./frizzle.pdx/

@@ -1,5 +1,5 @@
 #!/bin/bash
 
-pdc source/ builds/tamagochi-game
+pdc source/ builds/frizzle
 cd builds
-pdsim tamagochi-game.pdx
+pdsim frizzle.pdx
