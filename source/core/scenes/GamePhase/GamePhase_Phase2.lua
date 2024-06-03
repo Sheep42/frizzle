@@ -40,7 +40,7 @@ function phase:init( scene )
 
 				local limit = false
 				for k, v in pairs( GameController.getFlag( 'game.gamesPlayed' ) ) do
-					if v >= 3 then
+					if v >= 4 then
 						limit = true
 						break
 					end
@@ -63,7 +63,7 @@ function phase:init( scene )
 
 				local limit = false
 				for k, v in pairs( GameController.getFlag( 'game.gamesPlayed' ) ) do
-					if v >= 4 then
+					if v >= 5 then
 						limit = true
 						break
 					end
