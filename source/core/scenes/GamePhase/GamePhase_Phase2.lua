@@ -46,7 +46,7 @@ function phase:init( scene )
 					end
 				end
 
-				if limit then
+				if limit or GameController.getFlag( 'game.playTime' ) >= 360 then
 					GameController.setFlag( 'game.phase2.playerRecorded', true )
 					GameController.setFlag( 'statBars.paused', true )
 					GameController.setFlag( 'buttons.active', false )
@@ -69,17 +69,7 @@ function phase:init( scene )
 					end
 				end
 
-				if limit then
-
-					self.games.feeding = {
-						Feeding_CrankGame_Phase2,
-						Feeding_CrankGame_Phase2_Glitch,
-					}
-					self.games.petting = {
-						Petting_CrankGame_Phase2,
-						Petting_CrankGame_Phase2_Glitch,
-					}
-
+				if limit or GameController.getFlag( 'game.playTime' ) >= 500 then
 					GameController.setFlag( 'game.phase2.narratorAfterPet', true )
 					GameController.setFlag( 'statBars.paused', true )
 					GameController.setFlag( 'buttons.active', false )
@@ -219,6 +209,17 @@ function phase:enter()
 			GameController.dialogue:show()
 		end)
 
+	end
+
+	if GameController.getFlag( 'game.phase2.narratorAfterPet' ) then
+		self.games.feeding = {
+			Feeding_CrankGame_Phase2,
+			Feeding_CrankGame_Phase2_Glitch,
+		}
+		self.games.petting = {
+			Petting_CrankGame_Phase2,
+			Petting_CrankGame_Phase2_Glitch,
+		}
 	end
 
 	self.owner:softRestart()
