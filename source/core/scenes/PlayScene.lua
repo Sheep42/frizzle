@@ -330,8 +330,6 @@ function scene:update()
 
 	scene.super.update( self )
 
-	print( GameController.getFlag( 'game.playTime' ) )
-	
 	-- Draw dialogue canvas over sprites
 	dialogue:drawCanvas()
 

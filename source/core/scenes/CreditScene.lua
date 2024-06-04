@@ -3,7 +3,7 @@ class("CreditScene").extends(NobleScene)
 local scene = CreditScene
 
 scene.baseColor = Graphics.kColorBlack
-scene.TEXT_POS_LIMIT = 400
+scene.TEXT_POS_LIMIT = 450
 
 local background
 local menu
@@ -67,10 +67,11 @@ function scene:update()
 	Noble.Text.draw( "Programming & Art By: Dan Shedd", textX, textY + 30 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "Story By: Dan Shedd & Ridley4Eve", textX, textY + 50 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "Frizzle Font: Futura Handwritten\nBy Billy Snyder", textX, textY + 100 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
-	Noble.Text.draw( "Built with Noble Engine By Noble Robot", textX, textY + 160 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
-	Noble.Text.draw( "Playtesters:", textX, textY + 225 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
-	Noble.Text.draw( "Chris Hickman, Ben Ehrlich (Benergize)", textX, textY + 250 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
-	Noble.Text.draw( "The End", textX, textY + 385, Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "Menu Font: PixelSplitter\nBy Manfred Klein", textX, textY + 150 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "Built with Noble Engine By Noble Robot", textX, textY + 225 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "Playtesters:", textX, textY + 275 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "Chris Hickman, Ben Ehrlich (Benergize)", textX, textY + 300 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "The End", textX, textY + 440, Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 
 	if self.textPos >= scene.TEXT_POS_LIMIT and not self.finished then
 		self.finished = true
