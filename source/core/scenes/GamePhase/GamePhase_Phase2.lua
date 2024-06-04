@@ -220,6 +220,10 @@ function phase:enter()
 			Petting_CrankGame_Phase2,
 			Petting_CrankGame_Phase2_Glitch,
 		}
+		self.games.sleeping = {
+			Sleeping_MicGame_Phase2,
+			Sleeping_MicGame_Phase2_Glitch,
+		}
 	end
 
 	self.owner:softRestart()

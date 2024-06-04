@@ -22,6 +22,7 @@ function GameController.getDefaultFlags()
 			opensAfterWin = 0,
 			resetCrank = false,
 			rollCredits = false,
+			doDataReset = false,
 			gamesPlayed = {
 				petting = 0,
 				feeding = 0,
@@ -937,14 +938,7 @@ GameController.dialogueLines = {
 		function()
 			GameController.setFlag( 'game.phase4.glitchTv', true )
 			Timer.new( ONE_SECOND, function()
-				if GameController.getFlag( 'game.opensAfterWin' ) >= 5 then
-					GameController.setFlag( 'dialogue.currentScript', 'dataResetNarrator' )
-					GameController.setFlag( 'dialogue.currentLine', 1 )
-					GameController.dialogue:setText( GameController.advanceDialogueLine() )
-					GameController.dialogue:show()
-				else
-					GameController.setFlag( 'game.rollCredits', true )
-				end
+				GameController.setFlag( 'game.rollCredits', true )
 			end)
 		end,
 	},
@@ -955,29 +949,23 @@ GameController.dialogueLines = {
 		"Maybe you can help me get out of\nthis thing, and get into your\nworld?",
 		function()
 			Timer.new( ONE_SECOND, function()
-				if GameController.getFlag( 'game.opensAfterWin' ) >= 5 then
-					GameController.setFlag( 'dialogue.currentScript', 'dataResetFrizzle' )
-					GameController.setFlag( 'dialogue.currentLine', 1 )
-					GameController.dialogue:setText( GameController.advanceDialogueLine() )
-					GameController.dialogue:show()
-				else
-					GameController.setFlag( 'game.rollCredits', true )
-				end
+				GameController.setFlag( 'game.rollCredits', true )
 			end)
 		end,
 	},
 	dataResetFrizzle= {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"You keep coming back.\nI hope that you aren't getting bored.",
+		"You really want to start over?",
 		"If you want, you can turn the crank\nto delete all of the game data.",
 		"But it will really restart the game.\nI won't remember you at all.",
 		function() GameController.setFlag( 'game.resetCrank', true ) end
 	},
 	dataResetNarrator = {
 		function() GameController.dialogue:resetDefaults() end,
-		"I've noticed that you've come back\na few times now.",
-		"Would you like to delete the game\ndata?\nIf so, crank the crank to confirm.",
+		"Would you like to delete the game\ndata?",
 		"Keep in mind, though, this will\ncompletely restart the game.",
+		"Frizzle will be back, and we\nwill have to do this all over\nagain.",
+		"If you really want to start\nover, turn the crank to\ndelete the game data.",
 		function() GameController.setFlag( 'game.resetCrank', true ) end
 	},
 }

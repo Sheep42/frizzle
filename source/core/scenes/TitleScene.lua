@@ -26,7 +26,7 @@ function scene:init()
 		end
 	)
 	menu:addItem( 
-		"set_text_speed", 
+		"set_text_speed",
 		function() 
 			local oldValue = Noble.Settings.get( "text_speed" )
 			local oldKey = Utilities.findKeyByValue( TextSpeed, oldValue )
@@ -51,16 +51,23 @@ function scene:init()
 		nil,
 		"Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) )
 	)
+
+	if GameController.getFlag( 'game.phase4.playedIntro' ) then
+
+		menu:addItem(
+			"delete_save",
+			function()
+				GameController.setFlag( 'game.doDataReset', true )
+				Noble.transition(PlayScene, 1, Noble.TransitionType.DIP_TO_BLACK)
+			end,
+			nil,
+			"Delete Save Data"
+		)
+
+	end
+
 	menu:addItem(
-		"delete_save",
-		function()
-			GameController.deleteData()
-		end,
-		nil,
-		"Delete Save Data"
-	)
-	menu:addItem( 
-		"Credits", 
+		"Credits",
 		function() 
 			Noble.transition(CreditScene, 1, Noble.TransitionType.DIP_TO_BLACK)
 		end

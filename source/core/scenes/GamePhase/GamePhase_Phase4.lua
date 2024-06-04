@@ -169,11 +169,18 @@ function phase:enter()
 
 	else
 
-		GameController.setFlag( 'game.opensAfterWin', GameController.getFlag( 'game.opensAfterWin' ) + 1 )
-
 		local script = 'gameFinishedNarrator'
 		if GameController.getFlag( 'game.frizzleWon' ) then
 			script = 'gameFinishedFrizzle'
+		end
+
+		if GameController.getFlag( 'game.doDataReset' ) then
+			GameController.setFlag( 'game.doDataReset', false )
+			script = 'dataResetNarrator'
+
+			if GameController.getFlag( 'game.frizzleWon' ) then
+				script = 'dataResetFrizzle'
+			end
 		end
 
 		GameController.setFlag( 'dialogue.currentScript', script )
