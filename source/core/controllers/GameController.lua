@@ -241,7 +241,13 @@ function GameController.reset()
 	end
 
 	Noble.transition( TitleScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-	GameController.flags = GameController.getDefaultFlags()
+
+	GameController.saveData()
+
+	if GameController.getFlag( 'game.phase' ) == 4 then
+		GameController.flags = GameController.getDefaultFlags()
+	end
+
 	GameController.pet = VirtualPet( 'assets/images/pet' )
 	GameController.dialogue = nil
 	GameController.playTimer = nil

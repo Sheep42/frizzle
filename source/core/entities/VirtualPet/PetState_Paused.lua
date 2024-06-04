@@ -15,7 +15,7 @@ function state:exit() end
 -- Fires when the State Machine updates
 function state:tick()
 
-	if GameController.dialogue:getState() == DialogueState.Show or GameController.getFlag( 'pet.state' ) == GameController.pet.states.paused.id then
+	if (GameController.dialogue ~= nil and GameController.dialogue:getState() == DialogueState.Show) or GameController.getFlag( 'pet.state' ) == GameController.pet.states.paused.id then
 		return
 	end
 
