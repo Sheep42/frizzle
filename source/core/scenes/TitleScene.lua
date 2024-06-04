@@ -9,7 +9,7 @@ local menu
 local sequence
 local bgMusic = nil
 local version = "Version 0.1.10a"
-local font = Noble.Text.FONT_SMALL
+local font = Graphics.font.new( 'assets/fonts/pixelsplitter' )
 local versionWidth, versionHeight = Graphics.getTextSize( version, font )
 
 function scene:init()
@@ -40,17 +40,6 @@ function scene:init()
 		nil,
 		"Text Speed: " .. Utilities.findKeyByValue( TextSpeed, Noble.Settings.get( "text_speed" ) )
 	)
-	menu:addItem(
-		"enable_debug_mode",
-		function()
-			local oldValue = Noble.Settings.get( "debug_mode" )
-			local newValue = not oldValue
-			Noble.Settings.set( "debug_mode", newValue )
-			menu:setItemDisplayName( "enable_debug_mode", "Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) ) )
-		end,
-		nil,
-		"Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) )
-	)
 
 	if GameController.getFlag( 'game.phase4.playedIntro' ) then
 
@@ -71,6 +60,18 @@ function scene:init()
 		function() 
 			Noble.transition(CreditScene, 1, Noble.TransitionType.DIP_TO_BLACK)
 		end
+	)
+
+	menu:addItem(
+		"enable_debug_mode",
+		function()
+			local oldValue = Noble.Settings.get( "debug_mode" )
+			local newValue = not oldValue
+			Noble.Settings.set( "debug_mode", newValue )
+			menu:setItemDisplayName( "enable_debug_mode", "Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) ) )
+		end,
+		nil,
+		"Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) )
 	)
 
 	local crankTick = 0
@@ -127,7 +128,7 @@ function scene:update()
 
 	Graphics.setColor(Graphics.kColorWhite)
 	Graphics.setDitherPattern(0.2, Graphics.image.kDitherTypeScreen)
-	Graphics.fillRoundRect(15, (sequence:get()*0.75)+3, 185, 145, 15)
+	Graphics.fillRoundRect(15, (sequence:get()*0.75)+3, 215, 145, 15)
 	menu:draw(30, sequence:get()-15 or 100-15)
 
 	-- Graphics.setDitherPattern(0.2, Graphics.image.kDitherTypeScreen)
