@@ -40,7 +40,7 @@ function phase:init( scene )
 
 				local limit = false
 				for k, v in pairs( GameController.getFlag( 'game.gamesPlayed' ) ) do
-					if v >= 4 then
+					if v >= 3 then
 						limit = true
 						break
 					end
@@ -70,6 +70,16 @@ function phase:init( scene )
 				end
 
 				if limit then
+
+					self.games.feeding = {
+						Feeding_CrankGame_Phase2,
+						Feeding_CrankGame_Phase2_Glitch,
+					}
+					self.games.petting = {
+						Petting_CrankGame_Phase2,
+						Petting_CrankGame_Phase2_Glitch,
+					}
+
 					GameController.setFlag( 'game.phase2.narratorAfterPet', true )
 					GameController.setFlag( 'statBars.paused', true )
 					GameController.setFlag( 'buttons.active', false )

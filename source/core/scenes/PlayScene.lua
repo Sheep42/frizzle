@@ -330,6 +330,8 @@ function scene:update()
 
 	scene.super.update( self )
 
+	print( GameController.getFlag( 'game.playTime' ) )
+	
 	-- Draw dialogue canvas over sprites
 	dialogue:drawCanvas()
 
@@ -427,6 +429,13 @@ function scene:buildDebugMenu()
 	)
 
 	self.dbgMenu:addItem(
+		"Pet: Crank It - Phase 2 Glitch",
+		function()
+			Noble.transition( Petting_CrankGame_Phase2_Glitch, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
 		"Pet: Crank It - Phase 3",
 		function()
 			Noble.transition( Petting_CrankGame_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
@@ -448,6 +457,13 @@ function scene:buildDebugMenu()
 	)
 
 	self.dbgMenu:addItem(
+		"Feed: Crank It - Phase 2 Glitch",
+		function()
+			Noble.transition( Feeding_CrankGame_Phase2_Glitch, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
 		"Feed: Crank It - Phase 3",
 		function()
 			Noble.transition( Feeding_CrankGame_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
@@ -465,6 +481,13 @@ function scene:buildDebugMenu()
 		"Sleep: Say It - Phase 2",
 		function()
 			Noble.transition( Sleeping_MicGame_Phase2, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Sleep: Say It - Phase 2 Glitch",
+		function()
+			Noble.transition( Sleeping_MicGame_Phase2_Glitch, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 

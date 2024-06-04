@@ -263,7 +263,7 @@ GameController.STAT_BAR_CRY_TIME = 2
 GameController.STAT_BAR_FAIL_STAGE_1_TIME = 5
 GameController.STAT_BAR_FAIL_STAGE_2_TIME = 10
 
-GameController.PHASE_2_TIME_TRIGGER = 300
+GameController.PHASE_2_TIME_TRIGGER = 210
 GameController.PHASE_2_GAME_TRIGGERS = {
 	petting = 1,
 	feeding = 1,
@@ -272,6 +272,7 @@ GameController.PHASE_2_GAME_TRIGGERS = {
 	playing = 0,
 }
 
+GameController.PHASE_3_TIME_TRIGGER = 600
 GameController.PHASE_3_GAME_TRIGGERS = {
 	petting = 6,
 	feeding = 6,
