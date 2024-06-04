@@ -249,13 +249,16 @@ function phase:phaseHandler()
 	end
 
 	local change = true
-	for k, v in pairs( GameController.PHASE_3_GAME_TRIGGERS ) do
 
-		local flagVal = GameController.getFlag( 'game.gamesPlayed.' .. k )
-		if flagVal < v then
-			change = false
+	if GameController.getFlag( 'game.playTime' ) < GameController.PHASE_3_TIME_TRIGGER then
+		for k, v in pairs( GameController.PHASE_3_GAME_TRIGGERS ) do
+
+			local flagVal = GameController.getFlag( 'game.gamesPlayed.' .. k )
+			if flagVal < v then
+				change = false
+			end
+
 		end
-
 	end
 
 	if change then
