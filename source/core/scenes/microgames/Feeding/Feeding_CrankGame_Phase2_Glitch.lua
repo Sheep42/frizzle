@@ -139,6 +139,9 @@ function scene:update()
 		self.screenshot:draw( 0, 0 )
 
 		if self.timer.value >= self.gameTime then
+			GameController.setFlag( 'dialogue.showBark', true )
+			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
+			GameController.pet.stats.hunger.value = math.clamp( GameController.pet.stats.hunger.value + math.random(3), 1, 5 )
 			Noble.transition( PlayScene, 0.1, Noble.TransitionType.CROSS_DISSOLVE )
 			return
 		end
