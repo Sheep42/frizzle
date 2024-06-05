@@ -18,6 +18,12 @@ function scene:init()
 
 	scene.baseColor = Graphics.kColorBlack
 
+	self.resetPos = false
+	self.wanderX = false
+	self.wanderY = false
+	self.petStartX = Utilities.screenSize().width / 2
+	self.petStartY = (Utilities.screenSize().height / 2) + 20
+
 	-- Create cursor
 	self.cursor = Cursor()
 
@@ -210,6 +216,7 @@ function scene:start()
 	end
 
 	pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 20 )
+	self.resetPos = true
 
 	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
 		GameController.pet:setVisible( false )
@@ -636,6 +643,79 @@ function scene:glitchTv( callback )
 	end)
 
 end
+
+function scene:petWanderY()
+
+	local _, currY = pet:getPosition()
+	local moveY = 1
+
+	if currY < (Utilities.screenSize().height / 2) + 20 or currY >= (Utilities.screenSize().height / 2) + 50 then
+		moveY = 0
+		self.wanderY = false
+
+		Timer.new( ONE_SECOND * math.random( 2 ), function()
+			self.wanderX = true
+			if math.random( 2 ) % 2 == 0 then
+				self.randX = -1
+			else 
+				self.randX = 1
+			end
+		end )
+	end
+
+	if self.petStartY <= (Utilities.screenSize().height / 2) + 20 then
+		moveY = 1
+	else
+		moveY = -1
+	end
+
+
+	pet:moveBy( 0, moveY )
+
+end
+
+function scene:petWanderX()
+
+	local currX, _ = pet:getPosition()
+	local moveX = 1 * self.randX
+
+	if currX <= Utilities.screenBounds().left + 30 or currX >= Utilities.screenBounds().right - 30 then
+		moveX = 0
+		self.wanderX = false
+
+		Timer.new( ONE_SECOND * math.random( 3, 5 ), function()
+			self.resetPos = true
+		end)
+	end
+
+	pet:moveBy( moveX, 0 )
+
+end
+
+function scene:petResetPos()
+
+	local currX, currY = pet:getPosition()
+	local moveX, moveY = 1, -1
+
+	if currX <= Utilities.screenSize().width / 2 then
+		moveX = 1
+	else
+		moveX = -1
+	end
+
+	if currX ~= Utilities.screenSize().width / 2 then
+		pet:moveBy( moveX, 0 )
+	elseif currY > (Utilities.screenSize().height / 2) + 20 then
+		pet:moveBy( 0, moveY )
+	else
+		self.resetPos = false
+		self.petStartX = currX
+		self.petStartY = currY
+		Timer.new( ONE_SECOND * math.random( 3, 5 ), function() self.wanderY = true end)
+	end
+
+end
+
 
 function scene.setInputHandler( inputHandler )
 	scene.inputHandler = inputHandler

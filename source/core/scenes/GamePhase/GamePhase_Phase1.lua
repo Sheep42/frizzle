@@ -141,6 +141,14 @@ function phase:tick()
 		self.owner.face:remove()
 	end
 
+	if self.owner.wanderY then
+		self.owner:petWanderY()
+	elseif self.owner.wanderX then
+		self.owner:petWanderX()
+	elseif self.owner.resetPos then
+		self.owner:petResetPos()
+	end
+
 end
 
 function phase:handleInteractableClick()

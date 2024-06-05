@@ -289,8 +289,13 @@ GameController.PHASE_3_GAME_TRIGGERS = {
 }
 
 GameController.playTimer = nil
-GameController.playTimerCallback = function() 
+GameController.playTimerCallback = function()
 	GameController.flags.game.playTime += 1
+
+	if GameController.flags.game.playTime % 120 == 0 then
+		GameController.saveData()
+	end
+
 	GameController.playTimer = Timer.new( 1000, GameController.playTimerCallback )
 end
 
