@@ -9,6 +9,12 @@ pet._animations = {
 		startFrame = 1,
 		endFrame = 6,
 	},
+	walking = {
+		name = "walking",
+		startFrame = 2,
+		endFrame = 5,
+		frameDuration = 10,
+	},
 }
 
 function pet:init()

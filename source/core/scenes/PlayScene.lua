@@ -651,7 +651,7 @@ function scene:petWanderY()
 		moveY = 0
 		self.wanderY = false
 
-		Timer.new( ONE_SECOND * math.random( 2 ), function()
+		Timer.new( ONE_SECOND * math.random( 3, 6 ), function()
 			self.wanderX = true
 			if math.random( 2 ) % 2 == 0 then
 				self.randX = -1
@@ -666,7 +666,6 @@ function scene:petWanderY()
 	else
 		moveY = -1
 	end
-
 
 	pet:moveBy( 0, moveY )
 
@@ -722,7 +721,8 @@ function scene:petResetPos()
 		self.resetPos = false
 		self.petStartX = currX
 		self.petStartY = currY
-		Timer.new( ONE_SECOND * math.random( 3, 5 ), function() self.wanderY = true end)
+
+		Timer.new( ONE_SECOND * math.random( 5, 10 ), function() self.wanderY = true end)
 	end
 
 end
