@@ -8,6 +8,7 @@ function phase:init( scene )
 
 	phase.super.init( self, "phase-1" )
 	self.owner = scene
+	self.wanderStart = false
 
 	self.games = {
 		feeding = {
@@ -139,6 +140,11 @@ function phase:tick()
 
 	if GameController.getFlag( 'dialogue.playedIntro' ) and self.owner.face:isVisible() then
 		self.owner.face:remove()
+	end
+
+	if GameController.getFlag( 'dialogue.playedIntro' ) and not self.wanderStart then
+		self.owner.resetPos = true
+		self.wanderStart = true
 	end
 
 	if self.owner.wanderY then

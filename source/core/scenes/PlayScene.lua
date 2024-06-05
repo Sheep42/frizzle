@@ -216,7 +216,6 @@ function scene:start()
 	end
 
 	pet:add( Utilities.screenSize().width / 2, (Utilities.screenSize().height / 2) + 20 )
-	self.resetPos = true
 
 	if not GameController.getFlag( 'game.phase4.playedIntro' ) and GameController.getFlag( 'game.phase3.resetTriggered' ) then
 		GameController.pet:setVisible( false )
@@ -371,7 +370,6 @@ function scene:update()
 	if GameController.getFlag( 'dialogue.showBark' ) then
 
 		GameController.setFlag( 'dialogue.showBark', false )
-
 		if bark:getState() == DialogueState.Hide then
 			bark:show()
 		end
@@ -679,12 +677,25 @@ function scene:petWanderX()
 	local currX, _ = pet:getPosition()
 	local moveX = 1 * self.randX
 
-	if currX <= Utilities.screenBounds().left + 30 or currX >= Utilities.screenBounds().right - 30 then
+	if currX <= Utilities.screenBounds().left + 40 or currX >= Utilities.screenBounds().right - 30 then
 		moveX = 0
 		self.wanderX = false
 
 		Timer.new( ONE_SECOND * math.random( 3, 5 ), function()
-			self.resetPos = true
+
+			if math.random( 2 ) % 2 == 0 then
+				self.resetPos = true
+			else
+				self.wanderX = true
+				if currX <= Utilities.screenBounds().left + 40 then
+					self.randX = 1
+					pet:moveBy( self.randX, 0 )
+				else 
+					self.randX = -1
+					pet:moveBy( self.randX, 0 )
+				end
+			end
+
 		end)
 	end
 

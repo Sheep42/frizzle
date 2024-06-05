@@ -292,6 +292,10 @@ GameController.playTimer = nil
 GameController.playTimerCallback = function()
 	GameController.flags.game.playTime += 1
 
+	if GameController.flags.game.playTime % 60 == 0 then
+		math.randomseed( pd.getCurrentTimeMilliseconds() )
+	end
+
 	if GameController.flags.game.playTime % 120 == 0 then
 		GameController.saveData()
 	end

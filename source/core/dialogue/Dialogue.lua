@@ -207,6 +207,34 @@ function Dialogue:disableIndicator()
 
 end
 
+function Dialogue:setPosition( x, y )
+
+	self:clearCanvas()
+
+	if x ~= nil then
+		self.x = x
+	else
+		self.x = ( Utilities.screenSize().width / 2 ) - ( ( self.boxWidth + self.borderWidth ) / 2 )
+	end
+
+	if y ~= nil then
+		self.y = y
+	else
+		self.y = Utilities.screenSize().height - self.boxHeight - 60
+	end
+
+	self._innerX = self.x + ( self.borderWidth / 2 )
+	self._innerY = self.y + ( self.borderHeight / 2 )
+
+	self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
+	self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ), self.y + ( self.boxHeight / 2 )
+
+	if self.emote ~= nil then
+		self.emote:moveTo( self._emoteX, self._emoteY )
+	end
+
+end
+
 function Dialogue:show()
 	self._state = DialogueState.Show
 	self.onShowCallback()
