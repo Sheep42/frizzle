@@ -12,6 +12,7 @@ function phase:init( scene )
 
 	self.buffer = playdate.sound.sample.new( 2, playdate.sound.kFormat16bitMono )
 	self.listening = false
+	self.screenshot = nil
 
 	self.games = {
 		feeding = {
@@ -46,8 +47,7 @@ function phase:init( scene )
 					end
 				end
 
-				if limit or GameController.getFlag( 'game.playTime' ) >= 360 then
-					GameController.setFlag( 'game.phase2.playerRecorded', true )
+				if (limit or GameController.getFlag( 'game.playTime' ) >= 360) and GameController.dialogue:getState() ~= DialogueState.Show then
 					GameController.setFlag( 'statBars.paused', true )
 					GameController.setFlag( 'buttons.active', false )
 					GameController.setFlag( 'dialogue.currentScript', 'petRecord' )
@@ -69,7 +69,7 @@ function phase:init( scene )
 					end
 				end
 
-				if limit or GameController.getFlag( 'game.playTime' ) >= 500 then
+				if (limit or GameController.getFlag( 'game.playTime' ) >= 500) and GameController.dialogue:getState() ~= DialogueState.Show then
 					GameController.setFlag( 'game.phase2.narratorAfterPet', true )
 					GameController.setFlag( 'statBars.paused', true )
 					GameController.setFlag( 'buttons.active', false )
@@ -226,6 +226,16 @@ function phase:enter()
 		}
 	end
 
+	if GameController.getFlag( 'game.phase2.playedGlitchGame' ) and not GameController.getFlag( 'game.phase2.didGlitchScreen' ) then
+		GameController.setFlag( 'game.phase2.didGlitchScreen', true )
+		Timer.new( ONE_SECOND * 0.25, function()
+			GameController.setFlag( 'dialogue.currentScript', 'narratorAfterGlitch' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+		end )
+	end
+
 	self.owner:softRestart()
 
 end
@@ -239,6 +249,15 @@ function phase:tick()
 	if GameController.getFlag( 'game.listenForPlayer' ) then
 		self:recordPlayer()
 		return
+	end
+
+	if GameController.getFlag( 'game.glitchScreen' ) then
+		if self.screenshot == nil then
+			self.screenshot = Graphics.getDisplayImage()
+		end
+
+		self.screenshot = self.screenshot:vcrPauseFilterImage()
+		self.screenshot:draw( 0, 0 )
 	end
 
 	self:phaseHandler()

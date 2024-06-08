@@ -23,6 +23,7 @@ function GameController.getDefaultFlags()
 			resetCrank = false,
 			rollCredits = false,
 			doDataReset = false,
+			glitchScreen = false,
 			gamesPlayed = {
 				petting = 0,
 				feeding = 0,
@@ -42,6 +43,8 @@ function GameController.getDefaultFlags()
 			},
 			phase2 = {
 				playedMicroGame = false,
+				playedGlitchGame = false,
+				didGlitchScreen = false,
 				playerRecorded = false,
 				narratorAfterPet = false,
 				playedPettingFirstTime = false,
@@ -410,6 +413,7 @@ GameController.dialogueLines = {
 		function()
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'buttons.active', true )
+			GameController.setFlag( 'game.phase2.playerRecorded', true )
 		end
 	},
 	narratorAfterPetIntro = {
@@ -437,6 +441,30 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'statBars.paused', false )
 			GameController.setFlag( 'buttons.active', true )
 		end,
+	},
+	narratorAfterGlitch = {
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"Okay, that was strange...",
+		"I think Frizzle may be trying to\nmodify my changes.",
+		function()
+			Timer.new( ONE_SECOND * 2, function()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			end )
+		end,
+		"Let's see...\nHey! get out of there!",
+		function()
+			GameController.setFlag( 'game.glitchScreen', true )
+			Timer.new( ONE_SECOND, function() GameController.setFlag( 'game.glitchScreen', false ) end)
+		end,
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"That should keep him busy for\na little while.",
 	},
 	phase2PettingGameFinish1 = {
 		function()
