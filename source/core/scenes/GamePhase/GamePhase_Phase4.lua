@@ -383,7 +383,7 @@ function phase:handleCrankToEnd()
 		return
 	end
 
-	if self.cranked > 0 then
+	if self.cranked > 5 then
 
 		if self.noCrankTimer ~= nil then
 			self.noCrankTimer:reset()
@@ -439,7 +439,7 @@ function phase:handleCrankToReset()
 		GameController.reset()
 	end
 
-	if self.cranked > 0 then
+	if self.cranked > 30 then
 
 		if self.noCrankTimer ~= nil then
 			self.noCrankTimer:reset()
