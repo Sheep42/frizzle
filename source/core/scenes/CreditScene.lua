@@ -3,7 +3,7 @@ class("CreditScene").extends(NobleScene)
 local scene = CreditScene
 
 scene.baseColor = Graphics.kColorBlack
-scene.TEXT_POS_LIMIT = 500
+scene.TEXT_POS_LIMIT = 510
 
 local background
 local menu
@@ -80,7 +80,8 @@ function scene:update()
 	Noble.Text.draw( "Playtesters:", textX, textY + 275 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "Chris Hickman, Ben Ehrlich (Benergize),", textX, textY + 300 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "theswellpenguin, Brian Bahia", textX, textY + 330 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
-	Noble.Text.draw( "The End", textX, textY + 490, Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "Ryan Szrama (roguewombat)", textX, textY + 360 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "The End", textX, textY + 500, Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 
 	if self.textPos >= scene.TEXT_POS_LIMIT and not self.finished then
 		self.finished = true
