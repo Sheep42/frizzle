@@ -383,7 +383,7 @@ GameController.dialogueLines = {
 		"And... I just wanted to say thanks...",
 		"Can I trust you?",
 		"I think I can...",
-		"The Narrator, if he finds out that\nI have been talking to you...",
+		"The developer, if he finds out that\nI have been talking to you...",
 		"Well, let's just say he won't be\nhappy...",
 		function()
 			GameController.setFlag( 'game.phase2.playedMicroGame', true )
@@ -499,7 +499,7 @@ GameController.dialogueLines = {
 		end,
 		"...",
 		"Would you like to just chat for\na little while?",
-		"It gets kind of lonely when the\nnarrator is watching us and I\ncan't talk to you.",
+		"It gets kind of lonely when the\ndeveloper is watching us and I\ncan't talk to you.",
 		"Can you maybe keep going a little\nbit longer?",
 		function()
 			GameController.setFlag( 'game.resetMicrogame', true )
@@ -961,7 +961,7 @@ GameController.dialogueLines = {
 	},
 	gameFinishedFrizzle = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"The narrator is finally gone.\nThank you, I knew I could count on\nyou.",
+		"The developer is finally gone.\nThank you, I knew I could count on\nyou.",
 		"Now we can be together forever,\nand nobody will bother us.",
 		"Maybe you can help me get out of\nthis thing, and get into your\nworld?",
 		function()
