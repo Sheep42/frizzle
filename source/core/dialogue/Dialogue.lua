@@ -21,7 +21,7 @@ DialogueState = {
 Dialogue._BASE_TIMER_DURATION = 70
 Dialogue._BASE_PITCH = 261.63
 Dialogue._BASE_VOLUME = 0.25
-Dialogue._SYNTH_LENGTH = 0.15
+Dialogue._SYNTH_LENGTH = 0.05
 
 Dialogue.DEFAULT_FONT = Noble.Text.FONT_SYSTEM
 
@@ -478,7 +478,7 @@ function Dialogue:buildText()
 		return
 	end
 
-	if self._textSound ~= nil and self.text:sub( self._dialoguePointer, self._dialoguePointer ) ~= ' ' then
+	if self._textSound ~= nil and self.text:sub( self._dialoguePointer, self._dialoguePointer ) ~= ' ' and not self._textSound:isPlaying() then
 		self._textSound:playNote( self.pitch + math.random( -10, 10 ), self._BASE_VOLUME, self._SYNTH_LENGTH )
 	end
 
