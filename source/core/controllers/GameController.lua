@@ -379,7 +379,7 @@ GameController.dialogueLines = {
 			GameController.dialogue:setText( GameController.getDialogue() )
 		end,
 		"Hey, it's me... Frizzle\n",
-		"I know... I can talk...\nI'm not really supposed to but you\nhave been doing such a good job.",
+		"I know... I can talk...\nI'm not really supposed to, but you\nhave been doing such a good job.",
 		"And... I just wanted to say thanks...",
 		"Can I trust you?",
 		"I think I can...",
