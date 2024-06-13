@@ -13,6 +13,8 @@ function scene:init()
 
 	background = Graphics.image.new( "assets/images/background" )
 
+	self.arrowBtn = Button( "assets/images/UI/button-arrow-left", 5 )
+
 	-- Create Pet
 	pet = GameController.pet
 
@@ -45,6 +47,9 @@ end
 
 function scene:start()
 	scene.super.start( self )
+
+	self.arrowBtn:add( Utilities.screenBounds().left + 10, Utilities.screenBounds().bottom - 30 )
+
 end
 
 function scene:softRestart()

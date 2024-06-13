@@ -15,7 +15,7 @@ function scene:init()
 	pet = GameController.pet
 	background = Graphics.image.new( "assets/images/background" )
 
-	self.arrowBtn = Button( "assets/images/UI/button-arrow", 5 )
+	self.arrowBtn = Button( "assets/images/UI/button-arrow-right", 5 )
 
 	-- Create room sprites
 	self.window = NobleSprite( 'assets/images/room/window' )
