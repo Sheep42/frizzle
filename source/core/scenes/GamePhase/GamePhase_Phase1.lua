@@ -35,6 +35,8 @@ function phase:init( scene )
 		end,
 		BButtonDown = function()
 
+			Noble.transition( KitchenScene )
+
 			if Noble.Settings.get( 'debug_mode' ) then
 				Noble.transition( TitleScene )
 			end
@@ -106,7 +108,7 @@ end
 function phase:enter()
 
 	-- Input Listener Callbacks
-	PlayScene.setInputHandler( self.inputHandler )
+	self.owner.setInputHandler( self.inputHandler )
 
 	-- Button Press Handlers
 	self.owner.petBtn:setPressedCallback( function()
@@ -138,21 +140,25 @@ function phase:tick()
 	self:phaseChangeHandler()
 	self.owner:handleStatNag( self.games )
 
-	if GameController.getFlag( 'dialogue.playedIntro' ) and self.owner.face:isVisible() then
-		self.owner.face:remove()
-	end
+	if self.owner.className == 'LivingRoomScene' then
 
-	if GameController.getFlag( 'dialogue.playedIntro' ) and not self.wanderStart then
-		self.owner.resetPos = true
-		self.wanderStart = true
-	end
+		if GameController.getFlag( 'dialogue.playedIntro' ) and self.owner.face:isVisible() then
+			self.owner.face:remove()
+		end
 
-	if self.owner.wanderY then
-		self.owner:petWanderY()
-	elseif self.owner.wanderX then
-		self.owner:petWanderX()
-	elseif self.owner.resetPos then
-		self.owner:petResetPos()
+		if GameController.getFlag( 'dialogue.playedIntro' ) and not self.wanderStart then
+			self.owner.resetPos = true
+			self.wanderStart = true
+		end
+
+		if self.owner.wanderY then
+			self.owner:petWanderY()
+		elseif self.owner.wanderX then
+			self.owner:petWanderX()
+		elseif self.owner.resetPos then
+			self.owner:petResetPos()
+		end
+
 	end
 
 end
@@ -163,40 +169,44 @@ function phase:handleInteractableClick()
 		return false
 	end
 
-	local collision = self.owner.window:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
+	if self.owner.className == 'LivingRoomScene' then
 
-	collision = self.owner.vase:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickVase' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
+		local collision = self.owner.window:overlappingSprites()
+		if #collision > 0 then
+			GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+			return true
+		end
 
-	collision = self.owner.table:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTable' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
+		collision = self.owner.vase:overlappingSprites()
+		if #collision > 0 then
+			GameController.setFlag( 'dialogue.currentScript', 'clickVase' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+			return true
+		end
 
-	collision = self.owner.tv:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
+		collision = self.owner.table:overlappingSprites()
+		if #collision > 0 then
+			GameController.setFlag( 'dialogue.currentScript', 'clickTable' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+			return true
+		end
+
+		collision = self.owner.tv:overlappingSprites()
+		if #collision > 0 then
+			GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+			return true
+		end
+
 	end
 
 	return false

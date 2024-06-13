@@ -14,6 +14,8 @@ math.randomseed( ms, s )
 import 'core/scenes/SplashScene'
 import 'core/scenes/TitleScene'
 import 'core/scenes/PlayScene'
+import 'core/scenes/LivingRoomScene'
+import 'core/scenes/KitchenScene'
 import 'core/scenes/CreditScene'
 
 import 'core/scenes/microgames/Microgame'

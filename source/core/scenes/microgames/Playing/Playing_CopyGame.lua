@@ -41,7 +41,7 @@ function scene:init()
 
 	scene.inputHandler = {
 		BButtonDown = function()
-			Noble.transition( PlayScene )
+			Noble.transition( LivingRoomScene )
 		end
 	}
 
@@ -77,7 +77,7 @@ function scene:update()
 			GameController.pet.stats.boredom.value = math.clamp( GameController.pet.stats.boredom.value + math.random(3), 1, 5 )
 		end
 
-		Noble.transition( PlayScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		Noble.transition( LivingRoomScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		return
 
 	end

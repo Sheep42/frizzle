@@ -22,7 +22,7 @@ function scene:init()
 	menu:addItem( 
 		"Play", 
 		function() 
-			Noble.transition(PlayScene, 1, Noble.TransitionType.DIP_TO_BLACK)
+			Noble.transition( LivingRoomScene, 1, Noble.TransitionType.DIP_TO_BLACK)
 		end
 	)
 	menu:addItem( 
@@ -47,7 +47,7 @@ function scene:init()
 			"delete_save",
 			function()
 				GameController.setFlag( 'game.doDataReset', true )
-				Noble.transition(PlayScene, 1, Noble.TransitionType.DIP_TO_BLACK)
+				Noble.transition( LivingRoomScene, 1, Noble.TransitionType.DIP_TO_BLACK)
 			end,
 			nil,
 			"Delete Save Data"

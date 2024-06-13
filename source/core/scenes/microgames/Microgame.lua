@@ -48,7 +48,7 @@ function scene:init()
 		end,
 		BButtonDown = function()
 			if Noble.Settings.get( 'debug_mode' ) then
-				Noble.transition( PlayScene )
+				Noble.transition( LivingRoomScene )
 			end
 		end
 	}

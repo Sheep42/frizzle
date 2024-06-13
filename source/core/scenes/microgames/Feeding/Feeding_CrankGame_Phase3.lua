@@ -111,7 +111,7 @@ function scene:update()
 
 	if GameController.getFlag( 'game.phase3.finished.feeding' ) then
 		GameController.dialogue:hide()
-		Noble.transition( PlayScene, 0.75, Noble.TransitionType.SLIDE_OFF_LEFT )
+		Noble.transition( LivingRoomScene, 0.75, Noble.TransitionType.SLIDE_OFF_LEFT )
 		return
 	end
 
