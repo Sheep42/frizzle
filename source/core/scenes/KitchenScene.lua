@@ -14,6 +14,10 @@ function scene:init()
 	background = Graphics.image.new( "assets/images/background" )
 
 	self.arrowBtn = Button( "assets/images/UI/button-arrow-left", 5 )
+	self.arrowBtn:setPressedCallback( function()
+		Noble.transition( LivingRoomScene, 1, Noble.TransitionType.DIP_TO_BLACK )
+	end )
+
 
 	-- Create Pet
 	pet = GameController.pet

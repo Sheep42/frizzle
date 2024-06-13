@@ -35,8 +35,6 @@ function phase:init( scene )
 		end,
 		BButtonDown = function()
 
-			Noble.transition( KitchenScene )
-
 			if Noble.Settings.get( 'debug_mode' ) then
 				Noble.transition( TitleScene )
 			end

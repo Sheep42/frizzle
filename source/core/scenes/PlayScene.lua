@@ -250,18 +250,19 @@ function scene:checkABtnPress()
 
 	if GameController.dialogue:getState() == DialogueState.Show then
 		GameController.dialogue:buttonPressedCallback()
-	else
-
-		if self.dbgMenu:isActive() then
-			self.dbgMenu:click()
-			return
-		end
-
-		for i = 1, #uiButtons do
-			uiButtons[i]:press()
-		end
-
+		return
 	end
+
+	if self.dbgMenu:isActive() then
+		self.dbgMenu:click()
+		return
+	end
+
+	for i = 1, #uiButtons do
+		uiButtons[i]:press()
+	end
+
+	self.arrowBtn:press()
 
 end
 

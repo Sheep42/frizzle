@@ -15,7 +15,22 @@ function scene:init()
 	pet = GameController.pet
 	background = Graphics.image.new( "assets/images/background" )
 
+	self.screenshot = nil
 	self.arrowBtn = Button( "assets/images/UI/button-arrow-right", 5 )
+	self.arrowBtn:setPressedCallback( function()
+
+		if GameController.getFlag( 'game.phase' ) < 3 then
+			Noble.transition( KitchenScene, 1, Noble.TransitionType.DIP_TO_BLACK )
+		else
+			if self.screenshot == nil and not pd.getReduceFlashing() then
+				self.screenshot = Graphics.getDisplayImage()
+			end
+
+			Timer.new( ONE_SECOND * 0.05, function()
+				self.screenshot = nil
+			end )
+		end
+	end )
 
 	-- Create room sprites
 	self.window = NobleSprite( 'assets/images/room/window' )
@@ -118,6 +133,10 @@ function scene:update()
 
 		GameController.setFlag( 'game.tvToggle', false )
 
+	end
+
+	if self.screenshot ~= nil then
+		self.screenshot:drawBlurred( 0, 0, 20, 1, Graphics.image.kDitherTypeBayer4x4 )
 	end
 
 end
