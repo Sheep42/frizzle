@@ -266,12 +266,12 @@ function scene:checkABtnPress()
 end
 
 function scene:drawBackground()
-
 	scene.super.drawBackground(self)
+end
 
+function scene:drawBarkCanvas()
 	-- Draw Bark Canvas
 	bark:drawCanvas()
-
 end
 
 function scene:update()

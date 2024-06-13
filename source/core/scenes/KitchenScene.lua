@@ -53,7 +53,8 @@ end
 
 function scene:drawBackground()
 	scene.super.drawBackground(self)
-	background:draw( 0, 0, kImageFlippedX )
+	background:draw( 0, 0, imageFlippedX )
+	scene.super:drawBarkCanvas()
 end
 
 function scene:update()

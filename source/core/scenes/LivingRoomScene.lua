@@ -94,6 +94,7 @@ function scene:drawBackground()
 
 	scene.super.drawBackground(self)
 	background:draw( 0, 0 )
+	scene.super:drawBarkCanvas()
 
 end
 
