@@ -15,6 +15,8 @@ function scene:init()
 	pet = GameController.pet
 	background = Graphics.image.new( "assets/images/background" )
 
+	self.arrowBtn = Button( "assets/images/UI/button-arrow", 5 )
+
 	-- Create room sprites
 	self.window = NobleSprite( 'assets/images/room/window' )
 	self.table = NobleSprite( 'assets/images/room/table' )
@@ -74,6 +76,8 @@ end
 function scene:start()
 
 	scene.super.start(self)
+
+	self.arrowBtn:add( Utilities.screenBounds().right, Utilities.screenBounds().bottom - 30 )
 
 	-- Add Room objects
 	self.window:add( Utilities.screenBounds().left + 120, Utilities.screenBounds().top + 70 )

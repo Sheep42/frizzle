@@ -5,6 +5,10 @@ Noble.Settings.setup({
 	text_speed = TextSpeed.Normal
 })
 
+imageUnflipped = 0
+imageFlippedX = 1
+imageFlippedY = 2
+
 local menu = playdate.getSystemMenu()
 
 local menuItem, error = menu:addMenuItem( "back to title", function()
