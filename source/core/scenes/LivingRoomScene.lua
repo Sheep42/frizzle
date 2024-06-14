@@ -15,7 +15,7 @@ function scene:init()
 	pet = GameController.pet
 	background = Graphics.image.new( "assets/images/background" )
 
-	self.wanderStart = fals
+	self.wanderStart = false
 	self.screenshot = nil
 	self.arrowBtn = Button( "assets/images/UI/button-arrow-right", 5 )
 	self.arrowBtn:setPressedCallback( function()
