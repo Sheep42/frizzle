@@ -8,7 +8,6 @@ function phase:init( scene )
 
 	phase.super.init( self, "phase-1" )
 	self.owner = scene
-	self.wanderStart = false
 
 	self.games = {
 		feeding = {
@@ -137,27 +136,7 @@ function phase:tick()
 
 	self:phaseChangeHandler()
 	self.owner:handleStatNag( self.games )
-
-	if self.owner.className == 'LivingRoomScene' then
-
-		if GameController.getFlag( 'dialogue.playedIntro' ) and self.owner.face:isVisible() then
-			self.owner.face:remove()
-		end
-
-		if GameController.getFlag( 'dialogue.playedIntro' ) and not self.wanderStart then
-			self.owner.resetPos = true
-			self.wanderStart = true
-		end
-
-		if self.owner.wanderY then
-			self.owner:petWanderY()
-		elseif self.owner.wanderX then
-			self.owner:petWanderX()
-		elseif self.owner.resetPos then
-			self.owner:petResetPos()
-		end
-
-	end
+	self.owner:phase1Tick()
 
 end
 
@@ -167,47 +146,7 @@ function phase:handleInteractableClick()
 		return false
 	end
 
-	if self.owner.className == 'LivingRoomScene' then
-
-		local collision = self.owner.window:overlappingSprites()
-		if #collision > 0 then
-			GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
-			GameController.setFlag( 'dialogue.currentLine', 1 )
-			GameController.dialogue:setText( GameController.advanceDialogueLine() )
-			GameController.dialogue:show()
-			return true
-		end
-
-		collision = self.owner.vase:overlappingSprites()
-		if #collision > 0 then
-			GameController.setFlag( 'dialogue.currentScript', 'clickVase' )
-			GameController.setFlag( 'dialogue.currentLine', 1 )
-			GameController.dialogue:setText( GameController.advanceDialogueLine() )
-			GameController.dialogue:show()
-			return true
-		end
-
-		collision = self.owner.table:overlappingSprites()
-		if #collision > 0 then
-			GameController.setFlag( 'dialogue.currentScript', 'clickTable' )
-			GameController.setFlag( 'dialogue.currentLine', 1 )
-			GameController.dialogue:setText( GameController.advanceDialogueLine() )
-			GameController.dialogue:show()
-			return true
-		end
-
-		collision = self.owner.tv:overlappingSprites()
-		if #collision > 0 then
-			GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
-			GameController.setFlag( 'dialogue.currentLine', 1 )
-			GameController.dialogue:setText( GameController.advanceDialogueLine() )
-			GameController.dialogue:show()
-			return true
-		end
-
-	end
-
-	return false
+	return self.owner:phase1Interact()
 
 end
 

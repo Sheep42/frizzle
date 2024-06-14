@@ -57,7 +57,7 @@ function scene:start()
 end
 
 function scene:softRestart()
-	scene.super.start( self )
+	scene.super:softRestart( self )
 end
 
 function scene:drawBackground()

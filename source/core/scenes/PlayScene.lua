@@ -631,3 +631,32 @@ end
 function scene.setInputHandler( inputHandler )
 	scene.inputHandler = inputHandler
 end
+
+-- OVERRIDE WITH ROOM FUNCTIONALITY --
+function scene:phase1Interact()
+	return false
+end
+
+function scene:phase1Tick()
+end
+
+function scene:phase2Interact()
+	return false
+end
+
+function scene:phase2Tick()
+end
+
+function scene:phase3Interact()
+	return false
+end
+
+function scene:phase3Tick()
+end
+
+function scene:phase4Interact()
+	return false
+end
+
+function scene:phase4Tick()
+end

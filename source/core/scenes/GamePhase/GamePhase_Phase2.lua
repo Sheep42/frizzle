@@ -262,6 +262,7 @@ function phase:tick()
 
 	self:phaseHandler()
 	self.owner:handleStatNag( self.games )
+	self.owner:phase2Tick()
 
 end
 
@@ -325,42 +326,6 @@ function phase:handleInteractableClick()
 		return false
 	end
 
-	local collision = self.owner.window:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	collision = self.owner.vase:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickVase' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	collision = self.owner.table:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTable' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	collision = self.owner.tv:overlappingSprites()
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	return false
+	return self.owner:phase1Interact()
 
 end

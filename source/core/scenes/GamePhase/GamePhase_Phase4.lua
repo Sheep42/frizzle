@@ -289,6 +289,8 @@ function phase:tick()
 
 	end
 
+	self.owner:phase4Tick()
+
 end
 
 function phase:phaseHandler()
@@ -302,66 +304,10 @@ function phase:handleInteractableClick()
 	end
 
 	if not GameController.getFlag( 'game.frizzleWon' ) and not GameController.getFlag( 'game.narratorWon' ) then
-		return
+		return false
 	end
 
-	local collision = self.owner.window:overlappingSprites()
-	local script = 'narratorWonClickWindow'
-	if GameController.getFlag( 'game.frizzleWon' ) then
-		script = 'frizzleWonClickWindow'
-	end
-
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', script )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	collision = self.owner.vase:overlappingSprites()
-	script = 'narratorWonClickVaseTable'
-	if GameController.getFlag( 'game.frizzleWon' ) then
-		script = 'frizzleWonClickVaseTable'
-	end
-
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', script )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	collision = self.owner.table:overlappingSprites()
-	script = 'narratorWonClickVaseTable'
-	if GameController.getFlag( 'game.frizzleWon' ) then
-		script = 'frizzleWonClickVaseTable'
-	end
-
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', script )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	collision = self.owner.tv:overlappingSprites()
-	script = 'narratorWonClickTv'
-	if GameController.getFlag( 'game.frizzleWon' ) then
-		script = 'frizzleWonClickTv'
-	end
-
-	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', script )
-		GameController.setFlag( 'dialogue.currentLine', 1 )
-		GameController.dialogue:setText( GameController.advanceDialogueLine() )
-		GameController.dialogue:show()
-		return true
-	end
-
-	return false
+	return self.owner:phase4Interact()
 
 end
 

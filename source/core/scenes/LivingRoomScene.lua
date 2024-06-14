@@ -15,6 +15,7 @@ function scene:init()
 	pet = GameController.pet
 	background = Graphics.image.new( "assets/images/background" )
 
+	self.wanderStart = fals
 	self.screenshot = nil
 	self.arrowBtn = Button( "assets/images/UI/button-arrow-right", 5 )
 	self.arrowBtn:setPressedCallback( function()
@@ -22,6 +23,8 @@ function scene:init()
 		if GameController.getFlag( 'game.phase' ) < 3 then
 			Noble.transition( KitchenScene, 1, Noble.TransitionType.DIP_TO_BLACK )
 		else
+			-- TODO: Play Sound & Trigger Dialogue
+
 			if self.screenshot == nil and not pd.getReduceFlashing() then
 				self.screenshot = Graphics.getDisplayImage()
 			end
@@ -106,7 +109,8 @@ function scene:start()
 end
 
 function scene:softRestart()
-	scene.super.start( self )
+	scene.super:softRestart( self )
+	pet:setVisible( true )
 end
 
 function scene:drawBackground()
@@ -174,5 +178,214 @@ function scene:glitchTv( callback )
 
 		end)
 	end)
+
+end
+
+function scene:phase1Tick()
+
+	if GameController.getFlag( 'dialogue.playedIntro' ) and self.face:isVisible() then
+		self.face:remove()
+	end
+
+	if GameController.getFlag( 'dialogue.playedIntro' ) and not self.wanderStart then
+		self.resetPos = true
+		self.wanderStart = true
+	end
+
+	if self.wanderY then
+		self:petWanderY()
+	elseif self.wanderX then
+		self:petWanderX()
+	elseif self.resetPos then
+		self:petResetPos()
+	end
+
+end
+
+function scene:phase1Interact()
+
+	local collision = self.window:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.vase:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVase' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.table:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTable' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.tv:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
+
+end
+
+function scene:phase2Interact()
+
+	local collision = self.window:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.vase:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVase' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.table:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTable' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.tv:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
+
+end
+
+function scene:phase3Interact()
+
+	local collision = self.window:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickWindow3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.vase:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.table:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickVaseTable3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.tv:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickTv3' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
+
+end
+
+function scene:phase4Interact()
+
+	local collision = self.window:overlappingSprites()
+	local script = 'narratorWonClickWindow'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickWindow'
+	end
+
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', script )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.vase:overlappingSprites()
+	script = 'narratorWonClickVaseTable'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickVaseTable'
+	end
+
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', script )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.table:overlappingSprites()
+	script = 'narratorWonClickVaseTable'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickVaseTable'
+	end
+
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', script )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.tv:overlappingSprites()
+	script = 'narratorWonClickTv'
+	if GameController.getFlag( 'game.frizzleWon' ) then
+		script = 'frizzleWonClickTv'
+	end
+
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', script )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
 
 end
