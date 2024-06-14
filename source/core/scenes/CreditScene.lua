@@ -16,7 +16,8 @@ function scene:init()
 	self.finished = false
 	self.textPos = 0
 	self.futuraHand = Graphics.font.new( 'assets/fonts/FuturaHandwritten' )
-	bgMusic = Sound.fileplayer.new( "assets/sound/title" )
+	bgMusic = Sound.fileplayer.new( "assets/sound/credits" )
+	bgMusic:setVolume( 0.75 )
 
 	background = Graphics.image.new( Utilities.screenSize().width, Utilities.screenSize().height, Graphics.kColorBlack )
 
@@ -83,12 +84,18 @@ function scene:update()
 	Noble.Text.draw( "Ryan Szrama (roguewombat)", textX, textY + 360 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "The End", textX, textY + 500, Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 
-	if self.textPos >= scene.TEXT_POS_LIMIT and not self.finished then
-		self.finished = true
+	if self.textPos >= scene.TEXT_POS_LIMIT then
 
-		Timer.new( ONE_SECOND * 3, function()
-			Noble.transition( TitleScene, 1.5, Noble.TransitionType.DIP_TO_BLACK )
-		end)
+		if bgMusic:getVolume() > 0 then
+			bgMusic:setVolume( bgMusic:getVolume() - 0.009 )
+		end
+
+		if not self.finished then
+			self.finished = true
+			Timer.new( ONE_SECOND * 3, function()
+				Noble.transition( TitleScene, 1.5, Noble.TransitionType.DIP_TO_BLACK )
+			end)
+		end
 	end
 
 end
