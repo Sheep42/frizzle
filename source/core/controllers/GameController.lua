@@ -985,4 +985,9 @@ GameController.dialogueLines = {
 		"If you really want to start\nover, turn the crank to\ndelete the game data.",
 		function() GameController.setFlag( 'game.resetCrank', true ) end
 	},
+	frizzleBlockRoom = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"I don't want you to leave me here...",
+		"So, please don't take this the wrong\nway, but you aren't allowed to go\nto the kitchen anymore.",
+	},
 }

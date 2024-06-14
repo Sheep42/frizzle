@@ -23,14 +23,21 @@ function scene:init()
 		if GameController.getFlag( 'game.phase' ) < 3 then
 			Noble.transition( KitchenScene, 1, Noble.TransitionType.DIP_TO_BLACK )
 		else
-			-- TODO: Play Sound & Trigger Dialogue
+
+			local notAllowedSample = Sound.sampleplayer.new( 'assets/sound/not-allowed.wav' )
+			notAllowedSample:setVolume( 0.25 )
+			notAllowedSample:play()
 
 			if self.screenshot == nil and not pd.getReduceFlashing() then
 				self.screenshot = Graphics.getDisplayImage()
 			end
 
-			Timer.new( ONE_SECOND * 0.05, function()
+			Timer.new( ONE_SECOND * 0.15, function()
 				self.screenshot = nil
+				GameController.setFlag( 'dialogue.currentScript', 'frizzleBlockRoom' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
 			end )
 		end
 	end )
@@ -140,7 +147,7 @@ function scene:update()
 	end
 
 	if self.screenshot ~= nil then
-		self.screenshot:drawBlurred( 0, 0, 20, 1, Graphics.image.kDitherTypeBayer4x4 )
+		self.screenshot:drawBlurred( 0, 0, math.random( 5, 20 ), math.random( 3 ), Graphics.image.kDitherTypeBayer4x4 )
 	end
 
 end
