@@ -16,6 +16,7 @@ function GameController.getDefaultFlags()
 			phase = 1,
 			tvToggle = false,
 			tvState = 'default',
+			fridgeState = 'default',
 			narratorWon = false,
 			frizzleWon = false,
 			hideFrizzle = false,

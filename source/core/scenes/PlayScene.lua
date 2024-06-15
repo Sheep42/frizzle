@@ -227,6 +227,7 @@ function scene:setupButtons()
 
 	for i = 1, #uiButtons do
 		uiButtons[i]:add( currentX, Utilities.screenBounds().bottom - 10 )
+		uiButtons[i]:setZIndex( 2 )
 		currentX = currentX + Button.getDimensions().width + Button.getPadding()
 	end
 
