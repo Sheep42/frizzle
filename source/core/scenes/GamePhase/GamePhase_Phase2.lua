@@ -326,6 +326,6 @@ function phase:handleInteractableClick()
 		return false
 	end
 
-	return self.owner:phase1Interact()
+	return self.owner:phase2Interact()
 
 end

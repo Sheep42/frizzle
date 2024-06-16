@@ -65,7 +65,11 @@ function scene:init()
 end
 
 function scene:enter()
-	scene.super.enter(self)
+	scene.super.enter( self )
+
+	if GameController.getFlag( 'game.phase' ) >= 2 then
+		self.fridge.animation:setState( 'bloody' )
+	end
 end
 
 function scene:start()
@@ -104,4 +108,39 @@ end
 
 function scene:finish()
 	scene.super.finish( self )
+end
+
+function scene:phase1Interact()
+
+	local collision = self.fridge:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickFridge' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
+
+end
+
+function scene:phase2Interact()
+
+	local collision = self.fridge:overlappingSprites()
+	if #collision > 0 then
+		local script = 'clickFridge2'
+		if GameController.getFlag( 'game.phase2.fridgeClicked' ) then
+			script = 'clickFridge2Persist'
+		end
+
+		GameController.setFlag( 'dialogue.currentScript', script )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	return false
+
 end

@@ -50,6 +50,7 @@ function GameController.getDefaultFlags()
 				narratorAfterPet = false,
 				playedPettingFirstTime = false,
 				playedSleepingFirstTime = false,
+				fridgeClicked = false,
 			},
 			phase3 = {
 				allFinished = false,
@@ -894,6 +895,21 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.tvToggle', true )
 		end,
 		"There's nothing on...",
+	},
+	clickFridge = {
+		function() GameController.dialogue:resetDefaults() end,
+		"We keep Frizzle's food in there.",
+	},
+	clickFridge2 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"We keep Frizzle's food in there...",
+		"It's best not to ask.",
+		function() GameController.setFlag( 'game.phase2.fridgeClicked', true ) end,
+	},
+	clickFridge2Persist = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Frizzle will eat just about anything.",
+		"What do you suppose happened to\nthe last tester who asked too many\nquestions?",
 	},
 	clickWindow3 = {
 		function() GameController.dialogue:resetDefaults() end,
