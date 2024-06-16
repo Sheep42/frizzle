@@ -11,6 +11,7 @@ function GameController.getDefaultFlags()
 			playedIntro = false,
 			playedPhase2Intro = false,
 			showBark = false,
+			buttonPressEnabled = true,
 		},
 		game = {
 			phase = 1,
@@ -430,7 +431,13 @@ GameController.dialogueLines = {
 				Dialogue.PET_FONT,
 				Dialogue.PET_VOICE
 			)
-			Timer.new( ONE_SECOND * 2, function() GameController.dialogue:setText( GameController.advanceDialogueLine() ) end )
+
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+
+			Timer.new( ONE_SECOND * 2, function() 
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
+			end )
 		end,
 		"But, I want to talk to my new\nfriend. They are doing a really\ngreat job at taking care of me.",
 		function()
@@ -451,8 +458,11 @@ GameController.dialogueLines = {
 		"Okay, that was strange...",
 		"I think Frizzle may be trying to\nmodify my changes.",
 		function()
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+
 			Timer.new( ONE_SECOND * 2, function()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
 		"Let's see...\nHey! get out of there!",
@@ -592,11 +602,13 @@ GameController.dialogueLines = {
 		function()
 			GameController.setFlag( 'game.resetMicrogame', true )
 			GameController.dialogue:resetDefaults()
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 
 			Timer.new( ONE_SECOND * 3, function()
 				GameController.setFlag( 'dialogue.currentScript', 'phase3PettingGameNarrator' )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 				GameController.dialogue:show()
 			end)
 		end,
@@ -641,8 +653,11 @@ GameController.dialogueLines = {
 				Dialogue.PET_VOICE
 			)
 
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+
 			Timer.new( ONE_SECOND * 2, function()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
 		"No, I don't want to. I just want\nto hang out with my new best friend.\nThey are the best, and I love them.",
@@ -687,8 +702,11 @@ GameController.dialogueLines = {
 				Dialogue.PET_VOICE
 			)
 
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+
 			Timer.new( ONE_SECOND * 2, function()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
 		"I don't care!\nThey are my new best friend, and\nI love them! You can't stop me!",
@@ -745,8 +763,11 @@ GameController.dialogueLines = {
 		"Frizzle also happens to be the name\nof the cute little creature that you\nsee here.",
 		"They will need your love and attention\nin order to maintain their happiness.",
 		function()
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+
 			Timer.new( ONE_SECOND * 2, function() 
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end)
 		end,
 		"Make sure you keep an eye on their\nstats in the upper right part of the\nscreen.",
@@ -870,8 +891,10 @@ GameController.dialogueLines = {
 		function()
 			GameController.dialogue:setVoice( nil, Dialogue._BASE_PITCH - 200 )
 			GameController.dialogue.textSpeed = TextSpeed.Fast
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 			Timer.new( ONE_SECOND * 4, function()
 				GameController.advanceDialogueLine()
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
 		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
@@ -891,8 +914,10 @@ GameController.dialogueLines = {
 		function()
 			GameController.dialogue:setVoice( nil, Dialogue._BASE_PITCH - 200 )
 			GameController.dialogue.textSpeed = TextSpeed.Fast
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 			Timer.new( ONE_SECOND * 4, function()
 				GameController.advanceDialogueLine()
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
 		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
@@ -973,9 +998,11 @@ GameController.dialogueLines = {
 		"Nothing out there is part of the game.",
 		function()
 			GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE )
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 
 			Timer.new( ONE_SECOND, function()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end)
 		end,
 		"..... Let me back in ......",

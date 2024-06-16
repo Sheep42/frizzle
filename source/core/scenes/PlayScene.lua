@@ -249,7 +249,7 @@ end
 
 function scene:checkABtnPress()
 
-	if GameController.dialogue:getState() == DialogueState.Show then
+	if GameController.dialogue:getState() == DialogueState.Show and GameController.getFlag( 'dialogue.buttonPressEnabled' ) then
 		GameController.dialogue:buttonPressedCallback()
 		return
 	end
