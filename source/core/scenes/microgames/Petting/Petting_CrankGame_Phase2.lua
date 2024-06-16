@@ -46,6 +46,7 @@ function scene:init()
 	self.stat = GameController.pet.stats.friendship
 	self.finished = false
 	self.playCount = 1
+	self.playCountTarget = 1
 
 	scene.inputHandler = {
 		cranked = function( change, acceleratedChange )
@@ -107,17 +108,20 @@ function scene:update()
 
 		Noble.Input.setCrankIndicatorStatus( false )
 
-		if GameController.getFlag( 'game.resetMicrogame' ) then
+		if GameController.getFlag( 'game.resetMicrogame' ) and not self.finished then
 			self.happinessVal = 0
 			self.win = false
 			self:resetTimer()
 			self.startTimer = true
 			self.playCount += 1
+			if GameController.getFlag( 'game.phase2.didGlitchScreen' ) then
+				self.playCountTarget = 2
+			end
 			GameController.setFlag( 'game.resetMicrogame', false )
 			return
 		end
 
-		if self.playCount > 1 then
+		if self.playCount > self.playCountTarget and not self.finished then
 
 			if self.win then
 				GameController.setFlag( 'dialogue.showBark', true )
@@ -137,7 +141,10 @@ function scene:update()
 
 				local script = 'phase2PettingGameFinish1'
 				if GameController.getFlag( 'game.phase2.playedPettingFirstTime' ) then
-					local dialogueIndex = math.random(2)
+					local dialogueIndex = math.random( 2 )
+					if GameController.getFlag( 'game.phase2.didGlitchScreen' ) then
+						dialogueIndex = math.random( 4 )
+					end
 					script = 'phase2PettingGameFinish' .. tostring( dialogueIndex )
 				end
 
@@ -145,6 +152,7 @@ function scene:update()
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()
+				self.finished = false
 			end)
 
 			self.finished = true

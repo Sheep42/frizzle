@@ -215,6 +215,7 @@ function phase:enter()
 		self.games.feeding = {
 			Feeding_CrankGame_Phase2,
 			Feeding_CrankGame_Phase2_Glitch,
+			Feeding_CrankGame_Phase2_Glitch,
 		}
 		self.games.petting = {
 			Petting_CrankGame_Phase2,

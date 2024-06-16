@@ -508,6 +508,35 @@ GameController.dialogueLines = {
 			GameController.dialogue:resetDefaults()
 		end,
 	},
+	phase2PettingGameFinish3 = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"What's wrong?",
+		"Why did you stop?",
+		"Keep going for a bit longer.",
+		function()
+			GameController.setFlag( 'game.resetMicrogame', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase2PettingGameFinish4 = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"I thought you knew how this\nworks by now.",
+		"Keep going...",
+		function()
+			GameController.setFlag( 'game.resetMicrogame', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
 	phase2SleepingGameFinish1 = {
 		function()
 			GameController.dialogue:setVoice(
