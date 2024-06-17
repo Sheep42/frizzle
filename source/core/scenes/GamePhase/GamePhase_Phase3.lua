@@ -26,6 +26,10 @@ function phase:init( scene )
 	self.inputHandler = {
 		AButtonDown = function()
 
+			if GameController.getFlag( 'game.playRecording' ) then
+				return
+			end
+
 			if self:handleInteractableClick() then
 				return
 			end
