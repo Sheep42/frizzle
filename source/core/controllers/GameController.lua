@@ -454,6 +454,7 @@ GameController.dialogueLines = {
 	narratorAfterGlitch = {
 		function()
 			GameController.dialogue:resetDefaults()
+			GameController.setFlag( 'buttons.active', false )
 		end,
 		"Okay, that was strange...",
 		"I think Frizzle may be trying to\nmodify my changes.",
@@ -468,7 +469,10 @@ GameController.dialogueLines = {
 		"Let's see...\nHey! get out of there!",
 		function()
 			GameController.setFlag( 'game.glitchScreen', true )
-			Timer.new( ONE_SECOND, function() GameController.setFlag( 'game.glitchScreen', false ) end)
+			Timer.new( ONE_SECOND, function() 
+				GameController.setFlag( 'game.glitchScreen', false )
+				GameController.setFlag( 'buttons.active', true )
+			end)
 		end,
 		function()
 			GameController.dialogue:setVoice(
