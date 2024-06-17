@@ -102,7 +102,12 @@ function scene:update()
 				self.face.animation:setState( 'sleeping' )
 			end)
 
-			Timer.new( 5 * ONE_SECOND, function()
+			local waitTime = 5
+			if GameController.getFlag( 'game.phase2.didGlitchScreen' ) then
+				waitTime = 10
+			end
+
+			Timer.new( waitTime * ONE_SECOND, function()
 				self.finished = true
 			end)
 
