@@ -37,6 +37,10 @@ function phase:init( scene )
 	self.inputHandler = {
 		AButtonDown = function()
 
+			if GameController.getFlag( 'game.listenForPlayer' ) then
+				return
+			end
+
 			if GameController.getFlag( 'game.phase2.playedMicroGame' ) and not GameController.getFlag( 'game.phase2.playerRecorded' ) then
 
 				local limit = false
