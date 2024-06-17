@@ -13,7 +13,9 @@ function scene:init()
 
 	scene.inputHandler = {
 		AButtonDown = function()
-			self:transitionToTitle()
+			self.timer:reset()
+			self.timer:pause()
+			self:transitionScreen()
 		end
 	}
 
@@ -31,8 +33,8 @@ end
 function scene:start()
 	scene.super.start(self)
 
-	Timer.new( ONE_SECOND, function()
-		self:transitionToTitle()
+	self.timer = Timer.new( ONE_SECOND, function()
+		self:transitionScreen()
 	end)
 end
 
@@ -53,6 +55,6 @@ function scene:finish()
 	scene.super.finish(self)
 end
 
-function scene:transitionToTitle()
-	Noble.transition( TitleScene, 1, Noble.TransitionType.DIP_TO_WHITE )
+function scene:transitionScreen()
+	Noble.transition( DisclaimerScene, 1, Noble.TransitionType.DIP_TO_WHITE )
 end

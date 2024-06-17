@@ -8,7 +8,7 @@ local background
 local menu
 local sequence
 local bgMusic = nil
-local version = "Version 0.1.15a"
+local version = "Version 0.1.17a"
 local font = Graphics.font.new( 'assets/fonts/pixelsplitter' )
 local versionWidth, versionHeight = Graphics.getTextSize( version, font )
 

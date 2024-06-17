@@ -12,6 +12,7 @@ local s, ms = pd.getSecondsSinceEpoch()
 math.randomseed( ms, s )
 
 import 'core/scenes/SplashScene'
+import 'core/scenes/DisclaimerScene'
 import 'core/scenes/TitleScene'
 import 'core/scenes/PlayScene'
 import 'core/scenes/LivingRoomScene'
