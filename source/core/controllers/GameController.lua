@@ -897,7 +897,7 @@ GameController.dialogueLines = {
 			GameController.dialogue.textSpeed = TextSpeed.Fast
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 			Timer.new( ONE_SECOND * 4, function()
-				GameController.advanceDialogueLine()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
@@ -920,7 +920,7 @@ GameController.dialogueLines = {
 			GameController.dialogue.textSpeed = TextSpeed.Fast
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 			Timer.new( ONE_SECOND * 4, function()
-				GameController.advanceDialogueLine()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
@@ -947,12 +947,28 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:resetDefaults() end,
 		"They're plastic...",
 	},
-	clickTv = {
+	clickTv1 = {
 		function()
 			GameController.dialogue:resetDefaults()
 			GameController.setFlag( 'game.tvToggle', true )
 		end,
 		"There's nothing on...",
+	},
+	clickTv2 = {
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"I think you should stop playing\nwith that. It's not a toy.",
+		function()
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+
+			Timer.new( ONE_SECOND * 4, function()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
+			end )
+		end,
+		"If you tamper with it too much, you\nmight break the monitoring devices\nthat we use to keep track of...",
+		"Erm... nevermind.\nJust stop playing with it okay?",
 	},
 	clickFridge = {
 		function() GameController.dialogue:resetDefaults() end,
@@ -977,12 +993,28 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Better not mess with that, Frizzle\nmight find a way to exploit it.",
 	},
-	clickTv3 = {
+	clickTv31 = {
 		function()
 			GameController.dialogue:resetDefaults()
 		end,
 		"There's nothing on...",
 		function() GameController.setFlag( 'game.phase3.glitchTv', true ) end,
+	},
+	clickTv32 = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"He doesn't trust me to be good.\nBut you like me right?",
+		function()
+			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+
+			Timer.new( ONE_SECOND * 3, function()
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
+			end )
+		end,
+		"He's spying on us with this TV, you\nknow.",
+		function() GameController.dialogue:resetDefaults() end,
+		"That doesn't concern them, Frizzle!",
+		"This is why you can't be trusted!",
 	},
 	frizzleWonClickWindow = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
@@ -995,7 +1027,7 @@ GameController.dialogueLines = {
 	},
 	frizzleWonClickTv = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"I don't want to watch TV."
+		"Don't turn that thing on, please.\nHe might still be watching...",
 	},
 	narratorWonClickWindow = {
 		function() GameController.dialogue:resetDefaults() end,

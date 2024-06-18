@@ -240,7 +240,7 @@ function scene:phase1Interact()
 
 	collision = self.tv:overlappingSprites()
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
+		GameController.setFlag( 'dialogue.currentScript', 'clickTv1' )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -282,7 +282,14 @@ function scene:phase2Interact()
 
 	collision = self.tv:overlappingSprites()
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTv' )
+
+		local script = 'clickTv1'
+
+		if math.random() >= 0.3 then
+			script = 'clickTv2'
+		end
+
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -324,7 +331,10 @@ function scene:phase3Interact()
 
 	collision = self.tv:overlappingSprites()
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickTv3' )
+
+		local script = 'clickTv3' .. tostring( math.random( 2 ) )
+
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
