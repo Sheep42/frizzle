@@ -8,7 +8,7 @@ local background
 local menu
 local sequence
 local bgMusic = nil
-local version = "Version 0.1.17a"
+local version = "Version 0.1.18a"
 local font = Graphics.font.new( 'assets/fonts/pixelsplitter' )
 local versionWidth, versionHeight = Graphics.getTextSize( version, font )
 
@@ -63,25 +63,25 @@ function scene:init()
 		end
 	)
 
-	menu:addItem(
-		"dev_delete_save",
-		function()
-			GameController.deleteData()
-		end,
-		nil,
-		"Dev Delete Save Data"
-	)
-	menu:addItem(
-		"enable_debug_mode",
-		function()
-			local oldValue = Noble.Settings.get( "debug_mode" )
-			local newValue = not oldValue
-			Noble.Settings.set( "debug_mode", newValue )
-			menu:setItemDisplayName( "enable_debug_mode", "Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) ) )
-		end,
-		nil,
-		"Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) )
-	)
+	-- menu:addItem(
+	-- 	"dev_delete_save",
+	-- 	function()
+	-- 		GameController.deleteData()
+	-- 	end,
+	-- 	nil,
+	-- 	"Dev Delete Save Data"
+	-- )
+	-- menu:addItem(
+	-- 	"enable_debug_mode",
+	-- 	function()
+	-- 		local oldValue = Noble.Settings.get( "debug_mode" )
+	-- 		local newValue = not oldValue
+	-- 		Noble.Settings.set( "debug_mode", newValue )
+	-- 		menu:setItemDisplayName( "enable_debug_mode", "Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) ) )
+	-- 	end,
+	-- 	nil,
+	-- 	"Enable Debug Mode: " .. tostring( Noble.Settings.get( "debug_mode" ) )
+	-- )
 
 	local crankTick = 0
 
