@@ -175,6 +175,7 @@ function phase:enter()
 		end
 
 		if GameController.getFlag( 'game.doDataReset' ) then
+			GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			GameController.setFlag( 'game.doDataReset', false )
 			script = 'dataResetNarrator'
 

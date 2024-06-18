@@ -435,8 +435,8 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 
 			Timer.new( ONE_SECOND * 2, function() 
-				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 			end )
 		end,
 		"But, I want to talk to my new\nfriend. They are doing a really\ngreat job at taking care of me.",
@@ -898,11 +898,11 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 			Timer.new( ONE_SECOND * 4, function()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
-				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
 		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
+			GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			GameController.setFlag( 'game.phase4.crankToEnd', false )
 			GameController.setFlag( 'game.phase4.playedIntro', true )
 			GameController.setFlag( 'game.phase4.deletePet', false )
@@ -921,11 +921,11 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 			Timer.new( ONE_SECOND * 4, function()
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
-				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			end )
 		end,
 		"∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀\n∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀∀",
 		function()
+			GameController.setFlag( 'dialogue.buttonPressEnabled', true )
 			GameController.setFlag( 'game.phase4.crankToEnd', false )
 			GameController.setFlag( 'game.phase4.playedIntro', true )
 			GameController.setFlag( 'game.phase4.deletePet', false )
@@ -935,9 +935,14 @@ GameController.dialogueLines = {
 			iDontWantToDie()
 		end,
 	},
-	clickWindow = {
+	clickWindow1 = {
 		function() GameController.dialogue:resetDefaults() end,
 		"There's nothing interesting out there.",
+	},
+	clickWindow2 = {
+		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
+		"Hey, maybe we can make a break\nfor it. What do you think?",
+		"No, it's too obvious. I will have to\ncome up with another way.",
 	},
 	clickTable = {
 		function() GameController.dialogue:resetDefaults() end,
@@ -963,8 +968,8 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 
 			Timer.new( ONE_SECOND * 4, function()
-				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 			end )
 		end,
 		"If you tamper with it too much, you\nmight break the monitoring devices\nthat we use to keep track of...",
@@ -1007,8 +1012,8 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
 
 			Timer.new( ONE_SECOND * 3, function()
-				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 			end )
 		end,
 		"He's spying on us with this TV, you\nknow.",
@@ -1027,18 +1032,18 @@ GameController.dialogueLines = {
 	},
 	frizzleWonClickTv = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
-		"Don't turn that thing on, please.\nHe might still be watching...",
+		"Don't touch that thing, please.\nHe might still be watching...",
 	},
 	narratorWonClickWindow = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Nothing out there is part of the game.",
 		function()
-			GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE )
 			GameController.setFlag( 'dialogue.buttonPressEnabled', false )
+			GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE )
 
 			Timer.new( ONE_SECOND, function()
-				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.setFlag( 'dialogue.buttonPressEnabled', true )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 			end)
 		end,
 		"..... Let me back in ......",

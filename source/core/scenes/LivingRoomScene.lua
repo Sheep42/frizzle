@@ -213,7 +213,7 @@ function scene:phase1Interact()
 
 	local collision = self.window:overlappingSprites()
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
+		GameController.setFlag( 'dialogue.currentScript', 'clickWindow1' )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -255,7 +255,13 @@ function scene:phase2Interact()
 
 	local collision = self.window:overlappingSprites()
 	if #collision > 0 then
-		GameController.setFlag( 'dialogue.currentScript', 'clickWindow' )
+
+		local script = 'clickWindow1'
+		if math.random() >= 0.3 and GameController.getFlag( 'game.phase2.playedMicroGame' ) then
+			script = 'clickWindow2'
+		end
+
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -285,7 +291,7 @@ function scene:phase2Interact()
 
 		local script = 'clickTv1'
 
-		if math.random() >= 0.3 then
+		if math.random() >= 0.3 and GameController.getFlag( 'game.phase2.playedMicroGame' ) then
 			script = 'clickTv2'
 		end
 
