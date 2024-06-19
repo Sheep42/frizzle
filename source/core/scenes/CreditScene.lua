@@ -80,7 +80,7 @@ function scene:update()
 	Noble.Text.draw( "Built with Noble Engine By Noble Robot", textX, textY + 225 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "Playtesters:", textX, textY + 275 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "Chris Hickman, Ben Ehrlich (Benergize),", textX, textY + 300 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
-	Noble.Text.draw( "theswellpenguin, Brian Bahia", textX, textY + 330 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
+	Noble.Text.draw( "Ridley4Eve, theswellpenguin, Brian Bahia", textX, textY + 330 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "Ryan Szrama (roguewombat), Jon Shedd", textX, textY + 360 , Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 	Noble.Text.draw( "The End", textX, textY + 500, Noble.Text.ALIGN_CENTER, nil, self.futuraHand )
 

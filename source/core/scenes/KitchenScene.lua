@@ -41,6 +41,18 @@ function scene:init()
 	self.fridge:setGroups( Utilities.collisionGroups.interactables )
 	self.fridge:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
 
+	local fruitAnim = Noble.Animation.new( 'assets/images/kitchen/fruit' )
+	fruitAnim:addState( 'default', 1, 1, nil, nil, nil, 0 )
+	fruitAnim:addState( 'rotten', 2, 5, nil, nil, nil, 4 )
+	fruitAnim:setState( GameController.getFlag( 'game.fruitState' ) )
+
+	self.fruit = NobleSprite( fruitAnim )
+	self.fruit:setSize( 32, 32 )
+	self.fruit:setCollideRect( 0, 0, self.fruit:getSize() )
+	self.fruit:setGroups( Utilities.collisionGroups.interactables )
+	self.fruit:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
+
+
 	-- Create the game states
 	scene.phases = {
 		phase1 = GamePhase_Phase1( self ),
@@ -68,7 +80,10 @@ function scene:enter()
 	scene.super.enter( self )
 
 	if GameController.getFlag( 'game.phase' ) >= 2 then
-		self.fridge.animation:setState( 'bloody' )
+		GameController.setFlag( 'game.fridgeState', 'bloody' )
+		GameController.setFlag( 'game.fruitState', 'rotten' )
+		self.fridge.animation:setState( GameController.getFlag( 'game.fridgeState' ) )
+		self.fruit.animation:setState( GameController.getFlag( 'game.fruitState' ) )
 	end
 end
 
@@ -80,6 +95,10 @@ function scene:start()
 
 	self.fridge:add( Utilities.screenBounds().right - fridgeW - 100, Utilities.screenBounds().top + 100 )
 	self.counter:add( Utilities.screenBounds().right - (counterW / 2) + 5, Utilities.screenBounds().bottom - ( counterH / 2 ) )
+
+	local counterX, counterY = self.counter:getPosition()
+	self.fruit:add( counterX - 40, counterY + 15 )
+
 	self.arrowBtn:add( Utilities.screenBounds().left + 10, Utilities.screenBounds().bottom - 30 )
 
 end
@@ -121,6 +140,15 @@ function scene:phase1Interact()
 		return true
 	end
 
+	local collision = self.fruit:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickFruit' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
 	return false
 
 end
@@ -140,6 +168,18 @@ function scene:phase2Interact()
 		GameController.dialogue:show()
 		return true
 	end
+
+	local collision = self.fruit:overlappingSprites()
+	if #collision > 0 then
+		local script = 'clickFruit2'
+
+		GameController.setFlag( 'dialogue.currentScript', script )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
 
 	return false
 

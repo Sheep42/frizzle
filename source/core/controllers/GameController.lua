@@ -18,6 +18,7 @@ function GameController.getDefaultFlags()
 			tvToggle = false,
 			tvState = 'default',
 			fridgeState = 'default',
+			fruitState = 'default',
 			narratorWon = false,
 			frizzleWon = false,
 			hideFrizzle = false,
@@ -989,6 +990,14 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Frizzle will eat just about anything.",
 		"What do you suppose happened to\nthe last tester who asked too many\nquestions?",
+	},
+	clickFruit = {
+		function() GameController.dialogue:resetDefaults() end,
+		"It's a bowl of fresh fruits.",
+	},
+	clickFruit2 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Frizzle doesn't mind if they aren't\nsuper fresh.",
 	},
 	clickWindow3 = {
 		function() GameController.dialogue:resetDefaults() end,

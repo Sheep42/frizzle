@@ -63,14 +63,14 @@ function scene:init()
 		end
 	)
 
-	-- menu:addItem(
-	-- 	"dev_delete_save",
-	-- 	function()
-	-- 		GameController.deleteData()
-	-- 	end,
-	-- 	nil,
-	-- 	"Dev Delete Save Data"
-	-- )
+	menu:addItem(
+		"dev_delete_save",
+		function()
+			GameController.deleteData()
+		end,
+		nil,
+		"Dev Delete Save Data"
+	)
 	-- menu:addItem(
 	-- 	"enable_debug_mode",
 	-- 	function()
