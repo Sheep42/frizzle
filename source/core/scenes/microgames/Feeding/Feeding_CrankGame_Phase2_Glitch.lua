@@ -141,7 +141,7 @@ function scene:update()
 		if self.timer.value >= self.gameTime then
 			GameController.setFlag( 'dialogue.showBark', true )
 			GameController.setFlag( 'game.phase2.playedGlitchGame', true )
-			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
+			GameController.bark:setEmote( self.stat.icon, nil, nil, 'assets/sound/win-game.wav' )
 			GameController.pet.stats.hunger.value = math.clamp( GameController.pet.stats.hunger.value + math.random(3), 1, 5 )
 			Noble.transition( LivingRoomScene, 0.1, Noble.TransitionType.CROSS_DISSOLVE )
 			return

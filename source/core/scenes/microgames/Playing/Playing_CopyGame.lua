@@ -73,7 +73,7 @@ function scene:update()
 
 		if self.win then
 			GameController.setFlag( 'dialogue.showBark', true )
-			GameController.bark:setEmote( NobleSprite( self.stat.icon ), nil, nil, 'assets/sound/win-game.wav' )
+			GameController.bark:setEmote( self.stat.icon, nil, nil, 'assets/sound/win-game.wav' )
 			GameController.pet.stats.boredom.value = math.clamp( GameController.pet.stats.boredom.value + math.random(3), 1, 5 )
 		end
 

@@ -124,13 +124,13 @@ function scene:drawBackground()
 
 	scene.super.drawBackground(self)
 	background:draw( 0, 0 )
-	scene.super:drawBarkCanvas()
 
 end
 
 function scene:update()
 
 	scene.super.update( self )
+	scene.super:drawBarkCanvas()
 
 	if GameController.getFlag( 'game.tvToggle' ) then
 

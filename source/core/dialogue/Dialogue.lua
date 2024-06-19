@@ -153,7 +153,7 @@ function Dialogue:init( say, x, y, autohide, boxWidth, boxHeight, borderWidth, b
 		self._innerY = self.y + ( self.borderHeight / 2 )
 
 		self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
-		self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ), self.y + ( self.boxHeight / 2 )
+		self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ) - 4, self.y + ( self.boxHeight / 2 ) - 4
 
 	-- Set up timers
 		self:resetTimers()
@@ -227,11 +227,7 @@ function Dialogue:setPosition( x, y )
 	self._innerY = self.y + ( self.borderHeight / 2 )
 
 	self._textX, self._textY = self._innerX + 10, self._innerY + 10 -- Inner box position, plus some padding
-	self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ), self.y + ( self.boxHeight / 2 )
-
-	if self.emote ~= nil then
-		self.emote:moveTo( self._emoteX, self._emoteY )
-	end
+	self._emoteX, self._emoteY = self.x + ( self.boxWidth / 2 ) - 4, self.y + ( self.boxHeight / 2 ) - 4
 
 end
 
@@ -252,10 +248,6 @@ function Dialogue:drawCanvas()
 end
 
 function Dialogue:clearCanvas()
-
-	if self.emote ~= nil then
-		self.emote:remove()
-	end
 
 	self._canvas:clear( Graphics.kColorClear )
 	self._overlayCanvas:clear( Graphics.kColorClear )
@@ -306,11 +298,13 @@ function Dialogue:play()
 
 	elseif self.emote ~= nil then
 
+		Graphics.lockFocus( self._canvas )
+		self.emote:draw( self._emoteX, self._emoteY )
+		Graphics.unlockFocus()
+
 		if self.finished then
 			return
 		end
-
-		self.emote:add( self._emoteX, self._emoteY )
 
 		if self._emoteSound ~= nil then
 			self._emoteSound:play()
@@ -413,7 +407,7 @@ end
 
 -- Sets the current emote for this Dialogue and cleans up any internals
 --
--- @param NobleSprite emote The emote to set
+-- @param string emote The path to the emote to set
 --
 -- @param int textX Optional x position for the emote, relative to innerX
 --
@@ -422,7 +416,7 @@ end
 -- @param string soundPath Optional path to sample to play when emote is shown
 function Dialogue:setEmote( emote, emoteX, emoteY, soundPath )
 
-	self.emote = emote
+	self.emote = Graphics.image.new( emote )
 	self.text = nil
 
 	if emoteX ~= nil then

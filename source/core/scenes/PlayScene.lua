@@ -525,7 +525,7 @@ function scene:handleStatNag( games )
 			end
 
 			if statBar.playCry and bark:getState() == DialogueState.Hide then
-				bark:setEmote( NobleSprite( statBar.icon ), nil, nil, statBar.crySound )
+				bark:setEmote( statBar.icon, nil, nil, statBar.crySound )
 				statBar.playCry = false
 				bark:show()
 			end
