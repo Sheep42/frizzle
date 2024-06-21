@@ -52,6 +52,22 @@ function scene:init()
 	self.fruit:setGroups( Utilities.collisionGroups.interactables )
 	self.fruit:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
 
+	local trashAnim = Noble.Animation.new( 'assets/images/kitchen/trash' )
+	trashAnim:addState( 'default', 1, 1, nil, nil, nil, 0 )
+	trashAnim:addState( 'full', 2, 2, nil, nil, nil, 0 )
+	trashAnim:setState( GameController.getFlag( 'game.trashState' ) )
+
+	self.trash = NobleSprite( trashAnim )
+	self.trash:setSize( 32, 48 )
+	self.trash:setCollideRect( 0, 0, self.trash:getSize() )
+	self.trash:setGroups( Utilities.collisionGroups.interactables )
+	self.trash:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
+
+	self.card = NobleSprite( 'assets/images/kitchen/card' )
+
+	self.card:setCollideRect( 0, 0, self.card:getSize() )
+	self.card:setGroups( Utilities.collisionGroups.interactables )
+	self.card:setCollidesWithGroups( { Utilities.collisionGroups.cursor } )
 
 	-- Create the game states
 	scene.phases = {
@@ -97,7 +113,11 @@ function scene:start()
 	self.counter:add( Utilities.screenBounds().right - (counterW / 2) + 5, Utilities.screenBounds().bottom - ( counterH / 2 ) )
 
 	local counterX, counterY = self.counter:getPosition()
+	local fridgeX, fridgeY = self.fridge:getPosition()
+
 	self.fruit:add( counterX - 40, counterY + 15 )
+	self.card:add( counterX + 50, counterY + 25 )
+	self.trash:add( fridgeX - 60, fridgeY + 20 )
 
 	self.arrowBtn:add( Utilities.screenBounds().left + 10, Utilities.screenBounds().bottom - 30 )
 

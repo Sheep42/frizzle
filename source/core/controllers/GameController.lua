@@ -19,6 +19,7 @@ function GameController.getDefaultFlags()
 			tvState = 'default',
 			fridgeState = 'default',
 			fruitState = 'default',
+			trashState = 'default',
 			narratorWon = false,
 			frizzleWon = false,
 			hideFrizzle = false,
