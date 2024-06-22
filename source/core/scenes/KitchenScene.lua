@@ -101,6 +101,8 @@ function scene:enter()
 		self.fridge.animation:setState( GameController.getFlag( 'game.fridgeState' ) )
 		self.fruit.animation:setState( GameController.getFlag( 'game.fruitState' ) )
 	end
+
+	self.trash.animation:setState( GameController.getFlag( 'game.trashState' ) )
 end
 
 function scene:start()
@@ -116,8 +118,11 @@ function scene:start()
 	local fridgeX, fridgeY = self.fridge:getPosition()
 
 	self.fruit:add( counterX - 40, counterY + 15 )
-	self.card:add( counterX + 50, counterY + 25 )
 	self.trash:add( fridgeX - 60, fridgeY + 20 )
+
+	if GameController.getFlag( 'game.showCard' ) then	
+		self.card:add( counterX + 50, counterY + 25 )
+	end
 
 	self.arrowBtn:add( Utilities.screenBounds().left + 10, Utilities.screenBounds().bottom - 30 )
 
@@ -136,6 +141,11 @@ function scene:update()
 
 	scene.super.update( self )
 	scene.super:drawBarkCanvas()
+
+	if self.card:isVisible() and GameController.getFlag( 'game.showCard' ) == false then
+		self.card:remove()
+		self.trash.animation:setState( GameController.getFlag( 'game.trashState' ) )
+	end
 
 end
 
@@ -160,9 +170,33 @@ function scene:phase1Interact()
 		return true
 	end
 
-	local collision = self.fruit:overlappingSprites()
+	collision = self.fruit:overlappingSprites()
 	if #collision > 0 then
 		GameController.setFlag( 'dialogue.currentScript', 'clickFruit' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.card:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickCard' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.trash:overlappingSprites()
+	if #collision > 0 then
+		local script = 'clickTrash' .. tostring( math.random( 1, 4 ) )
+
+		if GameController.getFlag( 'game.showCard' ) == false and GameController.getFlag( 'dialogue.playedTrashFull' ) == false then
+			script = 'clickTrashFull'
+		end
+
+		GameController.setFlag( 'dialogue.currentScript', script )
 		GameController.setFlag( 'dialogue.currentLine', 1 )
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
@@ -177,9 +211,13 @@ function scene:phase2Interact()
 
 	local collision = self.fridge:overlappingSprites()
 	if #collision > 0 then
-		local script = 'clickFridge2'
-		if GameController.getFlag( 'game.phase2.fridgeClicked' ) then
-			script = 'clickFridge2Persist'
+
+		local script = 'clickFridge'
+		if self.fridge.animation.currentName == 'bloody' then
+			script = 'clickFridge2'
+			if GameController.getFlag( 'game.phase2.fridgeClicked' ) then
+				script = 'clickFridge2Persist' .. math.random( 1, 2 )
+			end
 		end
 
 		GameController.setFlag( 'dialogue.currentScript', script )
@@ -189,7 +227,7 @@ function scene:phase2Interact()
 		return true
 	end
 
-	local collision = self.fruit:overlappingSprites()
+	collision = self.fruit:overlappingSprites()
 	if #collision > 0 then
 		local script = 'clickFruit2'
 
@@ -200,6 +238,29 @@ function scene:phase2Interact()
 		return true
 	end
 
+	collision = self.card:overlappingSprites()
+	if #collision > 0 then
+		GameController.setFlag( 'dialogue.currentScript', 'clickCard' )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
+
+	collision = self.trash:overlappingSprites()
+	if #collision > 0 then
+		local script = 'clickTrash' .. tostring( math.random( 1, 4 ) )
+
+		if GameController.getFlag( 'game.showCard' ) == false and GameController.getFlag( 'dialogue.playedTrashFull' ) == false then
+			script = 'clickTrashFull'
+		end
+
+		GameController.setFlag( 'dialogue.currentScript', script )
+		GameController.setFlag( 'dialogue.currentLine', 1 )
+		GameController.dialogue:setText( GameController.advanceDialogueLine() )
+		GameController.dialogue:show()
+		return true
+	end
 
 	return false
 

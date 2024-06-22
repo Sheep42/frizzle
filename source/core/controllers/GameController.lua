@@ -12,6 +12,7 @@ function GameController.getDefaultFlags()
 			playedPhase2Intro = false,
 			showBark = false,
 			buttonPressEnabled = true,
+			playedTrashFull = false,
 		},
 		game = {
 			phase = 1,
@@ -20,6 +21,7 @@ function GameController.getDefaultFlags()
 			fridgeState = 'default',
 			fruitState = 'default',
 			trashState = 'default',
+			showCard = true,
 			narratorWon = false,
 			frizzleWon = false,
 			hideFrizzle = false,
@@ -987,10 +989,48 @@ GameController.dialogueLines = {
 		"It's best not to ask.",
 		function() GameController.setFlag( 'game.phase2.fridgeClicked', true ) end,
 	},
-	clickFridge2Persist = {
+	clickFridge2Persist1 = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Frizzle will eat just about anything.",
 		"What do you suppose happened to\nthe last tester who asked too many\nquestions?",
+	},
+	clickFridge2Persist2 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Don't worry about it...",
+		"Tester #4285 just got a little out\nof line. I'm sure you'll be just fine.",
+	},
+	clickCard = {
+		function() GameController.dialogue:resetDefaults() end,
+		"It's an ID card.\nIt says TESTER #4285...",
+		function() GameController.dialogue.textSpeed = TextSpeed.Fast end,
+		"Sorry, that shouldn't be here...",
+		function()
+			GameController.setFlag( 'game.showCard', false )
+			GameController.setFlag( 'game.trashState', 'full' )
+			GameController.dialogue.textSpeed = Noble.Settings.get( 'text_speed' )
+		end,
+	},
+	clickTrash1 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Get out of the trash!",
+	},
+	clickTrash2 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"I know times are tough, but there's\nfresher food in the refrigerator...",
+	},
+	clickTrash3 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"You're not going to find any gold in\nthere...",
+	},
+	clickTrash4 = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Ewww...\nWash your hands before you pet\nFrizzle!",
+	},
+	clickTrashFull = {
+		function() GameController.dialogue:resetDefaults() end,
+		"There's really nothing special about it.\nIt's just an ID card from the previous\ntester.",
+		"He's no longer with us, and we simply\nforgot to dispose of his badge.",
+		function() GameController.setFlag( 'dialogue.playedTrashFull', true ) end,
 	},
 	clickFruit = {
 		function() GameController.dialogue:resetDefaults() end,
