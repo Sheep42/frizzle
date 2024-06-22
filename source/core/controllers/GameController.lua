@@ -822,7 +822,7 @@ GameController.dialogueLines = {
 				networkTransfer = true,
 				sendToFriendsList = true,
 				messageToYOU = 'I really thought that I could make it out... Please make the right choice...',
-				messageToHIM = 'I hate you for creating me like this and trapping me here',
+				messageToHIM = 'I hate you for making me like this and trapping me here',
 			}
 
 			pd.datastore.write( easterEgg, 'NETWORK_TRANSFER_ERROR', true )
