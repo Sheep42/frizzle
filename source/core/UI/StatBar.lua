@@ -50,7 +50,8 @@ function StatBar:addSprites()
 
 	for i = 0, statVal - 1 do
 		local sprite = NobleSprite( self.icon )
-		sprite:add( self.position.x + (10 * i), self.position.y )
+		local iconW, iconH = sprite:getSize()
+		sprite:add( self.position.x + ((iconW + 2) * i), self.position.y )
 		table.insert( self.sprites, sprite )
 	end
 

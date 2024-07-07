@@ -95,16 +95,16 @@ function scene:init()
 	-- Create UI Buttons
 	self.petBtn = Button( "assets/images/UI/button-pet" )
 	self.feedBtn = Button( "assets/images/UI/button-feed" )
-	-- self.playBtn = Button( "assets/images/UI/button-play" )
-	-- self.groomBtn = Button( "assets/images/UI/button-groom" )
+	self.playBtn = Button( "assets/images/UI/button-play" )
 	self.sleepBtn = Button( "assets/images/UI/button-sleep" )
+	-- self.groomBtn = Button( "assets/images/UI/button-groom" )
 
 	-- Add UI Buttons to table
 	uiButtons[1] = self.petBtn
 	uiButtons[2] = self.feedBtn
-	-- uiButtons[3] = self.playBtn
+	uiButtons[3] = self.playBtn
+	uiButtons[4] = self.sleepBtn
 	-- uiButtons[4] = self.groomBtn
-	uiButtons[3] = self.sleepBtn
 
 	-- bug: statBars are recreated every time PlayScene is created which blows away the nag state
 	-- Add StatBars to table
@@ -112,7 +112,7 @@ function scene:init()
 		friendship = StatBar( pet.stats.friendship ),
 		hunger =  StatBar( pet.stats.hunger ),
 		tired = StatBar( pet.stats.tired ),
-		-- boredom = StatBar( "assets/images/UI/heart", "boredom" ),
+		boredom = StatBar( pet.stats.boredom ),
 		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
 
@@ -240,11 +240,11 @@ function scene:setupStatBars()
 	end
 
 	-- TOOD: These should not be hardcoded like this
-	self.statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
-	self.statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 10 )
-	-- self.statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
-	-- self.statBars.groom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
-	self.statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 20 )
+	self.statBars.friendship:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top )
+	self.statBars.hunger:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 15 )
+	self.statBars.boredom:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 30 )
+	-- self.statBars.groom:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 30 )
+	self.statBars.tired:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 45 )
 end
 
 function scene:checkABtnPress()
@@ -427,6 +427,13 @@ function scene:buildDebugMenu()
 		"Sleep: Say It - Phase 3",
 		function()
 			Noble.transition( Sleeping_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Play: Simon Says",
+		function()
+			Noble.transition( Playing_CopyGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 

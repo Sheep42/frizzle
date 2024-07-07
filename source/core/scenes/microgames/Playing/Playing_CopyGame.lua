@@ -10,15 +10,16 @@ function scene:init()
 
 	self.background = nil
 	self.bgMusic = nil
+	self.gameTime = 15999
 
 	self.introText = "SIMON SAYS!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
-	self.dialogue = Dialogue( 
+	self.dialogue = Dialogue(
 		self.introText,
 		(Utilities.screenSize().width / 2) - ((textW + 50) / 2),
 		(Utilities.screenSize().height / 2) - ((textH + 15) / 2),
-		true, 
-		textW + 50, 
+		true,
+		textW + 50,
 		textH + 15,
 		4,
 		4,
@@ -29,35 +30,81 @@ function scene:init()
 
 	self.dialogue.onHideCallback = function ()
 		self.startTimer = true
+		self.moveActions = true
 	end
 
-	self.minMovement = 0.1
-	self.accelerometerPos = { x = 0, y = 0, z = 0 }
-	self.accelerometerLastPos = { x = 0, y = 0, z = 0 }
 	self.happinessVal = 0
-	self.motionTimer = nil
 	self.category = MicrogameType.playing
 	self.stat = GameController.pet.stats.boredom
-
-	scene.inputHandler = {
-		BButtonDown = function()
-			Noble.transition( LivingRoomScene )
-		end
+	self.actions = {
+		up = {
+			icon = 'assets/images/UI/up-btn-lg',
+			action = 'up',
+		},
+		down = {
+			icon = 'assets/images/UI/down-btn-lg',
+			action = 'down',
+		},
+		left = {
+			icon = 'assets/images/UI/left-btn-lg',
+			action = 'left',
+		},
+		right = {
+			icon = 'assets/images/UI/right-btn-lg',
+			action = 'right',
+		},
+		aBtn = {
+			icon = 'assets/images/UI/a-btn-lg',
+			action = 'aBtn',
+		},
+		bBtn = {
+			icon = 'assets/images/UI/b-btn-lg',
+			action = 'bBtn',
+		},
 	}
+
+	self.actionBox = NobleSprite( 'assets/images/UI/btn-bounds' )
+
+	self.playActions = {
+		{ icon = NobleSprite( self.actions.up.icon ) },
+		{ icon = NobleSprite( self.actions.left.icon ) },
+		{ icon = NobleSprite( self.actions.right.icon ) },
+		{ icon = NobleSprite( self.actions.down.icon ) },
+		{ icon = NobleSprite( self.actions.aBtn.icon ) },
+		{ icon = NobleSprite( self.actions.bBtn.icon ) },
+		{ icon = NobleSprite( self.actions.up.icon ) },
+	}
+
+	self.currentAction = '';
+	self.moveActions = false
+
+	scene.inputHandler = {}
 
 end
 
 function scene:enter()
 
 	scene.super.enter( self )
-	pd.startAccelerometer()
-	self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z = pd.readAccelerometer()
 
 end
 
 function scene:start()
 
 	scene.super.start( self )
+
+	local actionBoxW, actionBoxH = self.actionBox:getSize()
+	local actionBoxCollideW, actionBoxCollideH = actionBoxW * 0.75, actionBoxH * 0.75
+	local actionXPadding, actionYPadding = 20, 15
+
+	self.actionBox:setCollideRect( (actionBoxW / 2) - (actionBoxCollideW / 2), (actionBoxH / 2) - (actionBoxCollideH / 2), actionBoxCollideW, actionBoxCollideH )
+	self.actionBox:add( Utilities.screenSize().width / 2, Utilities.screenBounds().bottom - 45 )
+
+	for i, action in ipairs( self.playActions ) do
+		local iconW, iconH = action.icon:getSize()
+		local iconCollideW, iconCollideH = iconW / 2, iconH / 2
+		action.icon:setCollideRect( (iconW / 2) - (iconCollideW / 2), (iconH / 2) - (iconCollideH / 2), iconCollideW, iconCollideH )
+		action.icon:add( 300 + ((iconW + actionXPadding) * i), Utilities.screenBounds().bottom - iconH - actionYPadding )
+	end
 
 end
 
@@ -91,80 +138,19 @@ function scene:update()
 		return
 	end
 
-	self:readAccelerometer()
-
-	self:renderDebugInfo()
-	self:handleShake()
-
-end
-
-function scene:readAccelerometer() 
-
-	if pd.accelerometerIsRunning() == false then
-		return
-	end
-
-	self.accelerometerLastPos = {
-		x = self.accelerometerPos.x,
-		y = self.accelerometerPos.y,
-		z = self.accelerometerPos.z,
-	}
-
-	self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z = pd.readAccelerometer()
-	
-end
-
-function scene:renderDebugInfo()
-
-	if Noble.Settings.get( "debug_mode" ) ~= true then
-		return
-	end
-
-	-- Draw debug coords
-	local x, y, z = self:getAccelerometerPos()
-	local lastX, lastY, lastZ = self:getAccelerometerLastPos()
-	local dx, dy, dz = ( x - lastX ), ( y - lastY ), ( z - lastZ )
-
-	local pos = string.format("x: %f, y: %f, z: %f", x, y, z)
-	local deltas = string.format("dx: %f, dy: %f, dz: %f", dx, dy, dz)
-
-	local posW, posH = Graphics.getTextSize(pos)
-	local deltasW, deltasH = Graphics.getTextSize(deltas)
-
-	Noble.Text.draw(pos, (Utilities.screenSize().width / 2) - (posW / 2), Utilities.screenBounds().top + 20)
-	Noble.Text.draw(deltas, (Utilities.screenSize().width / 2) - (deltasW / 2), Utilities.screenBounds().top + 40)
-
-end
-
-function scene:handleShake() 
-
-	local x, y, z = self:getAccelerometerPos()
-	local lastX, lastY, lastZ = self:getAccelerometerLastPos()
-
-	local dx, dy, dz = ( x - lastX ), ( y - lastY ), ( z - lastZ )
-
-	if dz >= self.minMovement or dz <= -self.minMovement then
-		self.happinessVal += 0.01
-		self.motionTimer = nil
-	else
-		self.motionTimer = Timer.new( 500, function() 
-			print( "stopped" )
-		end)
+	if self.moveActions then
+		for _, action in ipairs( self.playActions ) do
+			action.icon:moveBy( -2, 0 )
+		end
 	end
 
 end
 
-function scene:getAccelerometerPos() 
-	return self.accelerometerPos.x, self.accelerometerPos.y, self.accelerometerPos.z
-end
-
-function scene:getAccelerometerLastPos() 
-	return self.accelerometerLastPos.x, self.accelerometerLastPos.y, self.accelerometerLastPos.z
+function scene:moveActions()
 end
 
 function scene:exit()
 
-	pd.stopAccelerometer()
 	scene.super.exit( self )
 
 end

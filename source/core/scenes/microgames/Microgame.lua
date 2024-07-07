@@ -176,7 +176,7 @@ function scene:drawTimer()
 
 	-- Graphics.fillRect( 100, 100, 200*self.timer.value, 20 )
 
-	Noble.Text.draw( 
+	Noble.Text.draw(
 		self.timerLabel,
 		Utilities.screenBounds().left,
 		Utilities.screenBounds().bottom - 10,
@@ -186,7 +186,7 @@ function scene:drawTimer()
 	)
 
 	Noble.Text.draw(
-		math.floor( 5.999 - (self.timer.value / 1000)  ),
+		math.floor( ( self.gameTime / 1000 ) - (self.timer.value / 1000)  ),
 		Utilities.screenBounds().left + labelWidth + 20,
 		Utilities.screenBounds().bottom - 10,
 		Noble.Text.ALIGN_LEFT,

@@ -116,15 +116,16 @@ function phase:enter()
 		self.owner:handleBtnPress( MicrogameType.feeding, self.games )
 	end)
 
-	-- self.owner.playBtn:setPressedCallback( function ()
-	-- end)
-
-	-- self.owner.groomBtn:setPressedCallback( function ()
-	-- end)
+	self.owner.playBtn:setPressedCallback( function ()
+		self.owner:handleBtnPress( MicrogameType.playing, self.games )
+	end)
 
 	self.owner.sleepBtn:setPressedCallback( function ()
 		self.owner:handleBtnPress( MicrogameType.sleeping, self.games )
 	end)
+
+	-- self.owner.groomBtn:setPressedCallback( function ()
+	-- end)
 
 end
 

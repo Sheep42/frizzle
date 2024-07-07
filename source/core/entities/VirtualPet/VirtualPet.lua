@@ -40,11 +40,11 @@ function pet:init()
 		},
 		boredom = {
 			key = 'boredom',
-			icon = 'assets/images/UI/heart',
+			icon = 'assets/images/UI/play',
 			gameType = MicrogameType.playing,
 			crySound = 'assets/sound/cry.wav',
 			value = 5,
-			hidden = true,
+			hidden = false,
 		},
 		groom = {
 			key = 'groom',
@@ -146,8 +146,6 @@ function pet:tickStats()
 
 	if self._statTimer.value >= self._statTimer.duration then
 
-		self._statTimer = nil
-
 		for key, stat in pairs( self.stats ) do
 
 			-- Don't touch hidden stats
@@ -166,6 +164,7 @@ function pet:tickStats()
 			end
 
 			self.stats[key].value -= 1
+			self._statTimer = nil
 
 			::continue::
 
