@@ -30,7 +30,6 @@ function scene:init()
 
 	self.dialogue.onHideCallback = function ()
 		self.startTimer = true
-		self.moveActions = true
 	end
 
 	self.happinessVal = 0
@@ -66,17 +65,37 @@ function scene:init()
 	self.actionBox = NobleSprite( 'assets/images/UI/btn-bounds' )
 
 	self.playActions = {
-		{ icon = NobleSprite( self.actions.up.icon ) },
-		{ icon = NobleSprite( self.actions.left.icon ) },
-		{ icon = NobleSprite( self.actions.right.icon ) },
-		{ icon = NobleSprite( self.actions.down.icon ) },
-		{ icon = NobleSprite( self.actions.aBtn.icon ) },
-		{ icon = NobleSprite( self.actions.bBtn.icon ) },
-		{ icon = NobleSprite( self.actions.up.icon ) },
+		{
+			icon = NobleSprite( self.actions.up.icon ),
+			action = self.actions.up.action,
+		},
+		{
+			icon = NobleSprite( self.actions.left.icon ),
+			action = self.actions.left.action,
+		},
+		{
+			icon = NobleSprite( self.actions.right.icon ),
+			action = self.actions.right.action,
+		},
+		{
+			icon = NobleSprite( self.actions.down.icon ),
+			action = self.actions.down.action,
+		},
+		{
+			icon = NobleSprite( self.actions.aBtn.icon ),
+			action = self.actions.aBtn.action,
+		},
+		{
+			icon = NobleSprite( self.actions.bBtn.icon ),
+			action = self.actions.bBtn.action,
+		},
+		{
+			icon = NobleSprite( self.actions.up.icon ),
+			action = self.actions.up.action,
+		},
 	}
 
-	self.currentAction = '';
-	self.moveActions = false
+	self.currentAction = self.playActions[1].action;
 
 	scene.inputHandler = {}
 
@@ -138,15 +157,23 @@ function scene:update()
 		return
 	end
 
-	if self.moveActions then
-		for _, action in ipairs( self.playActions ) do
-			action.icon:moveBy( -2, 0 )
-		end
-	end
+	self:checkActions()
+	self:moveActions()
 
 end
 
+function scene:checkActions()
+	for _, action in ipairs( self.playActions ) do
+		if #action.icon:overlappingSprites() > 0 then
+			self.currentAction = action.action
+		end
+	end
+end
+
 function scene:moveActions()
+	for _, action in ipairs( self.playActions ) do
+		action.icon:moveBy( -2, 0 )
+	end
 end
 
 function scene:exit()
