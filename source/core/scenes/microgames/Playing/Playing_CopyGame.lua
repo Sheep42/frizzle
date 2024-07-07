@@ -9,7 +9,6 @@ function scene:init()
 	scene.super.init( self )
 
 	self.background = nil
-	self.bgMusic = nil
 	self.gameTime = 15999
 
 	self.introText = "SIMON SAYS!"
@@ -95,9 +94,59 @@ function scene:init()
 		},
 	}
 
-	self.currentAction = self.playActions[1].action;
+	self.currentAction = '';
+	self.currentActionIdx = 0;
 
-	scene.inputHandler = {}
+	scene.inputHandler = {
+		upButtonDown = function()
+			if self.currentAction ~= self.actions.up.action then
+				self:handleActionFail()
+				return
+			end
+
+			self:handleActionSuccess()
+		end,
+		downButtonDown = function()
+			if self.currentAction ~= self.actions.down.action then
+				self:handleActionFail()
+				return
+			end
+
+			self:handleActionSuccess()
+		end,
+		leftButtonDown = function()
+			if self.currentAction ~= self.actions.left.action then
+				self:handleActionFail()
+				return
+			end
+
+			self:handleActionSuccess()
+		end,
+		rightButtonDown = function()
+			if self.currentAction ~= self.actions.right.action then
+				self:handleActionFail()
+				return
+			end
+
+			self:handleActionSuccess()
+		end,
+		AButtonDown = function()
+			if self.currentAction ~= self.actions.aBtn.action then
+				self:handleActionFail()
+				return
+			end
+
+			self:handleActionSuccess()
+		end,
+		BButtonDown = function()
+			if self.currentAction ~= self.actions.bBtn.action then
+				self:handleActionFail()
+				return
+			end
+
+			self:handleActionSuccess()
+		end,
+	}
 
 end
 
@@ -163,16 +212,49 @@ function scene:update()
 end
 
 function scene:checkActions()
-	for _, action in ipairs( self.playActions ) do
+	for i, action in ipairs( self.playActions ) do
 		if #action.icon:overlappingSprites() > 0 then
 			self.currentAction = action.action
+			self.currentActionIdx = i
+			return
 		end
+	end
+
+	if self.currentAction ~= 'fail' then
+		self.currentAction = ''
 	end
 end
 
 function scene:moveActions()
 	for _, action in ipairs( self.playActions ) do
 		action.icon:moveBy( -2, 0 )
+	end
+end
+
+function scene:handleActionSuccess()
+	self.playActions[self.currentActionIdx].icon:clearCollideRect()
+	self.currentAction = ''
+
+	if self.happinessVal < 1.0 then
+		self.happinessVal += 0.1
+	end
+end
+
+function scene:handleActionFail()
+	print( self.currentAction )
+	if self.currentActionIdx + 1 > #self.playActions or self.currentAction == 'fail' then
+		return
+	end
+
+	local notAllowedSample = Sound.sampleplayer.new( 'assets/sound/not-allowed.wav' )
+	notAllowedSample:setVolume( 0.10 )
+	notAllowedSample:play()
+
+	self.playActions[self.currentActionIdx + 1].icon:clearCollideRect()
+	self.currentAction = 'fail'
+
+	if self.happinessVal > 0 then
+		self.happinessVal -= 0.1
 	end
 end
 
