@@ -16,7 +16,9 @@ function phase:init( scene )
 		petting = {
 			Petting_CrankGame_Phase3,
 		},
-		playing = {},
+		playing = {
+			Playing_CopyGame,
+		},
 		grooming = {},
 		sleeping = {
 			Sleeping_Phase3,
@@ -113,6 +115,10 @@ function phase:enter()
 
 	self.owner.feedBtn:setPressedCallback( function()
 		self.owner:handleBtnPress( MicrogameType.feeding, self.games )
+	end)
+
+	self.owner.playBtn:setPressedCallback( function ()
+		self.owner:handleBtnPress( MicrogameType.playing, self.games )
 	end)
 
 	self.owner.sleepBtn:setPressedCallback( function()

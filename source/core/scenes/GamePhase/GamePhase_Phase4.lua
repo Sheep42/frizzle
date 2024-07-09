@@ -14,7 +14,8 @@ function phase:init( scene )
 		},
 		petting = {
 		},
-		playing = {},
+		playing = {
+		},
 		grooming = {},
 		sleeping = {
 		},
@@ -154,6 +155,9 @@ function phase:enter()
 	end)
 
 	self.owner.feedBtn:setPressedCallback( function()
+	end)
+
+	self.owner.playBtn:setPressedCallback( function ()
 	end)
 
 	if not GameController.getFlag( 'game.phase3.resetTriggered' ) then

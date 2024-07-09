@@ -17,7 +17,9 @@ function phase:init( scene )
 			Petting_CrankGame,
 			Petting_ShakeGame,
 		},
-		playing = {},
+		playing = {
+			Playing_CopyGame,
+		},
 		grooming = {},
 		sleeping = {
 			Sleeping_MicGame,
