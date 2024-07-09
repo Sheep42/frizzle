@@ -73,3 +73,17 @@ end
 function Utilities.distance( x1, y1, x2, y2 )
     return math.sqrt((x2 - x1)^2 + (y2 - y1)^2)
 end
+
+
+-- Pick a random value from a table with keys
+function Utilities.randomElements( tb, count )
+	local keys = {}
+	local result = {}
+	for k in pairs(tb) do table.insert(keys, k) end
+
+	while #result < count do
+		table.insert( result, tb[keys[math.random(#keys)]] )
+	end
+
+	return result
+end

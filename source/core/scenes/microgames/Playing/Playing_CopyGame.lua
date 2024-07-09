@@ -63,36 +63,15 @@ function scene:init()
 
 	self.actionBox = NobleSprite( 'assets/images/UI/btn-bounds' )
 
-	self.playActions = {
-		{
-			icon = NobleSprite( self.actions.up.icon ),
-			action = self.actions.up.action,
-		},
-		{
-			icon = NobleSprite( self.actions.left.icon ),
-			action = self.actions.left.action,
-		},
-		{
-			icon = NobleSprite( self.actions.right.icon ),
-			action = self.actions.right.action,
-		},
-		{
-			icon = NobleSprite( self.actions.down.icon ),
-			action = self.actions.down.action,
-		},
-		{
-			icon = NobleSprite( self.actions.aBtn.icon ),
-			action = self.actions.aBtn.action,
-		},
-		{
-			icon = NobleSprite( self.actions.bBtn.icon ),
-			action = self.actions.bBtn.action,
-		},
-		{
-			icon = NobleSprite( self.actions.up.icon ),
-			action = self.actions.up.action,
-		},
-	}
+	local randomActions = Utilities.randomElements( self.actions, math.random( 10, 15 ) )
+	self.playActions = {}
+
+	for _, action in pairs( randomActions ) do
+		table.insert( self.playActions, {
+			icon = NobleSprite( action.icon ),
+			action = action.action,
+		} )
+	end
 
 	self.currentAction = '';
 	self.currentActionIdx = 0;
@@ -241,7 +220,6 @@ function scene:handleActionSuccess()
 end
 
 function scene:handleActionFail()
-	print( self.currentAction )
 	if self.currentActionIdx + 1 > #self.playActions or self.currentAction == 'fail' then
 		return
 	end
