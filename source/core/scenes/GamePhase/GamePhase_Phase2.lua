@@ -27,6 +27,8 @@ function phase:init( scene )
 		},
 		playing = {
 			Playing_CopyGame,
+			Playing_CopyGame_Phase2,
+			Playing_CopyGame_Phase2,
 		},
 		grooming = {},
 		sleeping = {
