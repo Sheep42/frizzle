@@ -63,7 +63,7 @@ function scene:init()
 
 	self.actionBox = NobleSprite( 'assets/images/UI/btn-bounds' )
 
-	local randomActions = Utilities.randomElements( self.actions, math.random( 10, 15 ) )
+	local randomActions = Utilities.randomElements( self.actions, math.random( 12, 15 ) )
 	self.playActions = {}
 
 	for _, action in pairs( randomActions ) do
@@ -76,8 +76,28 @@ function scene:init()
 	self.currentAction = '';
 	self.currentActionIdx = 0;
 
+	local animation = Noble.Animation.new( 'assets/images/pet-dance' )
+	local animFinish = function()
+		Timer.new( ONE_SECOND * 0.25, function() self.pet.animation:setState( 'idle' ) end )
+	end
+
+	animation:addState( 'idle', 1, 1, nil, false, nil, 0 )
+	animation:addState( 'down', 2, 2, nil, false, animFinish, 0 )
+	animation:addState( 'up', 3, 3, nil, false, animFinish, 0 )
+	animation:addState( 'left', 4, 4, nil, false, animFinish, 0 )
+	animation:addState( 'right', 5, 5, nil, false, animFinish, 0 )
+
+	animation:setState( 'idle' )
+
+	self.pet = NobleSprite( animation )
+	self.pet:setSize( 64, 64 )
+
 	scene.inputHandler = {
 		upButtonDown = function()
+			if self.dialogue:getState() == DialogueState.Show then
+				return
+			end
+
 			if self.currentAction ~= self.actions.up.action then
 				self:handleActionFail()
 				return
@@ -86,6 +106,10 @@ function scene:init()
 			self:handleActionSuccess()
 		end,
 		downButtonDown = function()
+			if self.dialogue:getState() == DialogueState.Show then
+				return
+			end
+
 			if self.currentAction ~= self.actions.down.action then
 				self:handleActionFail()
 				return
@@ -94,6 +118,10 @@ function scene:init()
 			self:handleActionSuccess()
 		end,
 		leftButtonDown = function()
+			if self.dialogue:getState() == DialogueState.Show then
+				return
+			end
+
 			if self.currentAction ~= self.actions.left.action then
 				self:handleActionFail()
 				return
@@ -102,6 +130,10 @@ function scene:init()
 			self:handleActionSuccess()
 		end,
 		rightButtonDown = function()
+			if self.dialogue:getState() == DialogueState.Show then
+				return
+			end
+
 			if self.currentAction ~= self.actions.right.action then
 				self:handleActionFail()
 				return
@@ -110,6 +142,12 @@ function scene:init()
 			self:handleActionSuccess()
 		end,
 		AButtonDown = function()
+			scene.super.inputHandler.AButtonDown()
+
+			if self.dialogue:getState() == DialogueState.Show then
+				return
+			end
+
 			if self.currentAction ~= self.actions.aBtn.action then
 				self:handleActionFail()
 				return
@@ -118,6 +156,10 @@ function scene:init()
 			self:handleActionSuccess()
 		end,
 		BButtonDown = function()
+			if self.dialogue:getState() == DialogueState.Show then
+				return
+			end
+
 			if self.currentAction ~= self.actions.bBtn.action then
 				self:handleActionFail()
 				return
@@ -143,6 +185,7 @@ function scene:start()
 	local actionBoxCollideW, actionBoxCollideH = actionBoxW * 0.75, actionBoxH * 0.75
 	local actionXPadding, actionYPadding = 20, 15
 
+	self.pet:add( Utilities.screenSize().width / 2, Utilities.screenBounds().top + 80 )
 	self.actionBox:setCollideRect( (actionBoxW / 2) - (actionBoxCollideW / 2), (actionBoxH / 2) - (actionBoxCollideH / 2), actionBoxCollideW, actionBoxCollideH )
 	self.actionBox:add( Utilities.screenSize().width / 2, Utilities.screenBounds().bottom - 45 )
 
@@ -211,6 +254,13 @@ function scene:moveActions()
 end
 
 function scene:handleActionSuccess()
+	if self.currentAction ~= 'aBtn' and self.currentAction ~= 'bBtn' then
+		self.pet.animation:setState( self.currentAction )
+	else
+		local actionList = { 'up', 'down', 'left', 'right' }
+		self.pet.animation:setState( actionList[math.random( #actionList )] )
+	end
+
 	self.playActions[self.currentActionIdx].icon:clearCollideRect()
 	self.currentAction = ''
 
