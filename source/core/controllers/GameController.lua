@@ -770,7 +770,7 @@ GameController.dialogueLines = {
 		function()
 			GameController.setFlag( 'game.phase3.finished.playing', true )
 			GameController.setFlag( 'game.phase3.disableBtn.playing', true )
-			GameController.pet.stats.hunger.value = 0
+			GameController.pet.stats.boredom.value = 0
 			GameController.setFlag( 'statBars.boredom.disabled', true )
 			GameController.dialogue:resetDefaults()
 		end,
