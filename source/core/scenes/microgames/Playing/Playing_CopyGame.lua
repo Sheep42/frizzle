@@ -142,7 +142,11 @@ function scene:init()
 			self:handleActionSuccess()
 		end,
 		AButtonDown = function()
-			scene.super.inputHandler.AButtonDown()
+
+			if GameController.dialogue:getState() == DialogueState.Show then
+				scene.super.inputHandler.AButtonDown()
+				return
+			end
 
 			if self.dialogue:getState() == DialogueState.Show then
 				return
