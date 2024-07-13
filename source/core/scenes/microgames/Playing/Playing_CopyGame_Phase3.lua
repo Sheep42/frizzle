@@ -1,6 +1,6 @@
-Playing_CopyGame_Phase2 = {}
-class( "Playing_CopyGame_Phase2" ).extends( Microgame )
-local scene = Playing_CopyGame_Phase2
+Playing_CopyGame_Phase3 = {}
+class( "Playing_CopyGame_Phase3" ).extends( Microgame )
+local scene = Playing_CopyGame_Phase3
 
 scene.baseColor = Graphics.kColorBlack
 
@@ -11,6 +11,7 @@ function scene:init()
 	self.background = nil
 	self.gameTime = 15999
 	self.glitchPet = false
+	self.finished = false
 
 	self.introText = "SIMON SAYS!"
 	local textW, textH = Graphics.getTextSize( self.introText, self.introFont )
@@ -82,92 +83,10 @@ function scene:init()
 		Timer.new( ONE_SECOND * 0.25, function() self.pet.animation:setState( 'idle' ) end )
 	end
 
-	self.animation:addState( 'idle', 1, 1, nil, false, nil, 0 )
-	self.animation:addState( 'down', 2, 2, nil, false, animFinish, 0 )
-	self.animation:addState( 'up', 3, 3, nil, false, animFinish, 0 )
-	self.animation:addState( 'left', 4, 4, nil, false, animFinish, 0 )
-	self.animation:addState( 'right', 5, 5, nil, false, animFinish, 0 )
-
-	self.animation:setState( 'idle' )
-
-	self.pet = NobleSprite( self.animation )
-	self.pet:setSize( 64, 64 )
+	self.pet = NobleSprite( 'assets/images/pet-bored' )
 
 	scene.inputHandler = {
-		upButtonDown = function()
-			if self.dialogue:getState() == DialogueState.Show then
-				return
-			end
-
-			if self.currentAction ~= self.actions.up.action then
-				self:handleActionFail()
-				return
-			end
-
-			self:handleActionSuccess()
-		end,
-		downButtonDown = function()
-			if self.dialogue:getState() == DialogueState.Show then
-				return
-			end
-
-			if self.currentAction ~= self.actions.down.action then
-				self:handleActionFail()
-				return
-			end
-
-			self:handleActionSuccess()
-		end,
-		leftButtonDown = function()
-			if self.dialogue:getState() == DialogueState.Show then
-				return
-			end
-
-			if self.currentAction ~= self.actions.left.action then
-				self:handleActionFail()
-				return
-			end
-
-			self:handleActionSuccess()
-		end,
-		rightButtonDown = function()
-			if self.dialogue:getState() == DialogueState.Show then
-				return
-			end
-
-			if self.currentAction ~= self.actions.right.action then
-				self:handleActionFail()
-				return
-			end
-
-			self:handleActionSuccess()
-		end,
-		AButtonDown = function()
-			scene.super.inputHandler.AButtonDown()
-
-			if self.dialogue:getState() == DialogueState.Show then
-				return
-			end
-
-			if self.currentAction ~= self.actions.aBtn.action then
-				self:handleActionFail()
-				return
-			end
-
-			self:handleActionSuccess()
-		end,
-		BButtonDown = function()
-			if self.dialogue:getState() == DialogueState.Show then
-				return
-			end
-
-			if self.currentAction ~= self.actions.bBtn.action then
-				self:handleActionFail()
-				return
-			end
-
-			self:handleActionSuccess()
-		end,
+		AButtonDown = scene.super.inputHandler.AButtonDown,
 	}
 
 end
@@ -207,17 +126,27 @@ end
 
 function scene:update()
 
-	if self.timer.value >= self.gameTime or self.win then
-
-		if self.win then
-			GameController.setFlag( 'dialogue.showBark', true )
-			GameController.bark:setEmote( self.stat.icon, nil, nil, 'assets/sound/win-game.wav' )
-			GameController.pet.stats.boredom.value = math.clamp( GameController.pet.stats.boredom.value + math.random(3), 1, 5 )
-		end
-
-		Noble.transition( LivingRoomScene, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+	if GameController.getFlag( 'game.phase3.finished.' .. self.category ) then
+		GameController.dialogue:hide()
+		Noble.transition( LivingRoomScene, 0.75, Noble.TransitionType.SLIDE_OFF_UP )
 		return
+	end
 
+	if self.timer.value >= ONE_SECOND * 3 and not self.finished then
+		if GameController.dialogue:getState() == DialogueState.Hide then
+
+			Timer.new( ONE_SECOND, function()
+				GameController.setFlag( 'dialogue.currentScript', 'phase3PlayingGameFinish' )
+				GameController.setFlag( 'dialogue.currentLine', 1 )
+				GameController.dialogue:setText( GameController.advanceDialogueLine() )
+				GameController.dialogue:show()
+			end)
+
+			self.finished = true
+
+			return
+
+		end
 	end
 
 	scene.super.update( self )
@@ -229,84 +158,13 @@ function scene:update()
 		return
 	end
 
-	if self.glitchPet then
-		self.pet:setImage(
-			self.pet.animation.imageTable:getImage(
-				self.pet.animation.currentFrame
-			):vcrPauseFilterImage()
-		)
-
-		Timer.new( ONE_SECOND * 0.25, function()
-			self.glitchPet = false
-			local x, y = self.pet:getPosition()
-			self.pet:remove()
-			self.pet = NobleSprite( self.animation )
-			self.pet:setSize( 64, 64 );
-			self.pet:add( x, y )
-		end )
-	end
-
-	self:checkActions()
 	self:moveActions()
 
-end
-
-function scene:checkActions()
-	for i, action in ipairs( self.playActions ) do
-		if #action.icon:overlappingSprites() > 0 then
-			self.currentAction = action.action
-			self.currentActionIdx = i
-			return
-		end
-	end
-
-	if self.currentAction ~= 'fail' then
-		self.currentAction = ''
-	end
 end
 
 function scene:moveActions()
 	for _, action in ipairs( self.playActions ) do
 		action.icon:moveBy( -2, 0 )
-	end
-end
-
-function scene:handleActionSuccess()
-
-	self.glitchPet = true
-	if( math.random( 2 ) == 2 ) then
-		self.glitchPet = false
-	end
-
-	if self.currentAction ~= 'aBtn' and self.currentAction ~= 'bBtn' then
-		self.pet.animation:setState( self.currentAction )
-	else
-		local actionList = { 'up', 'down', 'left', 'right' }
-		self.pet.animation:setState( actionList[math.random( #actionList )] )
-	end
-
-	self.playActions[self.currentActionIdx].icon:clearCollideRect()
-	self.currentAction = ''
-
-	if self.happinessVal < 1.0 then
-		self.happinessVal += 0.1
-	end
-end
-
-function scene:handleActionFail()
-	if self.currentActionIdx + 1 > #self.playActions or self.currentAction == 'fail' then
-		return
-	end
-
-	local notAllowedSample = Sound.sampleplayer.new( 'assets/sound/not-allowed.wav' )
-	notAllowedSample:setVolume( 0.10 )
-	notAllowedSample:play()
-
-	self.playActions[self.currentActionIdx + 1].icon:clearCollideRect()
-	self.currentAction = 'fail'
-
-	if self.happinessVal > 0 then
-		self.happinessVal -= 0.1
 	end
 end
 

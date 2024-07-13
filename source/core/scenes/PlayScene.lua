@@ -111,8 +111,8 @@ function scene:init()
 	self.statBars = {
 		friendship = StatBar( pet.stats.friendship ),
 		hunger =  StatBar( pet.stats.hunger ),
-		tired = StatBar( pet.stats.tired ),
 		boredom = StatBar( pet.stats.boredom ),
+		tired = StatBar( pet.stats.tired ),
 		-- groom = StatBar( "assets/images/UI/heart", "groom" ),
 	}
 
@@ -239,12 +239,24 @@ function scene:setupStatBars()
 		return
 	end
 
-	-- TOOD: These should not be hardcoded like this
-	self.statBars.friendship:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top )
-	self.statBars.hunger:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 15 )
-	self.statBars.boredom:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 30 )
-	-- self.statBars.groom:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 30 )
-	self.statBars.tired:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + 45 )
+	local padding = 0
+	local statBarTypes = {
+		'friendship',
+		'hunger',
+		'boredom',
+		'tired',
+	}
+
+	for i = 1, #statBarTypes do
+		if not GameController.getFlag( self.statBars[statBarTypes[i]].FLAG_PREFIX .. '.disabled' ) then
+			self.statBars[statBarTypes[i]]:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + padding )
+			padding += 15
+		end
+	end
+	-- self.statBars.friendship:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top )
+	-- self.statBars.hunger:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 15 )
+	-- self.statBars.boredom:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 30 )
+	-- self.statBars.tired:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + 45 )
 end
 
 function scene:checkABtnPress()
@@ -399,6 +411,34 @@ function scene:buildDebugMenu()
 		"Feed: Crank It - Phase 3",
 		function()
 			Noble.transition( Feeding_CrankGame_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Play: Simon Says",
+		function()
+			Noble.transition( Playing_CopyGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Play: Simon Says Phase 2",
+		function()
+			Noble.transition( Playing_CopyGame_Phase2, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Play: Simon Says Phase 2 Glitch",
+		function()
+			Noble.transition( Playing_CopyGame_Phase2_Glitch, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
+		end
+	)
+
+	self.dbgMenu:addItem(
+		"Play: Simon Says Phase 3",
+		function()
+			Noble.transition( Playing_CopyGame_Phase3, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
 		end
 	)
 

@@ -37,6 +37,7 @@ import 'core/scenes/microgames/Sleeping/Sleeping_Phase3'
 import 'core/scenes/microgames/Playing/Playing_CopyGame'
 import 'core/scenes/microgames/Playing/Playing_CopyGame_Phase2'
 import 'core/scenes/microgames/Playing/Playing_CopyGame_Phase2_Glitch'
+import 'core/scenes/microgames/Playing/Playing_CopyGame_Phase3'
 
 import "core/states/State"
 import "core/states/StateMachine"

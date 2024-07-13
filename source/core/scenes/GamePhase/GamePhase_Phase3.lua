@@ -152,6 +152,15 @@ function phase:enter()
 		end)
 	end
 
+	if GameController.getFlag( 'game.phase3.disableBtn.playing' ) then
+		self.owner.playBtn:setPressedCallback( function()
+			GameController.setFlag( 'dialogue.currentScript', 'phase3BtnAfterFinish' )
+			GameController.setFlag( 'dialogue.currentLine', 1 )
+			GameController.dialogue:setText( GameController.advanceDialogueLine() )
+			GameController.dialogue:show()
+		end)
+	end
+
 	self.owner:softRestart()
 	self.owner.bgMusic:load( 'assets/sound/main-crack' )
 

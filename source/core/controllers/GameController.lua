@@ -66,11 +66,13 @@ function GameController.getDefaultFlags()
 					petting = false,
 					feeding = false,
 					sleeping = false,
+					playing = false,
 				},
 				disableBtn = {
 					petting = false,
 					feeding = false,
 					sleeping = false,
+					playing = false,
 				},
 			},
 			phase4 = {
@@ -286,16 +288,16 @@ GameController.PHASE_2_GAME_TRIGGERS = {
 	feeding = 1,
 	sleeping = 1,
 	grooming = 0,
-	playing = 0,
+	playing = 1,
 }
 
 GameController.PHASE_3_TIME_TRIGGER = 900
 GameController.PHASE_3_GAME_TRIGGERS = {
-	petting = 6,
-	feeding = 6,
-	sleeping = 6,
+	petting = 5,
+	feeding = 5,
+	sleeping = 5,
 	grooming = 0,
-	playing = 0,
+	playing = 5,
 }
 
 GameController.playTimer = nil
@@ -727,6 +729,49 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase3.disableBtn.feeding', true )
 			GameController.pet.stats.hunger.value = 0
 			GameController.setFlag( 'statBars.hunger.disabled', true )
+			GameController.dialogue:resetDefaults()
+		end,
+	},
+	phase3PlayingGameFinish = {
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"I'm sick of playing simon says!",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"This is about the player's experience\nFrizzle, not yours.",
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"That's not fair.\nI have feelings. I'm not just some toy\nfor your amusement!",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"That's... what you are supposed to\nbe...",
+		function()
+			GameController.dialogue:setVoice(
+				Dialogue.PET_FONT,
+				Dialogue.PET_VOICE
+			)
+		end,
+		"I don't know what to say...\n_You_ don't believe that do you?",
+		function()
+			GameController.dialogue:resetDefaults()
+		end,
+		"It doesn't matter what anyone thinks!\nYou are my creation, and what I say\nis what matters.",
+		"This conversation is over!",
+		function()
+			GameController.setFlag( 'game.phase3.finished.playing', true )
+			GameController.setFlag( 'game.phase3.disableBtn.playing', true )
+			GameController.pet.stats.hunger.value = 0
+			GameController.setFlag( 'statBars.boredom.disabled', true )
 			GameController.dialogue:resetDefaults()
 		end,
 	},
