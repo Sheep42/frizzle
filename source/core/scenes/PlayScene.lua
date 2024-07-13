@@ -249,7 +249,7 @@ function scene:setupStatBars()
 
 	for i = 1, #statBarTypes do
 		if not GameController.getFlag( self.statBars[statBarTypes[i]].FLAG_PREFIX .. '.disabled' ) then
-			self.statBars[statBarTypes[i]]:add( Utilities.screenBounds().right - 40, Utilities.screenBounds().top + padding )
+			self.statBars[statBarTypes[i]]:add( Utilities.screenBounds().right - 60, Utilities.screenBounds().top + padding )
 			padding += 15
 		end
 	end
