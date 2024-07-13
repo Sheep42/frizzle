@@ -77,20 +77,20 @@ function scene:init()
 	self.currentAction = '';
 	self.currentActionIdx = 0;
 
-	local animation = Noble.Animation.new( 'assets/images/pet-dance' )
+	self.animation = Noble.Animation.new( 'assets/images/pet-dance' )
 	local animFinish = function()
 		Timer.new( ONE_SECOND * 0.25, function() self.pet.animation:setState( 'idle' ) end )
 	end
 
-	animation:addState( 'idle', 1, 1, nil, false, nil, 0 )
-	animation:addState( 'down', 2, 2, nil, false, animFinish, 0 )
-	animation:addState( 'up', 3, 3, nil, false, animFinish, 0 )
-	animation:addState( 'left', 4, 4, nil, false, animFinish, 0 )
-	animation:addState( 'right', 5, 5, nil, false, animFinish, 0 )
+	self.animation:addState( 'idle', 1, 1, nil, false, nil, 0 )
+	self.animation:addState( 'down', 2, 2, nil, false, animFinish, 0 )
+	self.animation:addState( 'up', 3, 3, nil, false, animFinish, 0 )
+	self.animation:addState( 'left', 4, 4, nil, false, animFinish, 0 )
+	self.animation:addState( 'right', 5, 5, nil, false, animFinish, 0 )
 
-	animation:setState( 'idle' )
+	self.animation:setState( 'idle' )
 
-	self.pet = NobleSprite( animation )
+	self.pet = NobleSprite( self.animation )
 	self.pet:setSize( 64, 64 )
 
 	scene.inputHandler = {
@@ -238,11 +238,11 @@ function scene:update()
 
 		Timer.new( ONE_SECOND * 0.25, function()
 			self.glitchPet = false
-			self.pet:setImage(
-				self.pet.animation.imageTable:getImage(
-					self.pet.animation.currentFrame
-				)
-			)
+			local x, y = self.pet:getPosition()
+			self.pet:remove()
+			self.pet = NobleSprite( self.animation )
+			self.pet:setSize( 64, 64 );
+			self.pet:add( x, y )
 		end )
 	end
 
@@ -284,12 +284,6 @@ function scene:handleActionSuccess()
 		local actionList = { 'up', 'down', 'left', 'right' }
 		self.pet.animation:setState( actionList[math.random( #actionList )] )
 	end
-
-	self.pet:setImage(
-		self.pet.animation.imageTable:getImage(
-			self.pet.animation.currentFrame
-		)
-	)
 
 	self.playActions[self.currentActionIdx].icon:clearCollideRect()
 	self.currentAction = ''
