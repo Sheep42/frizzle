@@ -34,7 +34,13 @@ function scene:init()
 
 			Timer.new( ONE_SECOND * 0.15, function()
 				self.screenshot = nil
-				GameController.setFlag( 'dialogue.currentScript', 'frizzleBlockRoom' )
+				local script = 'frizzleBlockRoom'
+
+				if GameController.getFlag( 'game.narratorWon' ) then
+					script = 'narratorBlockRoom'
+				end
+
+				GameController.setFlag( 'dialogue.currentScript', script )
 				GameController.setFlag( 'dialogue.currentLine', 1 )
 				GameController.dialogue:setText( GameController.advanceDialogueLine() )
 				GameController.dialogue:show()

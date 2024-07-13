@@ -1190,13 +1190,20 @@ GameController.dialogueLines = {
 		function() GameController.dialogue:resetDefaults() end,
 		"Would you like to delete the game\ndata?",
 		"Keep in mind, though, this will\ncompletely restart the game.",
-		"Frizzle will be back, and we\nwill have to do this all over\nagain.",
-		"If you really want to start\nover, turn the crank to\ndelete the game data.",
+		"Frizzle will be back, and we will have\nto do this all over again.",
+		"If you really want to start over, turn\nthe crank to delete the game data.",
 		function() GameController.setFlag( 'game.resetCrank', true ) end
 	},
 	frizzleBlockRoom = {
 		function() GameController.dialogue:setVoice( Dialogue.PET_FONT, Dialogue.PET_VOICE ) end,
 		"I don't want you to leave me here...",
 		"So, please don't take this the wrong\nway, but you aren't allowed to go\nto the kitchen anymore.",
+	},
+	narratorBlockRoom = {
+		function() GameController.dialogue:resetDefaults() end,
+		"Sorry, you can't go in there...",
+		"What are you doing hanging around\nhere anyway?",
+		"Do you just want to mock me?",
+		"Like I said, go outside or something.",
 	},
 }

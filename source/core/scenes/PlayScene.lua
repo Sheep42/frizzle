@@ -470,13 +470,6 @@ function scene:buildDebugMenu()
 		end
 	)
 
-	self.dbgMenu:addItem(
-		"Play: Simon Says",
-		function()
-			Noble.transition( Playing_CopyGame, 0.75, Noble.TransitionType.DIP_WIDGET_SATCHEL )
-		end
-	)
-
 end
 
 function scene:setCursorVelocity( velocity )
