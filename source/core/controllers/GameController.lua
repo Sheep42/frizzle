@@ -308,7 +308,7 @@ GameController.playTimerCallback = function()
 		math.randomseed( pd.getCurrentTimeMilliseconds() )
 	end
 
-	if GameController.flags.game.playTime % 120 == 0 then
+	if GameController.flags.game.playTime % 500 == 0 then
 		GameController.saveData()
 	end
 
