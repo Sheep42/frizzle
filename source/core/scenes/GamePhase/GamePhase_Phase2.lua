@@ -237,6 +237,10 @@ function phase:enter()
 			Sleeping_MicGame_Phase2,
 			Sleeping_MicGame_Phase2_Glitch,
 		}
+		self.games.playing = {
+			Playing_CopyGame_Phase2,
+			Playing_CopyGame_Phase2_Glitch,
+		}
 	end
 
 	if GameController.getFlag( 'game.phase2.playedGlitchGame' ) and not GameController.getFlag( 'game.phase2.didGlitchScreen' ) then
