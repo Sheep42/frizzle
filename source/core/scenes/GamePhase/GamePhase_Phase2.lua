@@ -290,20 +290,14 @@ function phase:phaseHandler()
 		return
 	end
 
-	local change = true
-
+	local total = 0
 	if GameController.getFlag( 'game.playTime' ) < GameController.PHASE_3_TIME_TRIGGER then
-		for k, v in pairs( GameController.PHASE_3_GAME_TRIGGERS ) do
-
-			local flagVal = GameController.getFlag( 'game.gamesPlayed.' .. k )
-			if flagVal < v then
-				change = false
-			end
-
+		for _, v in pairs( GameController.flags.game.gamesPlayed ) do
+			total += v
 		end
 	end
 
-	if change then
+	if total >= 25 then
 		GameController.setFlag( 'game.phase', 3 )
 	end
 
