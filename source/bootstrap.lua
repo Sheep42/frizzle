@@ -18,6 +18,7 @@ import 'core/scenes/PlayScene'
 import 'core/scenes/LivingRoomScene'
 import 'core/scenes/KitchenScene'
 import 'core/scenes/CreditScene'
+import 'core/scenes/CrashScene'
 
 import 'core/scenes/microgames/Microgame'
 import 'core/scenes/microgames/Petting/Petting_CrankGame'

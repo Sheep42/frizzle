@@ -87,3 +87,21 @@ function Utilities.randomElements( tb, count )
 
 	return result
 end
+
+-- Deep merge 2 tables together, overwriting values in src 
+-- if they already exist in merge. src will be modified
+function Utilities.tableMerge( src, merge )
+	for k,v in pairs( merge ) do
+		if type( v ) == "table" then
+			if type( src[k] or false ) == "table" then
+				Utilities.tableMerge( src[k] or {}, merge[k] or {} )
+			else
+				src[k] = v
+			end
+		else
+			src[k] = v
+		end
+	end
+
+	return src
+end

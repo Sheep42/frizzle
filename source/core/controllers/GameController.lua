@@ -84,6 +84,7 @@ function GameController.getDefaultFlags()
 				deletePet = false,
 				glitchTv = true,
 				crankToEnd = false,
+				systemCrash = false,
 			},
 		},
 		buttons = {
@@ -224,12 +225,10 @@ function GameController.readData()
 	local saveData = nil
 	saveData = pd.datastore.read( GameController.DATA_STORE_FILENAME )
 
-	if saveData ~= nil then
-		GameController.flags = saveData
-		return
-	end
-
 	GameController.flags = GameController.getDefaultFlags()
+	if saveData ~= nil then
+		GameController.flags = Utilities.tableMerge( GameController.flags, saveData )
+	end
 
 end
 
@@ -957,7 +956,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase4.deletePet', false )
 			GameController.setFlag( 'game.frizzleWon', true )
 			GameController.saveData()
-			iDontWantToDie()
+			GameController.setFlag( 'game.phase4.systemCrash', true )
 		end,
 	},
 	narratorWins = {
@@ -981,7 +980,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.hideFrizzle', true )
 			GameController.setFlag( 'game.narratorWon', true )
 			GameController.saveData()
-			iDontWantToDie()
+			GameController.setFlag( 'game.phase4.systemCrash', true )
 		end,
 	},
 	clickWindow1 = {
@@ -1205,5 +1204,8 @@ GameController.dialogueLines = {
 		"What are you doing hanging around\nhere anyway?",
 		"Do you just want to mock me?",
 		"Like I said, go outside or something.",
+	},
+	crashText = {
+		"...... System Kernel Panic! ......\n\nFatal error encountered in core...\n  core/Controllers/GameController.lua:958: NULL\n  Reference to ∀∀∀∀∀∀∀: Object not found!\n\nE R R O R : ∀ O U C A ∀ T K ∀ L L M E\n\n./Data/com.unicorner.frizzle: Data Written\n\nPress A to Restart",
 	},
 }

@@ -261,6 +261,10 @@ function phase:tick()
 		end
 	end
 
+	if GameController.getFlag( 'game.phase4.systemCrash' ) then
+		Noble.transition( CrashScene, 0, Noble.TransitionType.CUT )
+	end
+
 	if GameController.getFlag( 'game.resetCrank' ) then
 		self:handleCrankToReset()
 	end
