@@ -171,7 +171,7 @@ function phase:enter()
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
 
-	else if not GameController.getFlag( 'game.phase4.systemCrash' ) then
+	elseif not GameController.getFlag( 'game.phase4.systemCrash' ) then
 
 		local script = 'gameFinishedNarrator'
 		if GameController.getFlag( 'game.frizzleWon' ) then
