@@ -173,6 +173,8 @@ function phase:enter()
 
 	elseif not GameController.getFlag( 'game.phase4.systemCrash' ) then
 
+		GameController.dialogue:clearCanvas()
+
 		local script = 'gameFinishedNarrator'
 		if GameController.getFlag( 'game.frizzleWon' ) then
 			script = 'gameFinishedFrizzle'
