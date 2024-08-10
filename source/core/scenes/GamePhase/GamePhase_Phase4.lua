@@ -171,7 +171,7 @@ function phase:enter()
 		GameController.dialogue:setText( GameController.advanceDialogueLine() )
 		GameController.dialogue:show()
 
-	else
+	else if not GameController.getFlag( 'game.phase4.systemCrash' ) then
 
 		local script = 'gameFinishedNarrator'
 		if GameController.getFlag( 'game.frizzleWon' ) then
@@ -208,6 +208,10 @@ function phase:exit() end
 function phase:tick()
 
 	self:phaseHandler()
+
+	if GameController.getFlag( 'game.phase4.systemCrash' ) then
+		Noble.transition( CrashScene, 0, Noble.TransitionType.CUT )
+	end
 
 	self.dialogue:drawCanvas()
 	self.dialogue:update()
@@ -261,9 +265,6 @@ function phase:tick()
 		end
 	end
 
-	if GameController.getFlag( 'game.phase4.systemCrash' ) then
-		Noble.transition( CrashScene, 0, Noble.TransitionType.CUT )
-	end
 
 	if GameController.getFlag( 'game.resetCrank' ) then
 		self:handleCrankToReset()

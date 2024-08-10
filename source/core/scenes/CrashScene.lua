@@ -23,9 +23,26 @@ function scene:init()
 	self.dialogue:setVoice( nil, Dialogue._BASE_PITCH - 200 )
 	self.dialogue.textSpeed = TextSpeed.Fast
 	self.dialogue:disableIndicator()
+	self.dialogue.buttonPressedCallback = function()
+		if not self.dialogue.finished then
+			return
+		end
+
+		local line = GameController.advanceDialogueLine()
+		if line ~= nil then
+			self.dialogue:setText( line )
+		end
+	end
 
 	self.finished = false
 	self.textPos = 0
+
+	self.inputHandler = {
+		AButtonDown = function()
+			self.dialogue:buttonPressedCallback()
+		end
+	}
+
 end
 
 function scene:enter()

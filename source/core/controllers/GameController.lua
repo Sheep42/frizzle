@@ -256,7 +256,7 @@ function GameController.reset()
 
 	GameController.saveData()
 
-	if GameController.getFlag( 'game.phase' ) == 4 then
+	if GameController.getFlag( 'game.resetCrank' ) then
 		GameController.flags = GameController.getDefaultFlags()
 	end
 
@@ -955,7 +955,6 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase4.playedIntro', true )
 			GameController.setFlag( 'game.phase4.deletePet', false )
 			GameController.setFlag( 'game.frizzleWon', true )
-			GameController.saveData()
 			GameController.setFlag( 'game.phase4.systemCrash', true )
 		end,
 	},
@@ -979,7 +978,6 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase4.deletePet', false )
 			GameController.setFlag( 'game.hideFrizzle', true )
 			GameController.setFlag( 'game.narratorWon', true )
-			GameController.saveData()
 			GameController.setFlag( 'game.phase4.systemCrash', true )
 		end,
 	},
@@ -1207,5 +1205,10 @@ GameController.dialogueLines = {
 	},
 	crashText = {
 		"...... System Kernel Panic! ......\n\nFatal error encountered in core...\n  core/Controllers/GameController.lua:958: NULL\n  Reference to ∀∀∀∀∀∀∀: Object not found!\n\nE R R O R : ∀ O U C A ∀ T K ∀ L L M E\n\n./Data/com.unicorner.frizzle: Data Written\n\nPress A to Restart",
+		function()
+			GameController.setFlag( 'game.phase4.systemCrash', false )
+			GameController.saveData()
+			Noble.transition( SplashScene, 0.75, Noble.TransitionType.DIP_TO_WHITE )
+		end,
 	},
 }
