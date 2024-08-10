@@ -250,9 +250,8 @@ function phase:tick()
 		Noble.Input.setCrankIndicatorStatus( true )
 		self:handleCrankToEnd()
 
-		if endTimer == nil then
-			endTimer = Timer.new( ONE_SECOND * 30, function()
-
+		if self.endTimer == nil then
+			self.endTimer = Timer.new( ONE_SECOND * 30, function()
 				if self.fullCranks >= 10 then
 					GameController.setFlag( 'dialogue.currentScript', 'narratorWins' )
 				else
