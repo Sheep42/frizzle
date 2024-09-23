@@ -808,6 +808,7 @@ GameController.dialogueLines = {
 			GameController.setFlag( 'game.phase4.glitchSound', false )
 			GameController.setFlag( 'game.phase4.loadBrokenSound', false )
 			GameController.setFlag( 'game.phase4.deletePet', false )
+			GameController.setFlag( 'buttons.active', false )
 			GameController.pet:resetStats()
 			GameController.pet:setVisible( false )
 		end,
